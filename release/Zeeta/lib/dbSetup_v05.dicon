@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components.dtd">
+<components namespace="dbSetups">
+    <include path="j2ee.dicon"/>
+    <component name="dbSetup" class="jp.tokyo.selj.util.TableConvertor">
+        <arg>{
+
+"drop SEQUENCE if exists OutputId",
+"CREATE SEQUENCE OutputId",
+"drop SEQUENCE if exists OutputTypeId",
+"CREATE SEQUENCE OutputTypeId",
+"drop SEQUENCE if exists WorkTypeId",
+"CREATE SEQUENCE WorkTypeId",
+
+"drop table if exists workType",
+"CREATE TABLE workType (
+   workTypeId  INT NOT NULL,
+   SEQ           INT,
+   workTypeName VARCHAR(100) NOT NULL,
+   memo          varchar(65535),
+   newDate       timestamp,
+   versionNo     INT,
+   PRIMARY KEY (workTypeId)
+)",
+
+"drop table if exists outputType",
+"CREATE TABLE outputType (
+   outputTypeId  INT NOT NULL,
+   SEQ           INT,
+   outputTypeName VARCHAR(100) NOT NULL,
+   memo          varchar(65535),
+   newDate       timestamp,
+   workTypeId  INT NOT NULL,
+   versionNo     INT,
+   PRIMARY KEY (outputTypeId)
+)",
+"ALTER TABLE outputType ADD 
+ FOREIGN KEY(workTypeId) REFERENCES workType(workTypeId)", 
+
+"drop table if exists output",
+"CREATE TABLE output (
+   outputId      INT NOT NULL,
+   outputTypeId  INT,
+   name          VARCHAR(128) NOT NULL UNIQUE,
+   path          VARCHAR(256),
+   memo          varchar(65535),
+   newDate       timestamp,
+   userName      varchar(50),
+   versionNo     INT,
+   PRIMARY KEY (outputId)
+)",
+"ALTER TABLE output ADD 
+ FOREIGN KEY(outputTypeId) REFERENCES outputType(outputTypeId)", 
+
+"drop table if exists work",
+"CREATE TABLE work (
+   docId         INT NOT NULL,
+   outputId      INT NOT NULL,
+   workTypeId    INT,
+   pointer       VARCHAR(128),
+   compDate       timestamp,
+   newDate       timestamp,
+   userName      varchar(50),
+   versionNo     INT,
+   PRIMARY KEY (docId, workTypeId)
+)",
+"ALTER TABLE work ADD 
+ FOREIGN KEY(workTypeId) REFERENCES workType(workTypeId)",
+"ALTER TABLE Work ADD 
+ FOREIGN KEY(DocID) REFERENCES Doc(DocID) ON DELETE CASCADE",
+"ALTER TABLE Work ADD 
+ FOREIGN KEY(OutputID) REFERENCES Output(OutputID) ON DELETE CASCADE"
+
+            }
+        </arg>
+    </component>
+</components>

@@ -1,0 +1,99 @@
+<!-- Build configutaion for OSM2005 - Shuma Morimoto 03/16/2005 -->
+
+<project name="Jeeta" default="release" basedir=".">
+
+    <property name="root" value="." />
+    <property name="src" value="${root}/src/main" />
+    <property name="bin" value="${root}/temp_bin" />
+    <property name="dist" value="${root}/release/Zeeta" />
+    <property name="jar_name" value="selj" />
+    
+    <property name="debug" value="on" />
+
+    <!-- Construct the CLASSPATH -->
+    <path id="build.path">
+        <pathelement path="${classpath}" />
+        <pathelement location="./build" />
+        <fileset dir="./lib">
+            <include name="**/*.jar" />
+        </fileset>
+    </path>
+
+    <!-- Compile classes and move them to ${build} -->
+	<target name="-build" >
+        <tstamp>
+            <format property = "datetime" pattern = "yyyy/MM/dd HH:mm:ss zzzz"/>
+        </tstamp>
+        <mkdir dir="${bin}"/>
+        <javac srcdir="${src}" destdir="${bin}" source="1.5" debug="${debug}">
+            <classpath refid="build.path" />
+        </javac>
+		<copy todir="${bin}">
+	        <fileset dir="${src}/../resource">
+	            <include name="image/**/*.*" />
+	            <include name="jp/**/*.dicon" />
+	            <exclude name="*.dicon" />
+	            <exclude name="log4j.properties" />
+	        </fileset>
+		</copy>
+    </target>
+
+    <!-- Make jars to destribute -->
+    <target name="update" depends="-build" >
+        <mkdir dir="${dist}"/>
+        <mkdir dir="${dist}/lib"/>
+        <!-- jar菴懈縲->
+        <jar jarfile="${dist}/lib/${jar_name}.jar" manifest="${src}/META-INF/MANIFEST.MF" >
+            <fileset dir="${bin}" >
+                <include name="**/*.*" />
+            </fileset>  
+        </jar>
+
+        <delete dir="${bin}"/> 
+    </target>
+
+    <!-- Make release folder -->
+    <target name="release" depends="update" >
+        <mkdir dir="${dist}"/>
+        <mkdir dir="${dist}/lib"/>
+		<copy todir="${dist}/lib">
+	        <fileset dir="./lib">
+	            <include name="*.jar" />
+	        </fileset>
+	        <fileset dir="./lib/h2">
+	            <include name="*.jar" />
+	        </fileset>
+	        <fileset dir="./lib/s2">
+	            <include name="*.jar" />
+	        	<exclude name="hsqldb*.jar" />
+	        </fileset>
+	        <fileset dir="./lib/s2dao">
+	            <include name="*.jar" />
+	        </fileset>
+	        <fileset dir="./lib/s2dao_tiger">
+	            <include name="*.jar" />
+	        </fileset>
+			<!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+	        <fileset dir="${src}/../resource">
+	            <include name="*.dicon" />
+	            <include name="log4j.properties" />
+	        </fileset>
+		</copy>
+    	<!--
+		<copy todir="${dist}">
+			<fileset dir=".">
+				<include name="*.bat" />
+			</fileset>
+		</copy>    	
+		-->
+    </target>
+
+	<!--
+    <target name="clean" description="build繝輔ぃ繧、繝ォ謗勁逕ィ">
+        <delete dir="${bin}"/>
+        <delete dir="${dist}"/>
+    </target>
+	-->
+    
+</project>
+

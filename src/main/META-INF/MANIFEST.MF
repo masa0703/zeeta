@@ -1,0 +1,13 @@
+Main-Class: jp.tokyo.selj.ZeetaMain
+Class-Path: 
+ ./ 
+ h2.jar aopalliance-1.0.jar 
+ commons-logging-1.1.jar 
+ geronimo-jta_1.0.1B_spec-1.0.jar 
+ javassist-3.4.ga.jar 
+ log4j-1.2.13.jar 
+ ognl-2.6.7.jar 
+ s2-extension-2.4.22.jar 
+ s2-framework-2.4.22.jar 
+ s2-dao-1.0.47.jar 
+ s2-dao-tiger-1.0.47.jar  

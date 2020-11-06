@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components.dtd">
+<components namespace="dbSetups">
+    <include path="j2ee.dicon"/>
+    <component name="dbSetup" class="jp.tokyo.selj.util.DbSetup">
+        <arg>{
+
+"drop table if exists docStr",
+"drop table if exists workProp",
+"drop table if exists work",
+"drop table if exists doc",
+"drop table if exists usertbl",
+"drop table if exists sortType",
+"drop table if exists checkdetail",
+"drop table if exists checktbl",
+"drop table if exists reviewDetail",
+"drop table if exists review",
+"drop table if exists output",
+"drop table if exists checkpoint",
+"drop table if exists outputTypePropType",
+"drop table if exists outputType",
+"drop table if exists workType",
+
+"drop SEQUENCE if exists DocId",
+"drop SEQUENCE if exists OutputId",
+"drop SEQUENCE if exists OutputTypeId",
+"drop SEQUENCE if exists WorkTypeId",
+
+
+"drop SEQUENCE if exists DocId",
+"CREATE SEQUENCE DocId",
+
+"drop table if exists sortType",
+"CREATE TABLE sortType(
+  sortTypeId      INT NOT NULL,
+  sortTypeName    varchar(50),
+  orderSent       varchar(128),
+  PRIMARY KEY (sortTypeId)
+)",
+"INSERT INTO sortType ( sortTypeId, sortTypeName, orderSent ) VALUES (0,'指定順','docStr.SEQ')",
+"INSERT INTO sortType ( sortTypeId, sortTypeName, orderSent ) VALUES (10,'作成日昇順','doc.newDate')",
+"INSERT INTO sortType ( sortTypeId, sortTypeName, orderSent ) VALUES (11,'作成日降順','doc.newDate DESC')",
+"INSERT INTO sortType ( sortTypeId, sortTypeName, orderSent ) VALUES (20,'タイトル昇順','doc.docTitle')",
+"INSERT INTO sortType ( sortTypeId, sortTypeName, orderSent ) VALUES (21,'タイトル降順','doc.docTitle DESC')",
+
+"drop table if exists doc",
+"CREATE TABLE doc (
+   docId         INT NOT NULL,
+   docTypeId     INT,
+   docTitle      VARCHAR(100) NOT NULL,
+   docCont       varchar(65535),
+   newDate       timestamp,
+   userName      varchar(50),
+   sortTypeId    INT,
+   versionNo     INT,
+   PRIMARY KEY (docId)
+)",
+"ALTER TABLE doc ADD CONSTRAINT doc_fk1
+ FOREIGN KEY(sortTypeId) REFERENCES sortType(sortTypeId)", 
+
+
+"drop table if exists docStr",
+"CREATE TABLE docStr(
+  oyaDocId   INT NOT NULL,
+  koDocId    INT NOT NULL,
+  SEQ        INT,
+  newDate    timestamp,
+  userName   varchar(50),
+  versionNo  INT,
+  PRIMARY KEY (oyaDocId,koDocId)
+)",
+"create index ko_id on docStr(koDocId)",
+"create index oya_id on docStr(oyaDocId)",
+
+"drop table if exists usertbl",
+"CREATE TABLE usertbl(
+  userName  varchar(50) NOT NULL PRIMARY KEY,
+  org       varchar(50)
+)"
+
+,
+
+"drop SEQUENCE if exists OutputId",
+"CREATE SEQUENCE OutputId",
+"drop SEQUENCE if exists OutputTypeId",
+"CREATE SEQUENCE OutputTypeId",
+"drop SEQUENCE if exists WorkTypeId",
+"CREATE SEQUENCE WorkTypeId",
+
+"drop table if exists workType",
+"CREATE TABLE workType (
+   workTypeId  INT NOT NULL,
+   SEQ           INT,
+   workTypeName VARCHAR(100) NOT NULL,
+   memo          varchar(65535),
+   newDate       timestamp,
+   versionNo     INT,
+   PRIMARY KEY (workTypeId)
+)",
+
+"drop table if exists outputType",
+"CREATE TABLE outputType (
+   outputTypeId  INT NOT NULL,
+   SEQ           INT,
+   outputTypeName VARCHAR(100) NOT NULL,
+   memo          varchar(65535),
+   newDate       timestamp,
+   workTypeId  INT NOT NULL,
+   versionNo     INT,
+   PRIMARY KEY (outputTypeId)
+)",
+"ALTER TABLE outputType ADD CONSTRAINT outputType_fk1
+ FOREIGN KEY(workTypeId) REFERENCES workType(workTypeId)", 
+
+"drop table if exists output",
+"CREATE TABLE output (
+   outputId      INT NOT NULL,
+   outputTypeId  INT,
+   name          VARCHAR(128) NOT NULL UNIQUE,
+   path          VARCHAR(256),
+   memo          varchar(65535),
+   newDate       timestamp,
+   userName      varchar(50),
+   versionNo     INT,
+   PRIMARY KEY (outputId)
+)",
+"ALTER TABLE output ADD CONSTRAINT output_fk1
+ FOREIGN KEY(outputTypeId) REFERENCES outputType(outputTypeId)", 
+
+"drop table if exists work",
+"CREATE TABLE work (
+   docId         INT NOT NULL,
+   outputId      INT NOT NULL,
+   workTypeId    INT,
+   pointer       VARCHAR(128),
+   compFlg       boolean,
+   newFlg        boolean,
+   compDate      timestamp,
+   newDate       timestamp,
+   userName      varchar(50),
+   versionNo     INT,
+   PRIMARY KEY (docId, workTypeId)
+)",
+
+"ALTER TABLE work ADD CONSTRAINT work_fk1
+ FOREIGN KEY(workTypeId) REFERENCES workType(workTypeId)",
+"ALTER TABLE Work ADD CONSTRAINT work_fk2
+ FOREIGN KEY(DocID) REFERENCES Doc(DocID) ON DELETE CASCADE",
+"ALTER TABLE Work ADD CONSTRAINT work_fk3
+ FOREIGN KEY(OutputID) REFERENCES Output(OutputID) ON DELETE CASCADE",
+
+"drop table if exists outputPropType",
+"CREATE TABLE outputPropType (
+   outputPropTypeId   INT NOT NULL,
+   outputPropTypeName VARCHAR(128),
+   unitName         VARCHAR(20),
+   descr            VARCHAR(256),
+   SEQ              INT,
+   versionNo        INT,
+   PRIMARY KEY (outputPropTypeId)
+)",
+
+"drop SEQUENCE if exists OutputPropTypeId",
+"CREATE SEQUENCE OutputPropTypeId",
+
+"drop table if exists workProp",
+"CREATE TABLE workProp (
+   docId         INT NOT NULL,
+   workTypeId    INT NOT NULL,
+   outputPropTypeId   INT NOT NULL,
+   jissekiFlg       boolean NOT NULL,
+   value           NUMERIC(20,2),
+   versionNo        INT,
+   PRIMARY KEY (docId, workTypeId, outputPropTypeId, jissekiFlg)
+)",
+
+"ALTER TABLE workProp ADD CONSTRAINT workProp_fk1
+ FOREIGN KEY(docId,workTypeId) REFERENCES work(docId,workTypeId) ON DELETE CASCADE",
+"ALTER TABLE workProp ADD CONSTRAINT workProp_fk2
+ FOREIGN KEY(outputPropTypeId) REFERENCES outputPropType(outputPropTypeId)",
+
+
+"drop table if exists checkPoint",
+"CREATE TABLE checkPoint (
+   checkPointId     INT NOT NULL,
+   outputTypeId     INT NOT NULL,
+   checkCont        VARCHAR(512),
+   SEQ              INT,
+   deleteFlg        boolean,
+   versionNo        INT,
+   PRIMARY KEY (checkPointId)
+)",
+
+"ALTER TABLE checkPoint ADD CONSTRAINT checkPoint_fk1
+ FOREIGN KEY(outputTypeId) REFERENCES outputType(outputTypeId)",
+
+"drop SEQUENCE if exists CheckPointId",
+"CREATE SEQUENCE CheckPointId",
+
+
+"drop table if exists checktbl",
+"CREATE TABLE checktbl (
+   outputId       INT NOT NULL,
+   checkDate      timestamp NOT NULL,
+   userName       varchar(50),
+   remark         VARCHAR(128),
+   versionNo      INT,
+   PRIMARY KEY (outputId, checkDate)
+)",
+
+"ALTER TABLE checktbl ADD CONSTRAINT checktbl_fk1
+ FOREIGN KEY(outputId) REFERENCES output(outputId) ON DELETE CASCADE",
+
+"drop table if exists checkState",
+"CREATE TABLE checkState (
+   checkStateId  INT NOT NULL,
+   checkStateName VARCHAR(100) NOT NULL,
+   PRIMARY KEY (checkStateId)
+)",
+"INSERT INTO checkState ( checkStateId, checkStateName ) VALUES (0,'(no check)')",
+"INSERT INTO checkState ( checkStateId, checkStateName ) VALUES (10,'OK')",
+"INSERT INTO checkState ( checkStateId, checkStateName ) VALUES (20,'NG')",
+"INSERT INTO checkState ( checkStateId, checkStateName ) VALUES (30,'(no match)')",
+
+
+"drop table if exists checkDetail",
+"CREATE TABLE checkDetail (
+   outputId       INT NOT NULL,
+   checkDate      timestamp NOT NULL,
+   checkPointId   INT NOT NULL,
+   updDate      timestamp,
+   checkStateId     INT NOT NULL,
+   versionNo        INT,
+   PRIMARY KEY (outputId, checkDate, checkPointId)
+)",
+
+"ALTER TABLE checkDetail ADD CONSTRAINT checkDetail_fk1
+ FOREIGN KEY(checkPointId) REFERENCES checkPoint(checkPointId) ON DELETE CASCADE",
+"ALTER TABLE checkDetail ADD CONSTRAINT checkDetail_fk2
+ FOREIGN KEY(checkStateId) REFERENCES checkState(checkStateId)",
+"ALTER TABLE checkDetail ADD CONSTRAINT checkDetail_fk3
+ FOREIGN KEY(outputId,checkDate) REFERENCES checktbl(outputId,checkDate) ON DELETE CASCADE",
+
+
+"drop table if exists review",
+"CREATE TABLE review (
+   outputId       INT NOT NULL,
+   reviewDate      timestamp NOT NULL,
+   userName        varchar(50),
+   reviewi         varchar(50),
+   reviewer1       varchar(50),
+   reviewer2       varchar(50),
+   reviewer3       varchar(50),
+   remark          VARCHAR(1024),
+   versionNo        INT,
+   PRIMARY KEY (outputId, reviewDate)
+)",
+
+"ALTER TABLE review ADD CONSTRAINT review_fk1
+ FOREIGN KEY(outputId) REFERENCES output(outputId) ON DELETE CASCADE",
+
+"drop table if exists reviewStateType",
+"CREATE TABLE reviewStateType (
+   reviewStateTypeId  INT NOT NULL,
+   reviewStateTypeName VARCHAR(100) NOT NULL,
+   PRIMARY KEY (reviewStateTypeId)
+)",
+"INSERT INTO reviewStateType ( reviewStateTypeId, reviewStateTypeName ) VALUES (0,'未対応')",
+"INSERT INTO reviewStateType ( reviewStateTypeId, reviewStateTypeName ) VALUES (20,'対応済')",
+"INSERT INTO reviewStateType ( reviewStateTypeId, reviewStateTypeName ) VALUES (80,'再開')",
+"INSERT INTO reviewStateType ( reviewStateTypeId, reviewStateTypeName ) VALUES (100,'確認済み')",
+
+"drop table if exists reviewDetail",
+"CREATE TABLE reviewDetail (
+   outputId       INT NOT NULL,
+   reviewDate      timestamp NOT NULL,
+   SEQ             INT,
+   memo             VARCHAR(65535),
+   updDate         timestamp,
+   UpdUserName     varchar(50),
+   reviewStateTypeId   INT NOT NULL,
+   versionNo       INT,
+   PRIMARY KEY (outputId, reviewDate, SEQ)
+)",
+
+"ALTER TABLE reviewDetail ADD CONSTRAINT reviewDetail_fk1
+ FOREIGN KEY(reviewStateTypeId) REFERENCES reviewStateType(reviewStateTypeId)",
+"ALTER TABLE reviewDetail ADD CONSTRAINT reviewDetail_fk2
+ FOREIGN KEY(outputId,reviewDate) REFERENCES review(outputId,reviewDate) ON DELETE CASCADE",
+
+"drop table if exists outputTypePropType",
+"CREATE TABLE outputTypePropType (
+   outputTypeId   INT NOT NULL,
+   outputPropTypeId   INT NOT NULL,
+   PRIMARY KEY (outputTypeId, outputPropTypeId)
+)",
+"ALTER TABLE outputTypePropType ADD CONSTRAINT outputTypePropType_fk1
+ FOREIGN KEY(outputTypeId) REFERENCES OutputType(outputTypeId) ON DELETE CASCADE",
+"ALTER TABLE outputTypePropType ADD CONSTRAINT outputTypePropType_fk2
+ FOREIGN KEY(outputPropTypeId) REFERENCES OutputPropType(outputPropTypeId) ON DELETE CASCADE",
+
+
+"drop table if exists sysZeeta",
+"create table sysZeeta(
+  id INT NOT NULL
+ ,version varchar(10) NOT NULL
+ ,needUserName boolean
+ ,linkNodePref varchar(128)
+ ) ",
+"ALTER TABLE sysZeeta ADD PRIMARY KEY(id)",
+
+"insert into sysZeeta(id, version, needUserName) values (1, '616', false)",
+
+
+"--"
+            }
+        </arg>
+    </component>
+</components>

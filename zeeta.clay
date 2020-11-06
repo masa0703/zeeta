@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<clay-model clay-version="1.4.2">
+<database-model alias="" author="" begin-script="" end-script="" name="zeeta" remarks="" sql-dialect-id="jp.azzurri.clay.dialect.HSQLDB_1_7_0_Dialect" uid="1f6e3e9:11f3790682f:-7fca" version="1.0">
+<database-model-description/>
+<schema-list/>
+</database-model>
+</clay-model>

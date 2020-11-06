@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components.dtd">
+<components namespace="dbSetups">
+    <include path="j2ee.dicon"/>
+    <component name="dbSetup" class="jp.tokyo.selj.util.DbSetup">
+        <arg>{
+"drop table if exists doc",
+"CREATE TABLE doc (
+   docId         INT NOT NULL AUTO_INCREMENT,
+   docTypeId     INT,
+   docTitle      VARCHAR(100) NOT NULL,
+   docCont       TEXT,
+   newDate       timestamp,
+   userName      varchar(50),
+   sortTypeId    tinyint,
+   versionNo     INT,
+   PRIMARY KEY (docId)
+)",
+"drop table if exists docStr",
+"CREATE TABLE docStr(
+  oyaDocId   INT NOT NULL,
+  koDocId    INT NOT NULL,
+  SEQ        INT,
+  newDate    timestamp,
+  userName   varchar(50),
+  versionNo  INT
+)",
+"ALTER TABLE docStr ADD CONSTRAINT PRIMARY_KEY_1 PRIMARY KEY (oyaDocId,koDocId)",
+"create index ko_id on docStr(koDocId)",
+"create index oya_id on docStr(oyaDocId)",
+"drop table if exists sortType",
+"CREATE TABLE sortType(
+  sortTypeId      INT NOT NULL,
+  sortTypeName    varchar(50),
+  orderSent       varchar(128)
+)",
+"ALTER TABLE sortType ADD CONSTRAINT PRIMARY_KEY_1 PRIMARY KEY (sortTypeId)",
+"drop table if exists user",
+"CREATE TABLE user(
+  userName  varchar(50) NOT NULL PRIMARY KEY,
+  org       varchar(50)
+)"
+
+,
+
+"INSERT INTO sortType ( sortTypeId, sortTypeName, orderSent ) VALUES (0,'指定順','docStr.SEQ')",
+"INSERT INTO sortType ( sortTypeId, sortTypeName, orderSent ) VALUES (10,'作成日昇順','doc.newDate')",
+"INSERT INTO sortType ( sortTypeId, sortTypeName, orderSent ) VALUES (11,'作成日降順','doc.newDate DESC')",
+"INSERT INTO sortType ( sortTypeId, sortTypeName, orderSent ) VALUES (20,'タイトル昇順','doc.docTitle')",
+"INSERT INTO sortType ( sortTypeId, sortTypeName, orderSent ) VALUES (21,'タイトル降順','doc.docTitle DESC')"
+
+            }
+        </arg>
+    </component>
+</components>

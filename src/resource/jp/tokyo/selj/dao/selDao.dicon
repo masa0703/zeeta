@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components.dtd">
+<components>
+	<include path="dao.dicon"/>
+
+	<component class="jp.tokyo.selj.dao.DocDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component class="jp.tokyo.selj.dao.Doc2DaoImpl">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component class="jp.tokyo.selj.dao.DocStrDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component class="jp.tokyo.selj.dao.SortTypeDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component class="jp.tokyo.selj.dao.UserDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component class="jp.tokyo.selj.dao.WorkDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component class="jp.tokyo.selj.dao.OutputDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component class="jp.tokyo.selj.dao.WorkTypeDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component class="jp.tokyo.selj.dao.OutputTypeDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component class="jp.tokyo.selj.dao.CheckDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component class="jp.tokyo.selj.dao.CheckDetailDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component class="jp.tokyo.selj.dao.CheckStateDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component class="jp.tokyo.selj.dao.CheckPointDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component class="jp.tokyo.selj.dao.ReviewStateTypeDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component class="jp.tokyo.selj.dao.ReviewDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component class="jp.tokyo.selj.dao.ReviewDetailDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component class="jp.tokyo.selj.dao.OutputPropTypeDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component class="jp.tokyo.selj.dao.OutputTypePropTypeDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component class="jp.tokyo.selj.dao.WorkPropDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+	<component class="jp.tokyo.selj.dao.SysZeetaDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+</components>
