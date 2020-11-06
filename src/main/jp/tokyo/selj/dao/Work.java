@@ -47,13 +47,13 @@ public class Work implements Serializable {
 
     private int versionNo=0;
 
-    private Output output;		//ã“ã‚Œã¯s2Daoã§ã¯ã‚»ãƒƒãƒˆã—ãªã„
+    private Output output;		//‚±‚ê‚Ís2Dao‚Å‚ÍƒZƒbƒg‚µ‚È‚¢
 
 	public Work() {
 		userName = SysPreference.getDefaultUserName();
     }
 	public void check(){
-		//ç‰¹ã«ãªã—
+		//“Á‚É‚È‚µ
 	}
 
     public String toString() {
@@ -137,7 +137,7 @@ public class Work implements Serializable {
 		this.pointer = pointer;
 	}
 
-    //ã“ã‚Œã‚’ã‚„ã£ã¦ã‚‚ã€output.outputTypeãŒèª­ã¿è¾¼ã¾ã‚Œãªã„ã®ã§è‡ªå‰ã§ã‚»ãƒƒãƒˆã™ã‚‹
+    //‚±‚ê‚ğ‚â‚Á‚Ä‚àAoutput.outputType‚ª“Ç‚İ‚Ü‚ê‚È‚¢‚Ì‚Å©‘O‚ÅƒZƒbƒg‚·‚é
 	public Output getOutput() {
 		return output;
 	}

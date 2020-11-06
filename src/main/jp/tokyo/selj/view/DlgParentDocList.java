@@ -92,7 +92,7 @@ public class DlgParentDocList extends JDialog implements TreeSelectionListener{
 	@Override
 	public void setVisible(boolean b) {
 		if(b){
-			throw new RuntimeException("setVisible(boolean b, DocNode docNode)ã‚’ã¤ã‹ã‚ãªã‚ã‹ã‚“");
+			throw new RuntimeException("setVisible(boolean b, DocNode docNode)‚ğ‚Â‚©‚í‚È‚ ‚©‚ñ");
 		}else{
 			super.setVisible(b);
 		}
@@ -103,16 +103,16 @@ public class DlgParentDocList extends JDialog implements TreeSelectionListener{
 	}
 
 	public void valueChanged(TreeSelectionEvent e) {
-		//é¸æŠã•ã‚ŒãŸitem
+		//‘I‘ğ‚³‚ê‚½item
 		if( !isShowing() || e.getPath().getLastPathComponent() == null){
 			return;
 		}
 		log.debug("refresh parent list");
-		//é¸æŠã•ã‚ŒãŸãƒãƒ¼ãƒ‰ã‚’detailã«è¡¨ç¤º
+		//‘I‘ğ‚³‚ê‚½ƒm[ƒh‚ğdetail‚É•\¦
 		refreshParentList( (DocNode)e.getPath().getLastPathComponent() );
 	}
 	void refreshParentList(DocNode node){
-		//è¦ªä¸€è¦§ç”»é¢ã‚’æ›´æ–°
+		//eˆê——‰æ–Ê‚ğXV
 		long id = node.getDoc().getDocId();
 		List parents = docModel_.getParents(id);
 		selectedDoc_ = node.getDoc();

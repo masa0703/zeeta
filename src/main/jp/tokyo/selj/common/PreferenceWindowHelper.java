@@ -35,7 +35,7 @@ public class PreferenceWindowHelper {
 				super.windowClosing(e);
             }
 
-//			@Override   ä¸€ç¬å¦™ãªå ´æ‰€ã«è¡¨ç¤ºã•ã‚Œã¦ã‹ã‚‰ç§»å‹•ã™ã‚‹ã®ã§ã‚„ã‚ãŸ
+//			@Override   ˆêu–­‚ÈêŠ‚É•\¦‚³‚ê‚Ä‚©‚çˆÚ“®‚·‚é‚Ì‚Å‚â‚ß‚½
 //			public void windowOpened(WindowEvent e) {
 //				restoreForm();
 //				super.windowOpened(e);
@@ -60,7 +60,7 @@ public class PreferenceWindowHelper {
 
 	}
     private void saveLocation() {
-        if(dim.width < 1 && dim.height < 1){		//ä¸€åº¦ã‚‚ç§»å‹•ã‚‚ãƒªã‚µã‚¤ã‚ºã‚‚ã—ãªã„ã¨0ã«ãªã‚‹
+        if(dim.width < 1 && dim.height < 1){		//ˆê“x‚àˆÚ“®‚àƒŠƒTƒCƒY‚à‚µ‚È‚¢‚Æ0‚É‚È‚é
         	return;
         }
     	prefs_.putInt(key_+"locx", pos.x);
@@ -76,7 +76,7 @@ public class PreferenceWindowHelper {
     public void restoreForm(){
         int wdim = prefs_.getInt(key_+"dimw", window_.getSize().width);
         int hdim = prefs_.getInt(key_+"dimh", window_.getSize().height);
-        if(wdim > 0 && hdim > 0){		//ä¸€åº¦ã‚‚ç§»å‹•ã‚‚ãƒªã‚µã‚¤ã‚ºã‚‚ã—ãªã„ã¨0ã«ãªã‚‹
+        if(wdim > 0 && hdim > 0){		//ˆê“x‚àˆÚ“®‚àƒŠƒTƒCƒY‚à‚µ‚È‚¢‚Æ0‚É‚È‚é
         	window_.setSize(wdim, hdim);
         }
         

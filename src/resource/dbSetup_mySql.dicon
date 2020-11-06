@@ -44,11 +44,11 @@
 
 ,
 
-"INSERT INTO sortType ( sortTypeId, sortTypeName, orderSent ) VALUES (0,'æŒ‡å®šé †','docStr.SEQ')",
-"INSERT INTO sortType ( sortTypeId, sortTypeName, orderSent ) VALUES (10,'ä½œæˆæ—¥æ˜‡é †','doc.newDate')",
-"INSERT INTO sortType ( sortTypeId, sortTypeName, orderSent ) VALUES (11,'ä½œæˆæ—¥é™é †','doc.newDate DESC')",
-"INSERT INTO sortType ( sortTypeId, sortTypeName, orderSent ) VALUES (20,'ã‚¿ã‚¤ãƒˆãƒ«æ˜‡é †','doc.docTitle')",
-"INSERT INTO sortType ( sortTypeId, sortTypeName, orderSent ) VALUES (21,'ã‚¿ã‚¤ãƒˆãƒ«é™é †','doc.docTitle DESC')"
+"INSERT INTO sortType ( sortTypeId, sortTypeName, orderSent ) VALUES (0,'Žw’è‡','docStr.SEQ')",
+"INSERT INTO sortType ( sortTypeId, sortTypeName, orderSent ) VALUES (10,'ì¬“ú¸‡','doc.newDate')",
+"INSERT INTO sortType ( sortTypeId, sortTypeName, orderSent ) VALUES (11,'ì¬“ú~‡','doc.newDate DESC')",
+"INSERT INTO sortType ( sortTypeId, sortTypeName, orderSent ) VALUES (20,'ƒ^ƒCƒgƒ‹¸‡','doc.docTitle')",
+"INSERT INTO sortType ( sortTypeId, sortTypeName, orderSent ) VALUES (21,'ƒ^ƒCƒgƒ‹~‡','doc.docTitle DESC')"
 
             }
         </arg>

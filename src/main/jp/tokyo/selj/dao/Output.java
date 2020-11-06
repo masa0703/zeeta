@@ -56,20 +56,20 @@ public class Output implements Serializable {
 
     public void check() throws AppException{
     	if(name == null || "".equals(name.trim()) ){
-    		throw new ModelCheckException("åç§°(name)ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„");
+    		throw new ModelCheckException("–¼Ì(name)‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢");
     	}
     	if(outputType == null ){
-    		throw new ModelCheckException("æˆæœç‰©ç¨®é¡(outputType)ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„");
+    		throw new ModelCheckException("¬‰Ê•¨í—Ş(outputType)‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢");
     	}
-//    	if(getOutputId() < 0){	//æ›´æ–°æ™‚ã‚‚ãƒã‚§ãƒƒã‚¯ã›ã«ã‚ƒã
-	    	//nameãŒãƒ¦ãƒ‹ãƒ¼ã‚¯ã«ãªã£ã¦ã„ã‚‹ã“ã¨
+//    	if(getOutputId() < 0){	//XV‚àƒ`ƒFƒbƒN‚¹‚É‚á‚Ÿ
+	    	//name‚ªƒ†ƒj[ƒN‚É‚È‚Á‚Ä‚¢‚é‚±‚Æ
 	    	OutputDao outputDao = (OutputDao) SelJDaoContainer.SEL_DAO_CONT.getComponent(OutputDao.class);
 	    	List<Output> result = outputDao.findByName(getName());
 	    	if(result.size() > 0){
 	    		if(result.size() == 1 && result.get(0).outputId == getOutputId()){
-	    			//è‡ªåˆ†è‡ªèº«ã ã£ãŸã‚‰åç§°ã‚’å¤‰æ›´ã—ãªã„æ›´æ–°ã ã£ã¡ã‚ƒ
+	    			//©•ª©g‚¾‚Á‚½‚ç–¼Ì‚ğ•ÏX‚µ‚È‚¢XV‚¾‚Á‚¿‚á
 	    		}else{
-	    			throw new ModelCheckException("åŒã˜åç§°(name)ãŒæ—¢ã«å­˜åœ¨ã—ã¾ã™");
+	    			throw new ModelCheckException("“¯‚¶–¼Ì(name)‚ªŠù‚É‘¶İ‚µ‚Ü‚·");
 	    		}
 	    	}
 //    	}    	

@@ -1,7 +1,7 @@
 @call setenv.bat
 @echo ----------------------------------------------------
-@echo MSAccessデータを取り込みます。よろしいですか？
-@echo キャンセルする場合は、CTRL+Cをタイプしてください。
+@echo MSAccess�f�[�^����荞�݂܂��B��낵���ł����H
+@echo �L�����Z������ꍇ�́ACTRL+C���^�C�v���Ă��������B
 @echo ----------------------------------------------------
 @pause
 @java -cp %CLS% jp.tokyo.selj.util.Migrate

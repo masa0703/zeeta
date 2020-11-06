@@ -36,9 +36,9 @@ public class SortType implements Serializable {
     }
 //    public String toString() {
 //        StringBuffer buf = new StringBuffer();
-//        buf.append(繧ｽ繝ｼ繝育ｨｮ蛻･ID).append(", ");
-//        buf.append(繧ｽ繝ｼ繝育ｨｮ蛻･蜷咲ｧｰ).append(", ");
-//        buf.append(Order蜿･);
+//        buf.append(ソート種別ID).append(", ");
+//        buf.append(ソート種別名称).append(", ");
+//        buf.append(Order句);
 //        return buf.toString();
 //    }
 

@@ -40,7 +40,7 @@ public class DlgWorkDetail extends DlgOutputDetail {
 		public ActUpdateWork(){
 			super();
 			putValue(Action.NAME, "commit");
-			putValue(Action.SHORT_DESCRIPTION, "ä½œæ¥­ã®æ›´æ–°ã‚’è¡Œã„ã¾ã™");
+			putValue(Action.SHORT_DESCRIPTION, "ì‹Æ‚ÌXV‚ğs‚¢‚Ü‚·");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			DlgWorkDetail.super.commitOutput(e);
@@ -53,7 +53,7 @@ public class DlgWorkDetail extends DlgOutputDetail {
 				work_.setCompDate(null);
 			}
 			work_.check();
-			//æ›´æ–°
+			//XV
 			((OutputOfWorkListModel)model_).updateWork(work_);
 			DlgWorkDetail.this.setVisible(false);
 		}
@@ -75,11 +75,11 @@ public class DlgWorkDetail extends DlgOutputDetail {
 	public void setup(OutputOfWorkListModel model){
 		super.setup(model);
 		getInpPointer().getDocument().addDocumentListener(docListener_);
-		getCmdOk().setAction(new ActUpdateWork());	//actionã‚’å…¥ã‚Œæ›¿ãˆã‚‹
+		getCmdOk().setAction(new ActUpdateWork());	//action‚ğ“ü‚ê‘Ö‚¦‚é
 		
 		pointerUndoHandler_.setup(getInpPointer());
 		getJTree().setToolTipText(getJTree().getToolTipText()
-				+"ç·‘ã®ä¸‹ç·šã¯ã€é¸æŠä¸­ã®ä½œæ¥­ã«Linkã—ã¦ã„ã‚‹ãƒãƒ¼ãƒ‰ã€‚");
+				+"—Î‚Ì‰ºü‚ÍA‘I‘ğ’†‚Ìì‹Æ‚ÉLink‚µ‚Ä‚¢‚éƒm[ƒhB");
 	}
 
 	/**
@@ -88,9 +88,9 @@ public class DlgWorkDetail extends DlgOutputDetail {
 	 */
 	private void initialize() {
 		Dimension size = getSize();
-		size.height += 50;	//pointerãªã©ã®å…¥åŠ›ã‚¨ãƒªã‚¢ã‚’è¿½åŠ ã™ã‚‹ã®ã§å°‘ã—é«˜ãã™ã‚‹
+		size.height += 50;	//pointer‚È‚Ç‚Ì“ü—ÍƒGƒŠƒA‚ğ’Ç‰Á‚·‚é‚Ì‚Å­‚µ‚‚­‚·‚é
         this.setSize(size);
-		//ã€Œä½œæ¥­ã€å±æ€§åˆ†ã‚’
+		//uì‹Æv‘®«•ª‚ğ
 		GridBagConstraints gbcPointer = new GridBagConstraints();
 		gbcPointer.fill = GridBagConstraints.HORIZONTAL;
 		gbcPointer.weightx = 1.0;
@@ -105,7 +105,7 @@ public class DlgWorkDetail extends DlgOutputDetail {
 		if (inpPointer == null) {
 			inpPointer = new JTextField();
 			inpPointer.setBorder(new TitledBorder("pointer"));
-			inpPointer.setToolTipText("æˆæœç‰©å†…ã®ä½ç½®ã‚’è¨˜è¿°ã—ã¾ã™");
+			inpPointer.setToolTipText("¬‰Ê•¨“à‚ÌˆÊ’u‚ğ‹Lq‚µ‚Ü‚·");
 			inpPointer.setOpaque(false);
 		}
 		return inpPointer;
@@ -116,7 +116,7 @@ public class DlgWorkDetail extends DlgOutputDetail {
 		isUpdate_ = true;
 		work_ = work;
 		
-		resetOutputTypeList(work_.getWorkTypeId());		//æˆæœç‰©ç¨®é¡ã®ã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹ãƒªã‚¹ãƒˆã‚’ãƒªã‚»ãƒƒãƒˆ
+		resetOutputTypeList(work_.getWorkTypeId());		//¬‰Ê•¨í—Ş‚ÌƒRƒ“ƒ{ƒ{ƒbƒNƒXƒŠƒXƒg‚ğƒŠƒZƒbƒg
 		refreshDocTree(work);
 		
 		pointerUndoHandler_.cleanup();
@@ -129,7 +129,7 @@ public class DlgWorkDetail extends DlgOutputDetail {
 		inpPointer.setText(work.getPointer());
 		inpCompDate.setValue(work.getCompDate());
 		inpCompFlag.setSelected(work.getCompFlg());
-		// TreeCellRendererã®è¨­å®š
+		// TreeCellRenderer‚Ìİ’è
 		((DocTreeCellRenderer4Work)getJTree().getCellRenderer()).setWork(work);
 		
 		refreshDocTree(work.getOutput());
@@ -177,7 +177,7 @@ public class DlgWorkDetail extends DlgOutputDetail {
 		if (inpCompFlag == null) {
 			inpCompFlag = new JCheckBox();
 			inpCompFlag.setText("complete");
-			inpCompFlag.setToolTipText("ä½œæ¥­ãŒå®Œäº†ã—ãŸå ´åˆon");
+			inpCompFlag.setToolTipText("ì‹Æ‚ªŠ®—¹‚µ‚½ê‡on");
 			inpCompFlag.setOpaque(false);
 			inpCompFlag.addChangeListener(new javax.swing.event.ChangeListener() {
 				public void stateChanged(javax.swing.event.ChangeEvent e) {

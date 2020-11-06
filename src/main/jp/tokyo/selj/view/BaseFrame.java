@@ -1,6 +1,5 @@
 package jp.tokyo.selj.view;
 
-
 import java.util.prefs.Preferences;
 
 import javax.swing.JFrame;

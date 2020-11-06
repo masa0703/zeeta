@@ -39,12 +39,12 @@ public class TestH2 {
 					"NAME varchar(10000)" +
 					")");
 			
-			execute(con,"insert into TEST values(1, '„Åç„Çì„Åü„Åæ')");
-			execute(con,"insert into TEST values(2, '„Å°„Çì„Åü„Åæ')");
-			execute(con,"insert into TEST values(3, '„ÅÜ„Çì„Åì')");
+			execute(con,"insert into TEST values(1, 'Ç´ÇÒÇΩÇ‹')");
+			execute(con,"insert into TEST values(2, 'ÇøÇÒÇΩÇ‹')");
+			execute(con,"insert into TEST values(3, 'Ç§ÇÒÇ±')");
 			long t = System.currentTimeMillis();
 			for(int i=0; i<10000; i++){
-				execute(con,"insert into TEST values("+(i+100)+", '„Åç„Çì„Åü„Åæ')");
+				execute(con,"insert into TEST values("+(i+100)+", 'Ç´ÇÒÇΩÇ‹')");
 			}
 //			con.commit();
 			System.out.println("time="+ (System.currentTimeMillis() - t));

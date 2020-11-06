@@ -71,7 +71,7 @@ public class DlgReviewList extends JDialog implements ListSelectionListener{
 	
     protected TextUndoHandler memoUndoHandler_ = new TextUndoHandler();
 
-	//Viewã®çŠ¶æ…‹ã‚’ç®¡ç†ã™ã‚‹
+	//View‚Ìó‘Ô‚ğŠÇ—‚·‚é
 	enum DetailViewStateType {NEUTRAL, CREATING, UPDATING, DELETING}; 
 	class DetailViewState implements ListSelectionListener{
 		ReviewDetail curDetail_ = null;
@@ -86,13 +86,13 @@ public class DlgReviewList extends JDialog implements ListSelectionListener{
 				}
 log.debug("setDarty() "+setting_);
 
-				//ã“ã®IFæ–‡ã¯ã€ä»¥ä¸‹ã®ã‚ˆã†ãªä¸å¯è§£ãªç¾è±¡ã«å¯¾å¿œã™ã‚‹ãŸã‚ã®è‹¦è‚‰ã®ç­–ã§ã‚ã‚‹ã€‚
-				//ctrl+s, ctrl+enterã§commitã‚’å‹•ä½œã•ã›ã‚‹ã“ã¨ã«ã—ãŸéš›ã€commitã‚¢ã‚¯ã‚·ãƒ§ãƒ³
-				//å‹•ä½œå¾Œã«JFormattedTextFieldã‹ã‚‰ä½•æ•…ã‹æ›´æ–°ã‚¤ãƒ™ãƒ³ãƒˆãŒç™ºç”Ÿã—ã€
-				//Dartyãƒ•ãƒ©ã‚°ãŒOnã«ãªã£ã¦ã—ã¾ã†ã€‚
+				//‚±‚ÌIF•¶‚ÍAˆÈ‰º‚Ì‚æ‚¤‚È•s‰Â‰ğ‚ÈŒ»Û‚É‘Î‰‚·‚é‚½‚ß‚Ì‹ê“÷‚Ìô‚Å‚ ‚éB
+				//ctrl+s, ctrl+enter‚Åcommit‚ğ“®ì‚³‚¹‚é‚±‚Æ‚É‚µ‚½ÛAcommitƒAƒNƒVƒ‡ƒ“
+				//“®ìŒã‚ÉJFormattedTextField‚©‚ç‰½ŒÌ‚©XVƒCƒxƒ“ƒg‚ª”­¶‚µA
+				//Dartyƒtƒ‰ƒO‚ªOn‚É‚È‚Á‚Ä‚µ‚Ü‚¤B
 				if(!isCreating()){
 					if(getDspDetailList().getSelectedRow() < 0){
-						//æ›´æ–°æ™‚ã«æŒ‡æ‘˜äº‹é …ãƒªã‚¹ãƒˆãŒä½•ã‚‚é¸æŠã•ã‚Œã¦ã„ãªã„çŠ¶æ…‹ã¯æœ‰ã‚Šå¾—ãªã„
+						//XV‚Éw“E–€ƒŠƒXƒg‚ª‰½‚à‘I‘ğ‚³‚ê‚Ä‚¢‚È‚¢ó‘Ô‚Í—L‚è“¾‚È‚¢
 						return;
 					}
 				}
@@ -159,7 +159,7 @@ log.debug("setDarty() "+setting_);
 
 			if(val){
 				ReviewDetail detail = new ReviewDetail(reviewDetailListModel_.lastSelectedReview_);
-				detail.setUpdUserName(	//ã‚³ãƒ¡ãƒ³ãƒ†ãƒ¼ã‚¿ãƒ¼ã®åˆæœŸå€¤
+				detail.setUpdUserName(	//ƒRƒƒ“ƒe[ƒ^[‚Ì‰Šú’l
 					reviewDetailListModel_.lastSelectedReview_.getReviewer1()
 				);
 				detail.setSeq(reviewDetailListModel_.getNextSEQ());
@@ -187,12 +187,12 @@ log.debug("setDarty() "+setting_);
 		}
 		public ReviewDetail getReviewDetail(){
 			curDetail_.setMemo(inpMemo.getText());
-			//JFormattedTextFieldã¯ã€å®Ÿéš›ã«ãƒ­ã‚¹ãƒˆãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã—ãªã„ã¨å€¤ãŒå–ã‚Šè¾¼ã¾ã‚Œãªã„
-			//ã‚‚ã—ãã¯ã€ä»¥ä¸‹ã®ã‚ˆã†ã«commitEditã‚’å‘¼ã³å‡ºã™å¿…è¦ãŒã‚ã‚‹ã€‚
+			//JFormattedTextField‚ÍAÀÛ‚ÉƒƒXƒgƒtƒH[ƒJƒX‚µ‚È‚¢‚Æ’l‚ªæ‚è‚Ü‚ê‚È‚¢
+			//‚à‚µ‚­‚ÍAˆÈ‰º‚Ì‚æ‚¤‚ÉcommitEdit‚ğŒÄ‚Ño‚·•K—v‚ª‚ ‚éB
 			try {
 				inpUpdDate.commitEdit();
 			} catch (ParseException e1) {
-				//ç„¡è¦–
+				//–³‹
 			}
 			curDetail_.setUpdDate((Timestamp)inpUpdDate.getValue());
 			curDetail_.setUpdUserName(
@@ -233,12 +233,12 @@ log.debug("setDarty() "+setting_);
 		}
 		public void updateIfDarty(){
 			if(docListener_.isDarty()){
-				log.debug("æ±šã‚Œã¦ã„ã‚‹ã‚. ");
-				// æ›´æ–°ã›ãªã‚ã‹ã‚“
+				log.debug("‰˜‚ê‚Ä‚¢‚é‚í. ");
+				// XV‚¹‚È‚ ‚©‚ñ
 				if( JOptionPane.showConfirmDialog(
 						DlgReviewList.this
-						,"å†…å®¹ãŒå¤‰æ›´ã•ã‚Œã¦ã„ã¾ã™ã€‚\n" +
-						"æ›´æ–°ã‚’åæ˜ ã—ã¾ã™ã‹ï¼Ÿ",""
+						,"“à—e‚ª•ÏX‚³‚ê‚Ä‚¢‚Ü‚·B\n" +
+						"XV‚ğ”½‰f‚µ‚Ü‚·‚©H",""
 						,JOptionPane.YES_NO_OPTION
 						,JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
 					getCmdCommitDetail().getAction().actionPerformed(null);
@@ -287,7 +287,7 @@ log.debug("setDarty() "+setting_);
 		public ActShowNewReview(){
 			super();
 			putValue(Action.NAME, "C");
-			putValue(Action.SHORT_DESCRIPTION, "æ–°è¦ã®ãƒ¬ãƒ“ãƒ¥ãƒ¼ã‚’ä½œæˆã™ã‚‹");
+			putValue(Action.SHORT_DESCRIPTION, "V‹K‚ÌƒŒƒrƒ…[‚ğì¬‚·‚é");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			if(dlgNewReview_ == null){
@@ -306,12 +306,12 @@ log.debug("setDarty() "+setting_);
 		public ActShowUpdateReview(){
 			super();
 			putValue(Action.NAME, "U");
-			putValue(Action.SHORT_DESCRIPTION, "ãƒ¬ãƒ“ãƒ¥ãƒ¼ã‚’æ›´æ–°ã™ã‚‹");
+			putValue(Action.SHORT_DESCRIPTION, "ƒŒƒrƒ…[‚ğXV‚·‚é");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			Review header = (Review)getDspHeaderList().getSelectedValue();
 			if(header == null){
-				throw new AppException("ã„ãšã‚Œã‹ã®ãƒ¬ãƒ“ãƒ¥ãƒ¼ã‚’é¸æŠã—ã¦ãã ã•ã„");
+				throw new AppException("‚¢‚¸‚ê‚©‚ÌƒŒƒrƒ…[‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢");
 			}
 			if(dlgNewReview_ == null){
 				dlgNewReview_ = new DlgNewReview(DlgReviewList.this);
@@ -328,17 +328,17 @@ log.debug("setDarty() "+setting_);
 		public ActRemoveReview(){
 			super();
 			putValue(Action.NAME, "D");
-			putValue(Action.SHORT_DESCRIPTION, "é¸æŠã—ãŸãƒ¬ãƒ“ãƒ¥ãƒ¼ã‚’å‰Šé™¤ã—ã¾ã™");
+			putValue(Action.SHORT_DESCRIPTION, "‘I‘ğ‚µ‚½ƒŒƒrƒ…[‚ğíœ‚µ‚Ü‚·");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			Review header = (Review)getDspHeaderList().getSelectedValue();
 			if(header == null){
-				throw new AppException("ã„ãšã‚Œã‹ã®ãƒ¬ãƒ“ãƒ¥ãƒ¼ã‚’é¸æŠã—ã¦ãã ã•ã„");
+				throw new AppException("‚¢‚¸‚ê‚©‚ÌƒŒƒrƒ…[‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢");
 			}
 			if( JOptionPane.showConfirmDialog(
 					DlgReviewList.this
-					,"é¸æŠã—ãŸãƒ¬ãƒ“ãƒ¥ãƒ¼ã‚’å‰Šé™¤ã—ã¾ã™ã€‚\n" +
-					"ã‚ˆã‚ã—ã„ã§ã™ã‹ï¼Ÿ",""
+					,"‘I‘ğ‚µ‚½ƒŒƒrƒ…[‚ğíœ‚µ‚Ü‚·B\n" +
+					"‚æ‚ë‚µ‚¢‚Å‚·‚©H",""
 					,JOptionPane.YES_NO_OPTION
 					,JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
 				headerDao_.remove(header);
@@ -355,7 +355,7 @@ log.debug("setDarty() "+setting_);
 			super();
 			setEnabled(false);
 			putValue(Action.NAME, "commit");
-			putValue(Action.SHORT_DESCRIPTION, "ãƒã‚§ãƒƒã‚¯çµæœã‚’æ›¸ãè¾¼ã¿ã¾ã™");
+			putValue(Action.SHORT_DESCRIPTION, "ƒ`ƒFƒbƒNŒ‹‰Ê‚ğ‘‚«‚İ‚Ü‚·");
 		}
 		public void actionPerformed2(ActionEvent e) {
 log.debug("actionPerformed2() start");
@@ -363,14 +363,14 @@ log.debug("actionPerformed2() start");
 			detail.check();
 			
 			if(viewState_.isCreating()){
-				//æ–°è¦ç™»éŒ²ã®å ´åˆ
+				//V‹K“o˜^‚Ìê‡
 				detailDao_.insert(detail);
 			}else{
-				//updateã®å ´åˆ
+				//update‚Ìê‡
 				detailDao_.update(detail);
 			}
 			viewState_.setIgnoreChangeValue();
-			//detailListã‚’ãƒªãƒ•ãƒ¬ãƒƒã‚·ãƒ¥
+			//detailList‚ğƒŠƒtƒŒƒbƒVƒ…
 			reviewDetailListModel_.refreshDetailList();
 
 			viewState_.setNeutral();
@@ -384,21 +384,21 @@ log.debug("actionPerformed2() start");
 			super();
 			setEnabled(false);
 			putValue(Action.NAME, "remove");
-			putValue(Action.SHORT_DESCRIPTION, "æŒ‡æ‘˜äº‹é …ã‚’å‰Šé™¤ã—ã¾ã™");
+			putValue(Action.SHORT_DESCRIPTION, "w“E–€‚ğíœ‚µ‚Ü‚·");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			if(getDspDetailList().getSelectedRow() < 0){
-				throw new AppException("ã„ãšã‚Œã‹ã®æŒ‡æ‘˜äº‹é …ã‚’é¸æŠã—ã¦ãã ã•ã„");
+				throw new AppException("‚¢‚¸‚ê‚©‚Ìw“E–€‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢");
 			}
 			if( JOptionPane.showConfirmDialog(
 					DlgReviewList.this
-					,"é¸æŠã—ãŸæŒ‡æ‘˜äº‹é …ã‚’å‰Šé™¤ã—ã¾ã™ã€‚\n" +
-					"ã‚ˆã‚ã—ã„ã§ã™ã‹ï¼Ÿ",""
+					,"‘I‘ğ‚µ‚½w“E–€‚ğíœ‚µ‚Ü‚·B\n" +
+					"‚æ‚ë‚µ‚¢‚Å‚·‚©H",""
 					,JOptionPane.YES_NO_OPTION
 					,JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
 
 				detailDao_.remove(viewState_.curDetail_);
-				//detailListã‚’ãƒªãƒ•ãƒ¬ãƒƒã‚·ãƒ¥
+				//detailList‚ğƒŠƒtƒŒƒbƒVƒ…
 				reviewDetailListModel_.refreshDetailList();
 
 				viewState_.setNeutral();
@@ -407,7 +407,7 @@ log.debug("actionPerformed2() start");
 		}
 	}
 
-	//ãƒ¬ãƒ“ãƒ¥ãƒ¼ãƒªã‚¹ãƒˆãƒ†ãƒ¼ãƒ–ãƒ«ãƒ¢ãƒ‡ãƒ«
+	//ƒŒƒrƒ…[ƒŠƒXƒgƒe[ƒuƒ‹ƒ‚ƒfƒ‹
 	class ReviewDetailListModel extends AbstractTableModel implements ListSelectionListener{
 		String[] columnNames_ = {"comment", "state"};
 		List<ReviewDetail> details_ = Collections.EMPTY_LIST;
@@ -448,7 +448,7 @@ log.debug("actionPerformed2() start");
 		public void valueChanged(ListSelectionEvent e) {
 			Review selected = (Review)getDspHeaderList().getSelectedValue();
 			if(lastSelectedReview_ == selected ){
-				//2å›å‘¼ã³å‡ºã•ã‚Œã‚‹ç„¡é§„ã‚’æ’é™¤
+				//2‰ñŒÄ‚Ño‚³‚ê‚é–³‘Ê‚ğ”rœ
 				return;
 			}
 			lastSelectedReview_ = selected;
@@ -517,13 +517,13 @@ log.debug("actionPerformed2() start");
 	}
 	
 	public void valueChanged(ListSelectionEvent e) {
-		//é¸æŠã•ã‚ŒãŸitem
+		//‘I‘ğ‚³‚ê‚½item
 		JList list = (JList)e.getSource();
 		if( !isShowing() || list.getSelectedValue() == null){
 			return;
 		}
 		if(list.getSelectedValue() == lastSelectedOutput_){
-			//ãªãœã‹åŒã˜ã‚¤ãƒ™ãƒ³ãƒˆãŒï¼’ã¤é€£ç¶šã™ã‚‹ãŸã‚
+			//‚È‚º‚©“¯‚¶ƒCƒxƒ“ƒg‚ª‚Q‚Â˜A‘±‚·‚é‚½‚ß
 			return;
 		}
 		log.debug("selected="+list.getSelectedValue());
@@ -534,7 +534,7 @@ log.debug("actionPerformed2() start");
 	@Override
 	public void setVisible(boolean b) {
 		if(b){
-			throw new RuntimeException("setVisible(boolean b, Output output)ã‚’ã¤ã‹ã‚ãªã‚ã‹ã‚“");
+			throw new RuntimeException("setVisible(boolean b, Output output)‚ğ‚Â‚©‚í‚È‚ ‚©‚ñ");
 		}else{
 			super.setVisible(b);
 		}
@@ -549,7 +549,7 @@ log.debug("actionPerformed2() start");
 		
 		getCmdRemoveReview().setEnabled(false);
 		getCmdUpdateReview().setEnabled(false);
-		//lastSelected_ã«é–¢é€£ã™ã‚‹Reviewä¸€è¦§ã‚’ReviewListã«ã‚»ãƒƒãƒˆ
+		//lastSelected_‚ÉŠÖ˜A‚·‚éReviewˆê——‚ğReviewList‚ÉƒZƒbƒg
 		List<Review> reviews = headerDao_.findByOutputId(lastSelectedOutput_.getOutputId());
 		
 		getDspHeaderList().setModel(new ReviewListModel(reviews));
@@ -559,14 +559,14 @@ log.debug("actionPerformed2() start");
 	}
 
 	public void setup(){
-		//ãƒœã‚¿ãƒ³ã«ã‚¢ã‚¯ã‚·ãƒ§ãƒ³
+		//ƒ{ƒ^ƒ“‚ÉƒAƒNƒVƒ‡ƒ“
 		getCmdNewReview().setAction(new ActShowNewReview());
 		getCmdUpdateReview().setAction(new ActShowUpdateReview());
 		getCmdRemoveReview().setAction(new ActRemoveReview());
 		getCmdCommitDetail().setAction(new ActCommitDetail());
 		getCmdRemoveDetail().setAction(new ActRemoveDetail());
 		
-		//Actionãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã¸ãƒãƒƒãƒ—
+		//Actionƒ|ƒbƒvƒAƒbƒvƒƒjƒ…[‚Öƒ}ƒbƒv
 		JPopupMenu menu = ((LstReviews)getDspHeaderList()).getPopupMenu();
 		menu.add(getCmdNewReview().getAction());
 		menu.add(getCmdUpdateReview().getAction());
@@ -593,11 +593,11 @@ log.debug("actionPerformed2() start");
 		});
 		dspDetailList.setModel(reviewDetailListModel_);
 		
-		//tableã®åˆ—å¹…è¨­å®š
+		//table‚Ì—ñ•İ’è
 //		dspDetailList.getColumn("SEQ").setMaxWidth(100);
 		dspDetailList.getColumn("state").setMaxWidth(100);
 		
-		//ãƒ¬ãƒ“ãƒ¥ãƒ¼çŠ¶æ…‹combo
+		//ƒŒƒrƒ…[ó‘Ôcombo
 		getInpState().setModel(MasterComboModel.newRevieStateTypeComboBoxModel());
 		getInpState().setRenderer(
 				new DefaultListCellRenderer(){
@@ -610,22 +610,22 @@ log.debug("actionPerformed2() start");
 					}
 				}
 			);
-		//æŒ‡æ‘˜è€…combo
+		//w“EÒcombo
 		getInpReviewer().setModel(MasterComboModel.newUserComboBoxModel());
 		getInpReviewer().setSelectedItem(null);
 		
-		//detailListã«ãƒªã‚¹ãƒŠãƒ¼ç™»éŒ²
+		//detailList‚ÉƒŠƒXƒi[“o˜^
 		ListSelectionModel selModel = getDspDetailList().getSelectionModel();
 		selModel.addListSelectionListener(viewState_);
 		
-		//detailå…¥åŠ›éƒ¨ã®æ›´æ–°çŠ¶æ…‹ã‚’ç›£è¦–ã™ã‚‹
+		//detail“ü—Í•”‚ÌXVó‘Ô‚ğŠÄ‹‚·‚é
 		getInpMemo().getDocument().addDocumentListener(viewState_.docListener_);
 		getInpUpdDate().getDocument().addDocumentListener(viewState_.docListener_);
 		getInpState().getModel().addListDataListener(viewState_.docListener_);
 		getInpReviewer().getModel().addListDataListener(viewState_.docListener_);
 		viewState_.docListener_.reset();
 		
-		//inpMemoä¸Šã®ctrl+s, ctrl+enterã‚’commitã«ç´ä»˜ã‘ã‚‹
+		//inpMemoã‚Ìctrl+s, ctrl+enter‚ğcommit‚É•R•t‚¯‚é
 		Keymap keyMap = inpMemo.getKeymap();
 		keyMap.addActionForKeyStroke(
 				KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_MASK)
@@ -635,7 +635,7 @@ log.debug("actionPerformed2() start");
 				, getCmdCommitDetail().getAction());
 		
 		
-		//WindowListenerç™»éŒ²
+		//WindowListener“o˜^
 		this.addWindowListener(
 			new WindowAdapter(){
 				public void windowClosing(WindowEvent e) {
@@ -652,7 +652,7 @@ log.debug("actionPerformed2() start");
 		pref_ = new PreferenceWindowHelper(this);
 		pref_.restoreForm();
 		
-		//ã‚¹ãƒ—ãƒªãƒƒãƒˆãƒ‘ãƒãƒ«ã®çŠ¶æ…‹ã‚’å¾©å…ƒ
+		//ƒXƒvƒŠƒbƒgƒpƒlƒ‹‚Ìó‘Ô‚ğ•œŒ³
 		getCntSplitBody().setDividerLocation(
 			Integer.parseInt(
 				pref_.getPriference().get(DEVIDER_LOC_KEY1, 
@@ -915,7 +915,7 @@ log.debug("actionPerformed2() start");
 		if (inpMemo == null) {
 			inpMemo = new JTextArea();
 //			inpMemo.setBorder(new TitledBorder("comment"));
-			inpMemo.setToolTipText("ctrl+s, ctrl+enterã§commit");
+			inpMemo.setToolTipText("ctrl+s, ctrl+enter‚Åcommit");
 		}
 		return inpMemo;
 	}

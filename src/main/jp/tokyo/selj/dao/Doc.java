@@ -56,10 +56,10 @@ public class Doc implements Serializable , Cloneable{
 
     public void check() throws AppException{
     	if(docTitle == null || "".equals(docTitle.trim()) ){
-    		throw new ModelCheckException("ã‚¿ã‚¤ãƒˆãƒ«ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„");
+    		throw new ModelCheckException("ƒ^ƒCƒgƒ‹‚ð“ü—Í‚µ‚Ä‚­‚¾‚³‚¢");
     	}
     	if(docTitle.length() > 100 ){
-    		throw new ModelCheckException("ã‚¿ã‚¤ãƒˆãƒ«ã¯100æ–‡å­—ä»¥å†…ã§æŒ‡å®šã—ã¦ãã ã•ã„");
+    		throw new ModelCheckException("ƒ^ƒCƒgƒ‹‚Í100•¶ŽšˆÈ“à‚ÅŽw’è‚µ‚Ä‚­‚¾‚³‚¢");
     	}
     }
     

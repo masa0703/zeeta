@@ -88,9 +88,9 @@ public class DlgTools extends JDialog {
 
 	static {
 		ZEETA_INFO = new String[][]{
-				{"author", "ãã¾å‰"},
-				{"home page", "http://mm3991.qp.land.to/"},
-				{"mail address", "mm3991@mail.goo.ne.jp"},
+				{"author", "ƒ^ƒ“ƒW"},
+				{"home page", "http://sites.google.com/site/zeetahp/"},
+				{"mail address", "zeeta0703@gmail.com"},
 				{"database schema version", ZeetaDBManager.DB_VERSION},
 		};
 	}
@@ -102,7 +102,7 @@ public class DlgTools extends JDialog {
 
 		@Override
 		protected void actionPerformed2(ActionEvent e) {
-			// s2daoã§ã¯caseæ–‡ã®?ã¯ã†ã¾ãç½®æ›ã—ã¦ãã‚Œãªã„ã®ã§ä»•æ–¹ãªã„ã®ã§ã“ã†ã™ã‚‹ã®ã 
+			// s2dao‚Å‚Ícase•¶‚Ì?‚Í‚¤‚Ü‚­’uŠ·‚µ‚Ä‚­‚ê‚È‚¢‚Ì‚Åd•û‚È‚¢‚Ì‚Å‚±‚¤‚·‚é‚Ì‚¾
 	    	final String sql =
 	    		"update doc set doctypeid = " +
 	    		"case   when doctypeid = 1 then doctypeid" +
@@ -125,8 +125,8 @@ public class DlgTools extends JDialog {
 			JOptionPane.showMessageDialog(
 					DlgTools.this
 					,"" +
-					 "å…¨ã¦ã®ãƒãƒ¼ãƒ‰ã‚’å¤‰æ›´ã—ã¾ã—ãŸã€‚\n" +
-					 "è¡¨ç¤ºã‚’ãƒªãƒ•ãƒ¬ãƒƒã‚·ãƒ¥ã™ã‚‹ãŸã‚ã«ãƒ«ãƒ¼ãƒˆãƒãƒ¼ãƒ‰ã‚’é¸æŠã—F5ã‚­ãƒ¼ã‚’æŠ¼ã—ã¦ãã ã•ã„ã€‚"
+					 "‘S‚Ä‚Ìƒm[ƒh‚ğ•ÏX‚µ‚Ü‚µ‚½B\n" +
+					 "•\¦‚ğƒŠƒtƒŒƒbƒVƒ…‚·‚é‚½‚ß‚Éƒ‹[ƒgƒm[ƒh‚ğ‘I‘ğ‚µF5ƒL[‚ğ‰Ÿ‚µ‚Ä‚­‚¾‚³‚¢B"
 					,""
 					,JOptionPane.INFORMATION_MESSAGE);
 		}
@@ -137,7 +137,7 @@ public class DlgTools extends JDialog {
 		DlgWorkTypeOutputType view_=null;
 		ActShowDlgWorkTypeOutputType(){
 			putValue(Action.NAME, "workType & outputType");
-			putValue(Action.SHORT_DESCRIPTION, "ä½œæ¥­ç¨®é¡ã¨æˆæœç‰©ç¨®é¡tableã®ãƒ¡ãƒ³ãƒ†ãƒŠãƒ³ã‚¹");
+			putValue(Action.SHORT_DESCRIPTION, "ì‹Æí—Ş‚Æ¬‰Ê•¨í—Ştable‚Ìƒƒ“ƒeƒiƒ“ƒX");
 //			putValue(Action.SMALL_ICON, 
 //					new ImageIcon(getClass().getResource("/image/moveDown.gif")));
 		}
@@ -162,7 +162,7 @@ public class DlgTools extends JDialog {
 		DlgUserMaint view_=null;
 		ActShowDlgUserMaint(){
 			putValue(Action.NAME, "user table");
-			putValue(Action.SHORT_DESCRIPTION, "ãƒ¦ãƒ¼ã‚¶tableã®ãƒ¡ãƒ³ãƒ†ãƒŠãƒ³ã‚¹");
+			putValue(Action.SHORT_DESCRIPTION, "ƒ†[ƒUtable‚Ìƒƒ“ƒeƒiƒ“ƒX");
 //			putValue(Action.SMALL_ICON, 
 //					new ImageIcon(getClass().getResource("/image/moveDown.gif")));
 		}
@@ -187,7 +187,7 @@ public class DlgTools extends JDialog {
 		DlgCheckPointAndPropTypeMaint view_=null;
 		ActShowCheckPointMaint(){
 			putValue(Action.NAME, "checkPoint & output property type");
-			putValue(Action.SHORT_DESCRIPTION, "ãƒã‚§ãƒƒã‚¯é …ç›®ã¨æˆæœç‰©å±æ€§tableã®ãƒ¡ãƒ³ãƒ†ãƒŠãƒ³ã‚¹");
+			putValue(Action.SHORT_DESCRIPTION, "ƒ`ƒFƒbƒN€–Ú‚Æ¬‰Ê•¨‘®«table‚Ìƒƒ“ƒeƒiƒ“ƒX");
 //			putValue(Action.SMALL_ICON, 
 //					new ImageIcon(getClass().getResource("/image/moveDown.gif")));
 		}
@@ -213,7 +213,7 @@ public class DlgTools extends JDialog {
 		DlgReviewStateTypeMaint view_=null;
 		ActShowReviewStateTypeMaint(){
 			putValue(Action.NAME, "reviewStateType");
-			putValue(Action.SHORT_DESCRIPTION, "ãƒ¬ãƒ“ãƒ¥ãƒ¼çŠ¶æ…‹ç¨®é¡tableã®ãƒ¡ãƒ³ãƒ†ãƒŠãƒ³ã‚¹");
+			putValue(Action.SHORT_DESCRIPTION, "ƒŒƒrƒ…[ó‘Ôí—Ştable‚Ìƒƒ“ƒeƒiƒ“ƒX");
 //			putValue(Action.SMALL_ICON, 
 //					new ImageIcon(getClass().getResource("/image/moveDown.gif")));
 		}
@@ -446,7 +446,7 @@ public class DlgTools extends JDialog {
 	            	}
 					JOptionPane.showMessageDialog(
 							DlgTools.this
-							,"è¨­å®šã—ã¾ã—ãŸã€‚",""
+							,"İ’è‚µ‚Ü‚µ‚½B",""
 							,JOptionPane.INFORMATION_MESSAGE);
 				}
 			});
@@ -541,14 +541,14 @@ public class DlgTools extends JDialog {
 	private JPanel getPnlLinkNode() {
 		if (pnlLinkNode == null) {
 			dspLinkNode2 = new JLabel();
-			dspLinkNode2.setText("ã“ã®è¨­å®šã¯ã€ãƒã‚¹ã‚¿DBã«ä¿å­˜ã•ã‚Œã¾ã™ã€‚");
+			dspLinkNode2.setText("‚±‚Ìİ’è‚ÍAƒ}ƒXƒ^DB‚É•Û‘¶‚³‚ê‚Ü‚·B");
 			dspLinkNode2.setFont(new Font("Dialog", Font.PLAIN, 12));
 			pnlLinkNode = new JPanel();
 			pnlLinkNode.setBorder(new TitledBorder("title prefix for \"link node\""));
 			pnlLinkNode.setLayout(new FlowLayout());
 			pnlLinkNode.setPreferredSize(new Dimension(516, 100));
 			dspLinkNode = new JLabel();
-			dspLinkNode.setText("Titleã®å…ˆé ­ã‚’ã“ã®æ–‡å­—åˆ—ã«ã™ã‚‹ã¨link nodeã¨ã¿ãªã—ã¾ã™ã€‚");
+			dspLinkNode.setText("Title‚Ìæ“ª‚ğ‚±‚Ì•¶š—ñ‚É‚·‚é‚Ælink node‚Æ‚İ‚È‚µ‚Ü‚·B");
 			dspLinkNode.setFont(new Font("Dialog", Font.PLAIN, 12));
 			pnlLinkNode.add(getInpUseLinkNodePref(), null);
 			pnlLinkNode.add(getInpLinkNodePref(), null);
@@ -590,7 +590,7 @@ public class DlgTools extends JDialog {
 	            		if(inp_pref == null || inp_pref.trim().length() <= 0){
 	    					JOptionPane.showMessageDialog(
 	    							DlgTools.this
-	    							,"ã‚¹ãƒšãƒ¼ã‚¹ä»¥å¤–ã®æ–‡å­—åˆ—ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚",""
+	    							,"ƒXƒy[ƒXˆÈŠO‚Ì•¶š—ñ‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢B",""
 	    							,JOptionPane.INFORMATION_MESSAGE);
 	    					return;
 	            		}
@@ -602,16 +602,16 @@ public class DlgTools extends JDialog {
 
 					JOptionPane.showMessageDialog(
 							DlgTools.this
-							,"è¨­å®šã—ã¾ã—ãŸã€‚",""
+							,"İ’è‚µ‚Ü‚µ‚½B",""
 							,JOptionPane.INFORMATION_MESSAGE);
 					
 					
 					if(inp_pref != null){
 	    				if( JOptionPane.showConfirmDialog(
 	    						DlgTools.this
-	    						,"ã“ã®è¨­å®šã§å…¨ã¦ã®ãƒãƒ¼ãƒ‰ã®ã€Œlink nodeã€ã‚’å†è¨­å®šã—ã¾ã™ã‹ï¼Ÿ\n" +
-	    						 "ï¼ˆã“ã®å‡¦ç†ã‚’è¡Œã†å‰ã«DBã‚’ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã™ã‚‹ã“ã¨ã‚’ãŠå‹§ã‚ã—ã¾ã™ã€‚\n" +
-	    						 "ã€€H2ã‚’ä½¿ç”¨ã—ã¦ã„ã‚‹å ´åˆã¯ã€dbãƒ•ã‚©ãƒ«ãƒ€ã‚’ã©ã“ã‹ã¸ã‚³ãƒ”ãƒ¼ã—ã¾ã™ï¼‰"
+	    						,"‚±‚Ìİ’è‚Å‘S‚Ä‚Ìƒm[ƒh‚Ìulink nodev‚ğÄİ’è‚µ‚Ü‚·‚©H\n" +
+	    						 "i‚±‚Ìˆ—‚ğs‚¤‘O‚ÉDB‚ğƒoƒbƒNƒAƒbƒv‚·‚é‚±‚Æ‚ğ‚¨Š©‚ß‚µ‚Ü‚·B\n" +
+	    						 "@H2‚ğg—p‚µ‚Ä‚¢‚éê‡‚ÍAdbƒtƒHƒ‹ƒ_‚ğ‚Ç‚±‚©‚ÖƒRƒs[‚µ‚Ü‚·j"
 	    						,""
 	    						,JOptionPane.YES_NO_OPTION
 	    						,JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){

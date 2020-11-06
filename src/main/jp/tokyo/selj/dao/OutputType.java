@@ -42,7 +42,7 @@ public class OutputType implements Serializable {
     }
     public void check(){
     	if(outputTypeName == null || "".equals(outputTypeName.trim())){
-    		throw new AppException("outputTypeNameã¯çœç•¥ã§ãã¾ã›ã‚“");
+    		throw new AppException("outputTypeName‚ÍÈ—ª‚Å‚«‚Ü‚¹‚ñ");
     	}
     }
 

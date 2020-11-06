@@ -94,11 +94,11 @@ public class DlgOutputList extends JDialog implements DlgOutputDetail.CommitList
 		public ActSelectOutput(ActionMap map){
 			super(map);
 			putValue(Action.NAME, "select");
-			putValue(Action.SHORT_DESCRIPTION, "ä½œæ¥­ã®çµæœç”Ÿæˆã•ã‚Œã‚‹æˆæœç‰©ã‚’é¸æŠã—ã¾ã™");
+			putValue(Action.SHORT_DESCRIPTION, "ì‹Æ‚ÌŒ‹‰Ê¶¬‚³‚ê‚é¬‰Ê•¨‚ğ‘I‘ğ‚µ‚Ü‚·");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			if(dspOutputList.getSelectedValue() == null){
-				throw new AppException("æˆæœç‰©ã‚’é¸æŠã—ã¦ãã ã•ã„");
+				throw new AppException("¬‰Ê•¨‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢");
 			}
 			ActionEvent ev = new SelectOutputEvent(DlgOutputList.this,
 					EVENT_SELECT, 
@@ -116,7 +116,7 @@ public class DlgOutputList extends JDialog implements DlgOutputDetail.CommitList
 		public ActSearchNameOrPathOrCreator(ActionMap map){
 			super(map);
 			putValue(Action.NAME, "search");
-			putValue(Action.SHORT_DESCRIPTION, "nameã¾ãŸã¯pathã«å«ã¾ã‚Œã‚‹æ–‡å­—ã§æ¤œç´¢");
+			putValue(Action.SHORT_DESCRIPTION, "name‚Ü‚½‚Ípath‚ÉŠÜ‚Ü‚ê‚é•¶š‚ÅŒŸõ");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			String word = inpSearchText.getText();
@@ -124,16 +124,16 @@ public class DlgOutputList extends JDialog implements DlgOutputDetail.CommitList
 			if(word == null || "".equals(word.trim())){
 				word = null;
 				if(workType == null){
-					throw new AppException("workTypeã‚’é¸æŠã™ã‚‹ã‹ã€æ¤œç´¢ã™ã‚‹æ–‡å­—ã‚’å…¥ã‚Œã¦ãã ã•ã„");
+					throw new AppException("workType‚ğ‘I‘ğ‚·‚é‚©AŒŸõ‚·‚é•¶š‚ğ“ü‚ê‚Ä‚­‚¾‚³‚¢");
 				}
 			}
 			if(word == null){
 				model_.reloadOutputListByWorkType(workType.getWorkTypeId());
 			}else{
-				if(!canSelectBtnEnabled_){	//ä½œæ¥­ç”¨ã®æˆæœç‰©ã‚’æ¤œç´¢ã™ã‚‹å ´åˆã§ã¯ãªã„ã¨ã
+				if(!canSelectBtnEnabled_){	//ì‹Æ—p‚Ì¬‰Ê•¨‚ğŒŸõ‚·‚éê‡‚Å‚Í‚È‚¢‚Æ‚«
 					inpSelectWorkType.setSelectedItem(null);
 					model_.reloadOutputListByNameOrPathOrCreator(word);
-				}else{		//ä½œæ¥­ç”¨ã®æˆæœç‰©ã‚’æ¤œç´¢ã™ã‚‹å ´åˆ
+				}else{		//ì‹Æ—p‚Ì¬‰Ê•¨‚ğŒŸõ‚·‚éê‡
 					WorkType wt = (WorkType)inpSelectWorkType.getSelectedItem();
 					model_.reloadOutputListByWorkTypeAndNameOrPathOrCreator(wt, word);
 				}
@@ -149,14 +149,14 @@ public class DlgOutputList extends JDialog implements DlgOutputDetail.CommitList
 		public ActUseOutputDetail(ActionMap map){
 			super(map);
 			outputDetail_.setup((OutputListModel)getDspOutputList().getModel());
-			outputDetail_.setLocationRelativeTo(DlgOutputList.this.getRootPane());	//ä¸€ç™ºç›®ã¯ã€ç”»é¢ã®ä¸­å¤®ã«è¡¨ç¤º
+			outputDetail_.setLocationRelativeTo(DlgOutputList.this.getRootPane());	//ˆê”­–Ú‚ÍA‰æ–Ê‚Ì’†‰›‚É•\¦
 		}
 	}
 	class ActNewOutput extends ActUseOutputDetail {
 		public ActNewOutput(ActionMap map){
 			super(map);
 			putValue(Action.NAME, "new");
-			putValue(Action.SHORT_DESCRIPTION, "æˆæœç‰©ã‚’è¿½åŠ ã—ã¾ã™");
+			putValue(Action.SHORT_DESCRIPTION, "¬‰Ê•¨‚ğ’Ç‰Á‚µ‚Ü‚·");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			outputDetail_.newOutput();
@@ -164,7 +164,7 @@ public class DlgOutputList extends JDialog implements DlgOutputDetail.CommitList
 				WorkType workType = (WorkType)getInpSelectWorkType().getSelectedItem();
 				outputDetail_.resetOutputTypeList(workType.getWorkTypeId());
 			}else{
-				throw new AppException("ä½œæ¥­ç¨®é¡(workType)ã‚’é¸æŠã—ã¦ãã ã•ã„");
+				throw new AppException("ì‹Æí—Ş(workType)‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢");
 			}
 			outputDetail_.setVisible(true);
 		}
@@ -173,11 +173,11 @@ public class DlgOutputList extends JDialog implements DlgOutputDetail.CommitList
 		public ActShowOutputUpdater(ActionMap map){
 			super(map);
 			putValue(Action.NAME, "update");
-			putValue(Action.SHORT_DESCRIPTION, "æˆæœç‰©ã‚’ç·¨é›†ã—ã¾ã™");
+			putValue(Action.SHORT_DESCRIPTION, "¬‰Ê•¨‚ğ•ÒW‚µ‚Ü‚·");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			if(getDspOutputList().getSelectedValue() == null){
-				throw new AppException("ã„ãšã‚Œã‹ã®æˆæœç‰©ã‚’é¸æŠã—ã¦ãã ã•ã„");
+				throw new AppException("‚¢‚¸‚ê‚©‚Ì¬‰Ê•¨‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢");
 			}
 			Output output = (Output)getDspOutputList().getSelectedValue();
 			outputDetail_.resetOutputTypeList();
@@ -192,17 +192,17 @@ public class DlgOutputList extends JDialog implements DlgOutputDetail.CommitList
 		public ActRemoveOutput(ActionMap map){
 			super(map);
 			putValue(Action.NAME, "remove");
-			putValue(Action.SHORT_DESCRIPTION, "æˆæœç‰©ã‚’å‰Šé™¤ã—ã¾ã™");
+			putValue(Action.SHORT_DESCRIPTION, "¬‰Ê•¨‚ğíœ‚µ‚Ü‚·");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			if(dspOutputList.getSelectedValue() == null){
-				throw new AppException("æˆæœç‰©ã‚’é¸æŠã—ã¦ãã ã•ã„");
+				throw new AppException("¬‰Ê•¨‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢");
 			}
 			Output output = (Output)dspOutputList.getSelectedValue();
 			if( JOptionPane.showConfirmDialog(
 					getOwnerComponent()
-					,output.getName() + " ã‚’å‰Šé™¤ã—ã¾ã™ã€‚\n" +
-					"ã‚ˆã‚ã—ã„ã§ã™ã‹ï¼Ÿ",""
+					,output.getName() + " ‚ğíœ‚µ‚Ü‚·B\n" +
+					"‚æ‚ë‚µ‚¢‚Å‚·‚©H",""
 					,JOptionPane.YES_NO_OPTION
 					,JOptionPane.QUESTION_MESSAGE) != JOptionPane.YES_OPTION){
 				return;
@@ -210,7 +210,7 @@ public class DlgOutputList extends JDialog implements DlgOutputDetail.CommitList
 			model_.deleteOutput(output);
 		}
 	}
-	//ActShowLinkedDocTreeã‚’ä½¿ã†ã“ã¨ã«ã—ãŸãŒã€ã‚‚ã£ãŸã„ãªã„ã®ã§æ®‹ã—ã¦ã„ã‚‹
+	//ActShowLinkedDocTree‚ğg‚¤‚±‚Æ‚É‚µ‚½‚ªA‚à‚Á‚½‚¢‚È‚¢‚Ì‚Åc‚µ‚Ä‚¢‚é
 	class ActShowLinkedDocList extends ActBase {
 		DlgLinkDocList dlgLinkDocList_ = null;
 		protected Component getOwnerComponent(){
@@ -219,7 +219,7 @@ public class DlgOutputList extends JDialog implements DlgOutputDetail.CommitList
 		public ActShowLinkedDocList(ActionMap map){
 			super(map);
 			putValue(Action.NAME, "Linked Node");
-			putValue(Action.SHORT_DESCRIPTION, "æˆæœç‰©ã«é–¢é€£ã™ã‚‹ãƒãƒ¼ãƒ‰ä¸€è¦§ã‚’è¡¨ç¤º");
+			putValue(Action.SHORT_DESCRIPTION, "¬‰Ê•¨‚ÉŠÖ˜A‚·‚éƒm[ƒhˆê——‚ğ•\¦");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			if(dspOutputList.getSelectedValue() == null){
@@ -242,7 +242,7 @@ public class DlgOutputList extends JDialog implements DlgOutputDetail.CommitList
 		public ActShowLinkedDocTree(ActionMap map){
 			super(map);
 			putValue(Action.NAME, "Linked Node");
-			putValue(Action.SHORT_DESCRIPTION, "æˆæœç‰©ã«é–¢é€£ã™ã‚‹ãƒãƒ¼ãƒ‰ãƒ„ãƒªãƒ¼ã‚’è¡¨ç¤º");
+			putValue(Action.SHORT_DESCRIPTION, "¬‰Ê•¨‚ÉŠÖ˜A‚·‚éƒm[ƒhƒcƒŠ[‚ğ•\¦");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			if(dspOutputList.getSelectedValue() == null){
@@ -266,11 +266,11 @@ public class DlgOutputList extends JDialog implements DlgOutputDetail.CommitList
 		public ActShowCheckList(ActionMap map){
 			super(map);
 			putValue(Action.NAME, "check");
-			putValue(Action.SHORT_DESCRIPTION, "æˆæœç‰©ãƒã‚§ãƒƒã‚¯ãƒªã‚¹ãƒˆã‚’è¡¨ç¤º");
+			putValue(Action.SHORT_DESCRIPTION, "¬‰Ê•¨ƒ`ƒFƒbƒNƒŠƒXƒg‚ğ•\¦");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			if(dspOutputList.getSelectedValue() == null){
-				throw new AppException("æˆæœç‰©ã‚’é¸æŠã—ã¦ãã ã•ã„");
+				throw new AppException("¬‰Ê•¨‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢");
 			}
 			
 			if(dlgCheckList_ == null){
@@ -292,11 +292,11 @@ public class DlgOutputList extends JDialog implements DlgOutputDetail.CommitList
 		public ActShowReviewList(ActionMap map){
 			super(map);
 			putValue(Action.NAME, "review");
-			putValue(Action.SHORT_DESCRIPTION, "æˆæœç‰©ãƒ¬ãƒ“ãƒ¥ãƒ¼ãƒªã‚¹ãƒˆã‚’è¡¨ç¤º");
+			putValue(Action.SHORT_DESCRIPTION, "¬‰Ê•¨ƒŒƒrƒ…[ƒŠƒXƒg‚ğ•\¦");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			if(dspOutputList.getSelectedValue() == null){
-				throw new AppException("æˆæœç‰©ã‚’é¸æŠã—ã¦ãã ã•ã„");
+				throw new AppException("¬‰Ê•¨‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢");
 			}
 			
 			if(dlgList_ == null){
@@ -320,7 +320,7 @@ public class DlgOutputList extends JDialog implements DlgOutputDetail.CommitList
 		outputDetail_ = new DlgOutputDetail(DlgOutputList.this, isModal());
 		outputDetail_.addCommitOutputListener(this);
 		
-		//Actionç”Ÿæˆ
+		//Action¶¬
 		new ActSelectOutput(actionMap_).setEnabled(false);
 		new ActNewOutput(actionMap_).setEnabled(false);
 		new ActShowOutputUpdater(actionMap_).setEnabled(false);
@@ -331,7 +331,7 @@ public class DlgOutputList extends JDialog implements DlgOutputDetail.CommitList
 		new ActShowLinkedDocTree(actionMap_).setEnabled(false);
 		new ActSearchNameOrPathOrCreator(actionMap_).setEnabled(true);
 		
-		//Actionã‚’ãƒœã‚¿ãƒ³ã¸ãƒãƒƒãƒ—
+		//Action‚ğƒ{ƒ^ƒ“‚Öƒ}ƒbƒv
 		getCmdSelect().setAction(actionMap_.get(ActSelectOutput.class));
 		getCmdNew().setAction(actionMap_.get(ActNewOutput.class));
 		getCmdDelete().setAction(actionMap_.get(ActRemoveOutput.class));
@@ -341,7 +341,7 @@ public class DlgOutputList extends JDialog implements DlgOutputDetail.CommitList
 		getCmdReviewList().setAction(actionMap_.get(ActShowReviewList.class));
 		getCmdSearch().setAction(actionMap_.get(ActSearchNameOrPathOrCreator.class));
 		
-		//Actionãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã¸ãƒãƒƒãƒ—
+		//Actionƒ|ƒbƒvƒAƒbƒvƒƒjƒ…[‚Öƒ}ƒbƒv
 		JPopupMenu menu = getDspOutputList().getPopupMenu();
 		menu.add(actionMap_.get(ActSelectOutput.class));
 		menu.add(actionMap_.get(ActNewOutput.class));
@@ -358,11 +358,11 @@ public class DlgOutputList extends JDialog implements DlgOutputDetail.CommitList
 			put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,0), "search");
 		inpSearchText.getActionMap().put("search", actionMap_.get(ActSearchNameOrPathOrCreator.class));
 
-		//windowsã‚µã‚¤ã‚ºãƒ»ä½ç½®ã‚’å¾©å…ƒ
+		//windowsƒTƒCƒYEˆÊ’u‚ğ•œŒ³
 		pref_ = new PreferenceWindowHelper(this);
 		pref_.restoreForm();
 		
-		//ã‚½ãƒ¼ãƒˆæ¡ä»¶ã‚’å¾©å…ƒ
+		//ƒ\[ƒgğŒ‚ğ•œŒ³
 		String ky = prefs_.get(SORT_KEY, "ID");
 		for(int i=0; i<getInpSelSortCol().getItemCount(); i++){
 			Object item = getInpSelSortCol().getItemAt(i);
@@ -377,9 +377,9 @@ public class DlgOutputList extends JDialog implements DlgOutputDetail.CommitList
 		}else{
 			getInpSelDesc().setSelected(true);
 		}
-		sortList();	//ç¾åœ¨ã®ã‚½ãƒ¼ãƒˆæ¡ä»¶ã‚’è¨˜æ†¶ã•ã›ã‚‹ãŸã‚ã«ä¸€åº¦ã¯å‘¼ã³å‡ºã™
+		sortList();	//Œ»İ‚Ìƒ\[ƒgğŒ‚ğ‹L‰¯‚³‚¹‚é‚½‚ß‚Éˆê“x‚ÍŒÄ‚Ño‚·
 
-		//WindowListenerç™»éŒ²
+		//WindowListener“o˜^
 		this.addWindowListener(
 			new WindowAdapter(){
 				public void windowClosing(WindowEvent e) {
@@ -403,7 +403,7 @@ public class DlgOutputList extends JDialog implements DlgOutputDetail.CommitList
 		workType_ = workType;
 		getInpSelectWorkType().removeAllItems();
 		getInpSelectWorkType().addItem(workType_);
-		//Listã®ãƒ€ãƒ–ãƒ«ã‚¯ãƒªãƒƒã‚¯ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã‚’å®šç¾©
+		//List‚Ìƒ_ƒuƒ‹ƒNƒŠƒbƒNƒAƒNƒVƒ‡ƒ“‚ğ’è‹`
 		getDspOutputList().getActionMap().put(LstOutputs.DOUBLE_CLICK_ACTION_KEY, 
 				actionMap_.get(ActSelectOutput.class));
 	}
@@ -411,7 +411,7 @@ public class DlgOutputList extends JDialog implements DlgOutputDetail.CommitList
 	public void makeList(){
 		workType_ = null;
 //		getInpSelectWorkType().setModel(MasterComboModel.newWorkTypeComboBoxModel());
-		//ãƒªã‚¹ãƒˆã‚’ãƒªãƒ•ãƒ¬ãƒƒã‚·ãƒ¥
+		//ƒŠƒXƒg‚ğƒŠƒtƒŒƒbƒVƒ…
 		Object item = getInpSelectWorkType().getSelectedItem();
 		getInpSelectWorkType().setSelectedItem(null);
 		if(item != null){
@@ -419,7 +419,7 @@ public class DlgOutputList extends JDialog implements DlgOutputDetail.CommitList
 		}
 		actionMap_.get(ActSelectOutput.class).setEnabled(false);
 		canSelectBtnEnabled_ = false;
-		//Listã®ãƒ€ãƒ–ãƒ«ã‚¯ãƒªãƒƒã‚¯ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã‚’å®šç¾©
+		//List‚Ìƒ_ƒuƒ‹ƒNƒŠƒbƒNƒAƒNƒVƒ‡ƒ“‚ğ’è‹`
 		getDspOutputList().getActionMap().put(LstOutputs.DOUBLE_CLICK_ACTION_KEY, 
 				actionMap_.get(ActShowOutputUpdater.class));
 	}
@@ -452,7 +452,7 @@ public class DlgOutputList extends JDialog implements DlgOutputDetail.CommitList
 		this.setSize(600, 500);
 		this.setTitle("output list");
 		this.setContentPane(getJContentPane());
-		//è¡¨ç¤ºã—ãŸã¨ãã«ã©ã‚Œã‹ã‚’é¸æŠçŠ¶æ…‹ã«ã™ã‚‹
+		//•\¦‚µ‚½‚Æ‚«‚É‚Ç‚ê‚©‚ğ‘I‘ğó‘Ô‚É‚·‚é
 		this.addComponentListener(new java.awt.event.ComponentAdapter() {
 			public void componentShown(java.awt.event.ComponentEvent e) {
 				if(getDspOutputList().getModel().getSize() > 0){
@@ -703,7 +703,7 @@ public class DlgOutputList extends JDialog implements DlgOutputDetail.CommitList
 			inpSelectWorkType = new JComboBox();
 			inpSelectWorkType.addItemListener(new java.awt.event.ItemListener() {
 				public void itemStateChanged(java.awt.event.ItemEvent e) {
-//					if(e.getItem() == null ){		//ä»¥å‰ã®é¸æŠItemãŒå…¥ã£ã¦ã„ã‚‹
+//					if(e.getItem() == null ){		//ˆÈ‘O‚Ì‘I‘ğItem‚ª“ü‚Á‚Ä‚¢‚é
 					if(inpSelectWorkType.getSelectedItem() == null){
 						model_.removeAllElements();
 						actionMap_.get(ActNewOutput.class).setEnabled(false);
@@ -838,7 +838,7 @@ public class DlgOutputList extends JDialog implements DlgOutputDetail.CommitList
 			inpSelAsc = new JRadioButton();
 			inpSelAsc.setText("ASC");
 			inpSelAsc.setSelected(true);
-			inpSelAsc.setToolTipText("æ˜‡é †");
+			inpSelAsc.setToolTipText("¸‡");
 		}
 		return inpSelAsc;
 	}
@@ -856,7 +856,7 @@ public class DlgOutputList extends JDialog implements DlgOutputDetail.CommitList
 			inpSelSortCol.addItem(OutputListModel.CREATOR_COMPARATOR);
 			inpSelSortCol.addItem(OutputListModel.PATH_COMPARATOR);
 			inpSelSortCol.addItem(OutputListModel.DATE_COMPARATOR);
-			inpSelSortCol.setToolTipText("è¡¨ç¤ºé †ã®ã‚­ãƒ¼ã«ãªã‚‹é …ç›®ã‚’é¸æŠã—ã¦ãã ã•ã„");
+			inpSelSortCol.setToolTipText("•\¦‡‚ÌƒL[‚É‚È‚é€–Ú‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢");
 			inpSelSortCol.addItemListener(new java.awt.event.ItemListener() {
 				public void itemStateChanged(java.awt.event.ItemEvent e) {
 					sortList();
@@ -884,7 +884,7 @@ public class DlgOutputList extends JDialog implements DlgOutputDetail.CommitList
 		if (inpSelDesc == null) {
 			inpSelDesc = new JRadioButton();
 			inpSelDesc.setText("DESC");
-			inpSelDesc.setToolTipText("é™é †");
+			inpSelDesc.setToolTipText("~‡");
 		}
 		return inpSelDesc;
 	}

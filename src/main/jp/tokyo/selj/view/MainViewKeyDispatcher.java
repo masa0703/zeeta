@@ -4,6 +4,7 @@ import java.awt.KeyEventDispatcher;
 import java.awt.event.KeyEvent;
 
 import javax.swing.ActionMap;
+import javax.swing.JOptionPane;
 
 import jp.tokyo.selj.model.DocNode;
 import jp.tokyo.selj.view.FrmZeetaMain.ActCancelNewYouken;
@@ -34,16 +35,16 @@ public class MainViewKeyDispatcher implements KeyEventDispatcher{
 //		log.debug("evt="+evt);
 		
 		boolean ret = false;
-		if(!mainFrame_.isActive()){		//mainFrame„ÅåÈùû„Ç¢„ÇØ„ÉÜ„Ç£„Éñ„ÅÆÂ†¥Âêà„ÅØ„ÄÅ‰Ωï„ÇÇ„Åó„Å™„ÅÑ
+		if(!mainFrame_.isActive()){		//mainFrameÇ™îÒÉAÉNÉeÉBÉuÇÃèÍçáÇÕÅAâΩÇ‡ÇµÇ»Ç¢
 			return ret;
 		}
 		
-		//ÂÖ±ÈÄö„ÅÆ„Ç≠„Éº
+		//ã§í ÇÃÉLÅ[
 		ret = dispatchKeyEvent_common(evt, ret);
 
-		//AccessÁâà‰∫íÊèõ
+		//Accessî≈å›ä∑
 		if( !ret ){
-//			ret = dispatchKeyEvent_access(evt, ret); „Å®„Çä„ÅÇ„Åà„ÅöÂ§ñ„Åó„Å¶„Åä„Åè
+//			ret = dispatchKeyEvent_access(evt, ret); Ç∆ÇËÇ†Ç¶Ç∏äOÇµÇƒÇ®Ç≠
 		}
 		
 		return ret;
@@ -71,17 +72,19 @@ public class MainViewKeyDispatcher implements KeyEventDispatcher{
 						ret = true;
 						break;
 					case KeyEvent.VK_LEFT:
-						DocNode docNode = mainFrame_.nodeHistory_.back();
-						if(docNode != null ){
-							mainFrame_.showDetailAndSelectWord(docNode, (String)null);
-						}
+						JOptionPane.showConfirmDialog(
+								mainFrame_
+								,"history back key was changed to ALT+left",""
+								,JOptionPane.DEFAULT_OPTION
+								,JOptionPane.INFORMATION_MESSAGE);
 						ret = true;
 						break;
 					case KeyEvent.VK_RIGHT:
-						docNode = mainFrame_.nodeHistory_.forward();
-						if(docNode != null ){
-							mainFrame_.showDetailAndSelectWord(docNode, (String)null);
-						}
+						JOptionPane.showConfirmDialog(
+								mainFrame_
+								,"history forward key was changed to ALT+right",""
+								,JOptionPane.DEFAULT_OPTION
+								,JOptionPane.INFORMATION_MESSAGE);
 						ret = true;
 						break;
 					case KeyEvent.VK_D:
@@ -109,8 +112,25 @@ public class MainViewKeyDispatcher implements KeyEventDispatcher{
 						actionMap_.get(ActCommitDoc.class).actionPerformed(null);
 						ret = true;
 						break;
-					case KeyEvent.VK_F12:	//Èö†„ÅóÊ©üËÉΩ
+					case KeyEvent.VK_F12:	//âBÇµã@î\
 						actionMap_.get(ActShowDebugWindow.class).actionPerformed(null);
+						ret = true;
+						break;
+					}
+				}else if( (evt.getModifiers() & KeyEvent.ALT_MASK )!=0 ){
+					switch(evt.getKeyCode()){
+					case KeyEvent.VK_LEFT:
+						DocNode docNode = mainFrame_.nodeHistory_.back();
+						if(docNode != null ){
+							mainFrame_.showDetailAndSelectWord(docNode, (String)null);
+						}
+						ret = true;
+						break;
+					case KeyEvent.VK_RIGHT:
+						docNode = mainFrame_.nodeHistory_.forward();
+						if(docNode != null ){
+							mainFrame_.showDetailAndSelectWord(docNode, (String)null);
+						}
 						ret = true;
 						break;
 					}
@@ -136,7 +156,7 @@ public class MainViewKeyDispatcher implements KeyEventDispatcher{
 		return ret;
 	}
 
-	//==========================================AccessÁâà‰∫íÊèõ
+	//==========================================Accessî≈å›ä∑
 //	private boolean dispatchKeyEvent_access(KeyEvent evt, boolean ret) {
 //			if (evt.getID()  == KeyEvent.KEY_TYPED){
 //				if( (evt.getModifiers() & KeyEvent.ALT_MASK )!=0 ){

@@ -53,7 +53,7 @@ public class MasterComboModel {
 		if(sortTypes_ == null){
 			SortTypeDao sortTypeDao = (SortTypeDao)SelJDaoContainer.SEL_DAO_CONT.getComponent(SortTypeDao.class);
 			sortTypes_ = sortTypeDao.findAll();
-			DEFAULT_SORT_TYPE = sortTypeDao.findById(0);	//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ
+			DEFAULT_SORT_TYPE = sortTypeDao.findById(0);	//ƒfƒtƒHƒ‹ƒg
 		}
 		return new DefaultComboBoxModel(sortTypes_.toArray());
 	}
@@ -115,7 +115,7 @@ public class MasterComboModel {
 		CheckStateDao dao = (CheckStateDao)SelJDaoContainer.SEL_DAO_CONT.getComponent(CheckStateDao.class);
 		if(checkStates_ == null){
 			checkStates_ = new ArrayList();
-			DEFAULT_CHECK_STATE = dao.findById(0);	//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ
+			DEFAULT_CHECK_STATE = dao.findById(0);	//ƒfƒtƒHƒ‹ƒg
 		}
 		checkStates_.clear();
 		checkStates_.addAll(dao.findAll());
@@ -140,7 +140,7 @@ public class MasterComboModel {
 		ReviewStateTypeDao dao = (ReviewStateTypeDao)SelJDaoContainer.SEL_DAO_CONT.getComponent(ReviewStateTypeDao.class);
 		if(revieStateTypes_ == null){
 			revieStateTypes_ = new ArrayList();
-			DEFAULT_REVIEW_STATE = dao.findById(0);	//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ
+			DEFAULT_REVIEW_STATE = dao.findById(0);	//ƒfƒtƒHƒ‹ƒg
 		}
 		revieStateTypes_.clear();
 		revieStateTypes_.addAll(dao.findAll());
@@ -158,7 +158,7 @@ public class MasterComboModel {
 
 	
 	/*
-	 *  DefaultComboBoxModelã®å†…å®¹ã‚’å…¥ã‚Œæ›¿ãˆã‚‹
+	 *  DefaultComboBoxModel‚Ì“à—e‚ğ“ü‚ê‘Ö‚¦‚é
 	 */
 	static void refreshComboBoxModels(Set<DefaultComboBoxModel> cbModels, List items) {
 		for(Iterator<DefaultComboBoxModel> it=cbModels.iterator(); it.hasNext();){

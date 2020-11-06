@@ -49,7 +49,7 @@ public class DlgOutputTypeDetail extends DlgTableMaintUpdateBase {
 	OutputType outputType_ = null;  //  @jve:decl-index=0:
 	private JComboBox inpWorkType = null;
 
-	//new, updateå…¼ç”¨
+	//new, updateŒ“—p
 	class ActNewOrUpdateOutputType extends ActTransactionBase {
 		protected Component getOwnerComponent(){
 			return DlgOutputTypeDetail.this;
@@ -57,7 +57,7 @@ public class DlgOutputTypeDetail extends DlgTableMaintUpdateBase {
 		public ActNewOrUpdateOutputType(){
 			super();
 			putValue(Action.NAME, "commit");
-			putValue(Action.SHORT_DESCRIPTION, "æ–°è¦ç™»éŒ²ã¾ãŸã¯æ›´æ–°");
+			putValue(Action.SHORT_DESCRIPTION, "V‹K“o˜^‚Ü‚½‚ÍXV");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			outputType_.setSeq( ((Number)getInpSEQ().getValue()).intValue() );
@@ -66,27 +66,27 @@ public class DlgOutputTypeDetail extends DlgTableMaintUpdateBase {
 			outputType_.setMemo( getInpMemo().getText() );
 			outputType_.check();
 			if(isUpdate_){
-				//æ›´æ–°
+				//XV
 				outputTypeDao_.update(outputType_);
 			}else{
-				//æ–°è¦è¿½åŠ 
+				//V‹K’Ç‰Á
 				outputTypeDao_.insert(outputType_);
 			}
 			getOwnerComponent().setVisible(false);
-			//ä¸€æ—¦ãƒˆãƒ©ãƒ³ã‚¶ã‚¯ã‚·ãƒ§ãƒ³ã‚’çµ‚äº†ã—ãªã„ã¨model_.executeQuery()ãŒã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆã«ãªã‚‹
+			//ˆê’Uƒgƒ‰ƒ“ƒUƒNƒVƒ‡ƒ“‚ğI—¹‚µ‚È‚¢‚Æmodel_.executeQuery()‚ªƒ^ƒCƒ€ƒAƒEƒg‚É‚È‚é
 			postProc();
 			preProc();
-			//JTableã‚’ãƒªãƒ•ãƒ¬ãƒƒã‚·ãƒ¥ã™ã‚‹
+			//JTable‚ğƒŠƒtƒŒƒbƒVƒ…‚·‚é
 			if(getOwner() instanceof DlgWorkTypeOutputType){
 				((DlgWorkTypeOutputType)getOwner()).loadWorkTypeTable();
 			}else{
 				((DlgCheckPointAndPropTypeMaint)getOwner()).loadOutputTypeTable();
 			}
-			//comboBoxModelã‚’ãƒªãƒ•ãƒ¬ãƒƒã‚·ãƒ¥
+			//comboBoxModel‚ğƒŠƒtƒŒƒbƒVƒ…
 			MasterComboModel.refreshOutputType();
 		}
 	}
-	//deleteç”¨
+	//delete—p
 	ActDeleteOutputType actDeleteOutputType_ = new ActDeleteOutputType();
 	class ActDeleteOutputType extends ActTransactionBase {
 		protected Component getOwnerComponent(){
@@ -95,19 +95,19 @@ public class DlgOutputTypeDetail extends DlgTableMaintUpdateBase {
 		public ActDeleteOutputType(){
 			super();
 			putValue(Action.NAME, "delete");
-			putValue(Action.SHORT_DESCRIPTION, "å‰Šé™¤ã—ã¾ã™");
+			putValue(Action.SHORT_DESCRIPTION, "íœ‚µ‚Ü‚·");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			int id = Integer.parseInt(e.getActionCommand());
-			//outputTypeå‰Šé™¤
+			//outputTypeíœ
 			outputTypeDao_.deleteByOutputTypeId(id); 
-			//ä¸€æ—¦ãƒˆãƒ©ãƒ³ã‚¶ã‚¯ã‚·ãƒ§ãƒ³ã‚’çµ‚äº†ã—ãªã„ã¨model_.executeQuery()ãŒã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆã«ãªã‚‹
+			//ˆê’Uƒgƒ‰ƒ“ƒUƒNƒVƒ‡ƒ“‚ğI—¹‚µ‚È‚¢‚Æmodel_.executeQuery()‚ªƒ^ƒCƒ€ƒAƒEƒg‚É‚È‚é
 			postProc();
 			preProc();
-			//MasterComboModelã‚’æ›´æ–°ã™ã‚‹
+			//MasterComboModel‚ğXV‚·‚é
 			MasterComboModel.refreshOutputType();
 			
-			//JTableã‚’ãƒªãƒ•ãƒ¬ãƒƒã‚·ãƒ¥ã™ã‚‹
+			//JTable‚ğƒŠƒtƒŒƒbƒVƒ…‚·‚é
 			((DlgWorkTypeOutputType)getOwner()).refreshOutputTypeTable();
 
 			getOwnerComponent().setVisible(false);
@@ -120,7 +120,7 @@ public class DlgOutputTypeDetail extends DlgTableMaintUpdateBase {
 		getInpMemo().setText(outputType.getMemo());
 		
 		if( outputType.getWorkType() == null){
-			//ä½œæ¥­ç¨®é¡ã®ãƒã‚¸ã‚·ãƒ§ãƒ‹ãƒ³ã‚°
+			//ì‹Æí—Ş‚Ìƒ|ƒWƒVƒ‡ƒjƒ“ƒO
 			DefaultComboBoxModel cmodel = (DefaultComboBoxModel)getInpWorkType().getModel();
 			for(int i=0; i < cmodel.getSize(); i++){
 				WorkType workType = (WorkType)cmodel.getElementAt(i);
@@ -151,7 +151,7 @@ public class DlgOutputTypeDetail extends DlgTableMaintUpdateBase {
 	public void loadOutputType(long id){
 		outputType_ = outputTypeDao_.findByOutputTypeId(id); 
 		if(outputType_ == null){
-			throw new AppException("æˆæœç‰©ç¨®é¡ID="+id+" ã¯ã€æ—¢ã«å‰Šé™¤ã•ã‚Œã¦ã„ã¾ã™");
+			throw new AppException("¬‰Ê•¨í—ŞID="+id+" ‚ÍAŠù‚Éíœ‚³‚ê‚Ä‚¢‚Ü‚·");
 		}
 		setOutputType(outputType_);
 		isUpdate_ = true;

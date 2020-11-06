@@ -65,7 +65,7 @@ public class DlgSummary extends JDialog {
 				return;
 			}
 			
-			//workTypeIdã®é…åˆ—ã‚’ä½œæˆã™ã‚‹
+			//workTypeId‚Ì”z—ñ‚ğì¬‚·‚é
 			long[] ids = new long[workTypes.length];
 			
 			for(int i=0; i<workTypes.length; i++){
@@ -73,7 +73,7 @@ public class DlgSummary extends JDialog {
 				ids[i] = wt.getWorkTypeId();
 			}
 			
-			//OutputTypeã‚’å–å¾—
+			//OutputType‚ğæ“¾
 			List<OutputPropType> outputPropTypes = 
 				outputPropTypeDao_.findByWorkTypeId(ids);
 			for(OutputPropType opt:outputPropTypes){
@@ -82,12 +82,12 @@ public class DlgSummary extends JDialog {
 		}
 	}
 	
-	//é¸æŠã®åè»¢
+	//‘I‘ğ‚Ì”½“]
 	class ActReverseSelection extends AbstractAction {
 		JFileChooser chooser_=null;
 		public ActReverseSelection(){
 			putValue(Action.NAME, "reverse selection");
-			putValue(Action.SHORT_DESCRIPTION, "é¸æŠçŠ¶æ…‹ã‚’åè»¢ã—ã¾ã™");
+			putValue(Action.SHORT_DESCRIPTION, "‘I‘ğó‘Ô‚ğ”½“]‚µ‚Ü‚·");
 		}
 		public void actionPerformed(ActionEvent e) {
 			JList list = null;
@@ -107,16 +107,16 @@ public class DlgSummary extends JDialog {
 	}
 	ActReverseSelection actReverseSelection_ = new ActReverseSelection();  //  @jve:decl-index=0:
 
-	//ã‚µãƒãƒª
+	//ƒTƒ}ƒŠ
 	class ActSummary extends AbstractAction {
 		JFileChooser chooser_=null;
 		DlgSummaryResult dlg_ = null;
 		public ActSummary(){
 			putValue(Action.NAME, "summary");
-			putValue(Action.SHORT_DESCRIPTION, "é¸æŠãƒãƒ¼ãƒ‰é…ä¸‹ã®ä½œæ¥­å±æ€§ã‚’é›†è¨ˆã—ã¾ã™");
+			putValue(Action.SHORT_DESCRIPTION, "‘I‘ğƒm[ƒh”z‰º‚Ìì‹Æ‘®«‚ğWŒv‚µ‚Ü‚·");
 		}
 		public void actionPerformed(ActionEvent e) {
-			//é¸æŠä½œæ¥­ç¨®é¡
+			//‘I‘ğì‹Æí—Ş
 //			List<WorkType> workTypes = new ArrayList<WorkType>();
 //			for(int i=0; i < inpSelWork.getSelectedValues().length; i++){
 //				workTypes.add((WorkType)inpSelWork.getSelectedValues()[i]);
@@ -137,7 +137,7 @@ public class DlgSummary extends JDialog {
 							wd.setVisible(false);
 							DlgSummary.this.setEnabled(true);
 						}
-						//è¡¨ç¤º
+						//•\¦
 						DlgSummaryResult dlg = getDlg();
 						dlg.setModel(summModel);
 						dlg.setVisible(true);
@@ -283,7 +283,7 @@ public class DlgSummary extends JDialog {
 			inpDepth.setMajorTickSpacing(5);
 			inpDepth.setPaintTicks(true);
 			inpDepth.setPaintLabels(false);
-			inpDepth.setToolTipText("0ã®å ´åˆã¯æœ«ç«¯ã®éšå±¤ã¾ã§é›†è¨ˆã—ã¾ã™");
+			inpDepth.setToolTipText("0‚Ìê‡‚Í––’[‚ÌŠK‘w‚Ü‚ÅWŒv‚µ‚Ü‚·");
 			inpDepth.setSnapToTicks(true);
 			inpDepth.setValue(0);
 		}
@@ -412,7 +412,7 @@ public class DlgSummary extends JDialog {
 	private JList getInpSelWork() {
 		if (inpSelWork == null) {
 			inpSelWork = new JList();
-			inpSelWork.setToolTipText("ctrl+clickã§è¤‡æ•°é¸æŠãŒå¯èƒ½ã§ã™");
+			inpSelWork.setToolTipText("ctrl+click‚Å•¡”‘I‘ğ‚ª‰Â”\‚Å‚·");
 			inpSelWork.addListSelectionListener(
 					new ListSelectionListener(){
 						public void valueChanged(ListSelectionEvent arg0) {
@@ -444,7 +444,7 @@ public class DlgSummary extends JDialog {
 						}
 					}
 			);
-			inpSelProp.setToolTipText("ctrl+clickã§è¤‡æ•°é¸æŠãŒå¯èƒ½ã§ã™");
+			inpSelProp.setToolTipText("ctrl+click‚Å•¡”‘I‘ğ‚ª‰Â”\‚Å‚·");
 			
 		}
 		return inpSelProp;

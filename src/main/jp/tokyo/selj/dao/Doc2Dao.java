@@ -6,7 +6,7 @@ import org.seasar.dao.annotation.tiger.S2Dao;
 
 @S2Dao(bean = Doc.class)
 public interface Doc2Dao {
-	//ã‚¢ãƒãƒ†ãƒ¼ã‚·ãƒ§ãƒ³ãŒåŠ¹ã‹ãªã„ã‚‰ã—ã„ã€‚ãƒ€ãƒƒã‚»ãƒ¼ï¼
+	//ƒAƒmƒe[ƒVƒ‡ƒ“‚ªŒø‚©‚È‚¢‚ç‚µ‚¢Bƒ_ƒbƒZ[I
 	public Class BEAN = Doc.class;
 
     public List<Doc> findByText(String[] keywords);

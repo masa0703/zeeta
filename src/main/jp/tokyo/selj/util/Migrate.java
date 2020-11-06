@@ -49,16 +49,16 @@ public class Migrate {
     	TransactionManager trn = (TransactionManager)container.getComponent(TransactionManager.class);
         try {
         	trn.begin();
-        	//è¦ä»¶
+        	//—vŒ
         	migrateYouken(container);
         	
-        	//è¦ä»¶æ§‹é€ 
+        	//—vŒ\‘¢
         	migrateYoukenKouzou(container);
         	
-        	//ã‚½ãƒ¼ãƒˆç¨®åˆ¥
+        	//ƒ\[ƒgí•Ê
 //        	migrateSortType(container);
 
-        	//ä½œæ¥­è€…
+        	//ì‹ÆÒ
         	migrateUser(container);
 
         	
@@ -86,19 +86,19 @@ public class Migrate {
 		try{
 			Statement st = con.createStatement();
 			dao.deleteAll();
-			ResultSet rs = st.executeQuery("select * from è¦ä»¶");
+			ResultSet rs = st.executeQuery("select * from —vŒ");
 			while(rs.next()){
 				Doc out = new Doc();
-				Number n = (Number)rs.getObject("è¦ä»¶ID");
+				Number n = (Number)rs.getObject("—vŒID");
 				long oldId = n.longValue();
 				out.setDocId( oldId ); 
-				n = (Number)rs.getObject("è¦ä»¶ç¨®é¡ID");
+				n = (Number)rs.getObject("—vŒí—ŞID");
 				out.setDocTypeId( (n==null)? 0:n.intValue() );
-				out.setDocTitle(rs.getString("è¦ä»¶ã‚¿ã‚¤ãƒˆãƒ«"));
-				out.setDocCont(rs.getString("è¦ä»¶å†…å®¹"));
-				out.setNewDate(rs.getTimestamp("ä½œæˆæ—¥"));
-				out.setUserName(rs.getString("ä½œæˆè€…å"));
-				n = (Number)rs.getObject("å­ãƒãƒ¼ãƒ‰é †åº");
+				out.setDocTitle(rs.getString("—vŒƒ^ƒCƒgƒ‹"));
+				out.setDocCont(rs.getString("—vŒ“à—e"));
+				out.setNewDate(rs.getTimestamp("ì¬“ú"));
+				out.setUserName(rs.getString("ì¬Ò–¼"));
+				n = (Number)rs.getObject("qƒm[ƒh‡˜");
 				out.setSortTypeId( (n==null)? 0:n.intValue() );
 				dao.insert(out);
 				logger.info(out);
@@ -117,21 +117,21 @@ public class Migrate {
 		try{
 			Statement st = con.createStatement();
 			dao.deleteAll();
-			ResultSet rs = st.executeQuery("select * from è¦ä»¶æ§‹é€ ");
+			ResultSet rs = st.executeQuery("select * from —vŒ\‘¢");
 			while(rs.next()){
 				DocStr out = new DocStr();
-				Number n = (Number)rs.getObject("è¦ªè¦ä»¶ID");
+				Number n = (Number)rs.getObject("e—vŒID");
 				logger.debug("oldId="+n.longValue());
 				out.setOyaDocId( idMap.get(n.longValue()) ); 
 
-				n = (Number)rs.getObject("å­è¦ä»¶ID");
+				n = (Number)rs.getObject("q—vŒID");
 				out.setKoDocId( idMap.get(n.longValue()) ); 
 				
 				n = (Number)rs.getObject("SEQ");
 				out.setSEQ( n.intValue() ); 
 
-				out.setNewDate(rs.getTimestamp("ä½œæˆæ—¥"));
-				out.setUserName(rs.getString("ä½œæˆè€…"));
+				out.setNewDate(rs.getTimestamp("ì¬“ú"));
+				out.setUserName(rs.getString("ì¬Ò"));
 
 				logger.info(out);
 				dao.insert(out);
@@ -148,13 +148,13 @@ public class Migrate {
 		try{
 			Statement st = con.createStatement();
 			dao.deleteAll();
-			ResultSet rs = st.executeQuery("select * from ã‚½ãƒ¼ãƒˆç¨®åˆ¥");
+			ResultSet rs = st.executeQuery("select * from ƒ\[ƒgí•Ê");
 			while(rs.next()){
 				SortType out = new SortType();
-				Number n = (Number)rs.getObject("ã‚½ãƒ¼ãƒˆç¨®åˆ¥ID");
+				Number n = (Number)rs.getObject("ƒ\[ƒgí•ÊID");
 				out.setSortTypeID( n.intValue() ); 
-				out.setSortTypeName(rs.getString("ã‚½ãƒ¼ãƒˆç¨®åˆ¥åç§°"));
-				out.setOrderSent(rs.getString("Orderå¥"));
+				out.setSortTypeName(rs.getString("ƒ\[ƒgí•Ê–¼Ì"));
+				out.setOrderSent(rs.getString("Order‹å"));
 				logger.info(out);
 				dao.insert(out);
 			}
@@ -170,11 +170,11 @@ public class Migrate {
 		try{
 			Statement st = con.createStatement();
 			dao.deleteAll();
-			ResultSet rs = st.executeQuery("select * from ä½œæ¥­è€…");
+			ResultSet rs = st.executeQuery("select * from ì‹ÆÒ");
 			while(rs.next()){
 				User out = new User();
-				out.setUserName(rs.getString("ä½œæ¥­è€…å"));
-				out.setOrg(rs.getString("æ‰€å±"));
+				out.setUserName(rs.getString("ì‹ÆÒ–¼"));
+				out.setOrg(rs.getString("Š‘®"));
 				logger.info(out);
 				dao.insert(out);
 			}

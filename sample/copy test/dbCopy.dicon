@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components.dtd">
+<components namespace="dbSetups">
+    <include path="j2ee.dicon"/>
+    <component name="dbSetup" class="jp.tokyo.selj.util.DbSetup">
+        <arg>{
+"--"
+,"CREATE LINKED TABLE lnk_work('org.postgresql.Driver', 'jdbc:postgresql://localhost:5432/zeeta', 'zeeta', 'zeeta', 'work') "
+,"insert into work select * from lnk_work"
+
+
+,"CREATE LINKED TABLE lnk_usertbl('org.postgresql.Driver', 'jdbc:postgresql://localhost:5432/zeeta', 'zeeta', 'zeeta', 'usertbl') "
+,"insert into usertbl select * from lnk_usertbl"
+
+            }
+        </arg>
+    </component>
+</components>
+

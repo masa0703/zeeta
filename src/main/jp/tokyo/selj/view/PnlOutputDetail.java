@@ -52,11 +52,11 @@ public class PnlOutputDetail extends JPanel {
 		initialize();
 	}
 	public void setup(){
-		//æˆæœç‰©ç¨®é¡ãƒªã‚¹ãƒˆã®è¨­å®š
+		//¬‰Ê•¨í—ŞƒŠƒXƒg‚Ìİ’è
 		getInpOutputType().setModel(MasterComboModel.newOutputTypeComboBoxModel());
 		getInpOutputType().getModel().setSelectedItem("");
 		
-		//ä½œæ¥­è€…ã®è¨­å®š
+		//ì‹ÆÒ‚Ìİ’è
 		getInpCreator().setModel(MasterComboModel.newUserComboBoxModel());
 		getInpCreator().getModel().setSelectedItem("");
 		
@@ -127,7 +127,7 @@ public class PnlOutputDetail extends JPanel {
 		if (inpName == null) {
 			inpName = new JTextField();
 			inpName.setBorder(new TitledBorder("name"));
-			inpName.setToolTipText("ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ãƒ‰ãƒ­ãƒƒãƒ—ã§ãã¾ã™");
+			inpName.setToolTipText("ƒtƒ@ƒCƒ‹‚ğƒhƒƒbƒv‚Å‚«‚Ü‚·");
 		}
 		return inpName;
 	}
@@ -141,7 +141,7 @@ public class PnlOutputDetail extends JPanel {
 		if (inpPath == null) {
 			inpPath = new JTextField();
 			inpPath.setBorder(new TitledBorder("path"));
-			inpPath.setToolTipText("ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ãƒ‰ãƒ­ãƒƒãƒ—ã§ãã¾ã™");
+			inpPath.setToolTipText("ƒtƒ@ƒCƒ‹‚ğƒhƒƒbƒv‚Å‚«‚Ü‚·");
 		}
 		return inpPath;
 	}

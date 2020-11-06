@@ -38,7 +38,7 @@ public class DlgUsertblDetail extends DlgTableMaintUpdateBase {
 	boolean isUpdate_ = false;
 	UserDao userDao_ = null;  //  @jve:decl-index=0:
 	User user_ = null;  //  @jve:decl-index=0:
-	//new, updateå…¼ç”¨
+	//new, updateŒ“—p
 	private class ActNewOrUpdate extends ActTransactionBase {
 		protected Component getOwnerComponent(){
 			return DlgUsertblDetail.this;
@@ -46,37 +46,37 @@ public class DlgUsertblDetail extends DlgTableMaintUpdateBase {
 		public ActNewOrUpdate(){
 			super();
 			putValue(Action.NAME, "commit");
-			putValue(Action.SHORT_DESCRIPTION, "æ–°è¦ç™»éŒ²ã¾ãŸã¯æ›´æ–°");
+			putValue(Action.SHORT_DESCRIPTION, "V‹K“o˜^‚Ü‚½‚ÍXV");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			if(isUpdate_ &&
 					!user_.getUserName().equals(getInpUsertblName().getText())){
-				//PKãŒå¤‰æ›´ã•ã‚Œã¦ã„ãŸå ´åˆ
-				userDao_.remove(user_);		//ä¸€æ—¦å‰Šé™¤
+				//PK‚ª•ÏX‚³‚ê‚Ä‚¢‚½ê‡
+				userDao_.remove(user_);		//ˆê’Uíœ
 				isUpdate_ = false;
 			}
 			user_.setUserName( getInpUsertblName().getText() );
 			user_.setOrg( getInpOrg().getText() );
 			user_.check();
 			if(isUpdate_){
-				//æ›´æ–°
+				//XV
 				userDao_.update(user_);
 			}else{
-				//æ–°è¦è¿½åŠ 
+				//V‹K’Ç‰Á
 				userDao_.insert(user_);
 			}
 			getOwnerComponent().setVisible(false);
-			//ä¸€æ—¦ãƒˆãƒ©ãƒ³ã‚¶ã‚¯ã‚·ãƒ§ãƒ³ã‚’çµ‚äº†ã—ãªã„ã¨model_.executeQuery()ãŒã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆã«ãªã‚‹
+			//ˆê’Uƒgƒ‰ƒ“ƒUƒNƒVƒ‡ƒ“‚ğI—¹‚µ‚È‚¢‚Æmodel_.executeQuery()‚ªƒ^ƒCƒ€ƒAƒEƒg‚É‚È‚é
 			postProc();
 			preProc();
-			//JTableã‚’ãƒªãƒ•ãƒ¬ãƒƒã‚·ãƒ¥ã™ã‚‹
+			//JTable‚ğƒŠƒtƒŒƒbƒVƒ…‚·‚é
 			((DlgUserMaint)getOwner()).loadUsertblTable();
 
-			//MasterComboModelã‚’æ›´æ–°ã™ã‚‹
+			//MasterComboModel‚ğXV‚·‚é
 			MasterComboModel.refreshUser();
 		}
 	}
-	//deleteç”¨
+	//delete—p
 	ActDelete actDelete_ = new ActDelete();  //  @jve:decl-index=0:
 
 	private JTextField inpOrg = null;
@@ -88,19 +88,19 @@ public class DlgUsertblDetail extends DlgTableMaintUpdateBase {
 		public ActDelete(){
 			super();
 			putValue(Action.NAME, "delete");
-			putValue(Action.SHORT_DESCRIPTION, "å‰Šé™¤ã—ã¾ã™");
+			putValue(Action.SHORT_DESCRIPTION, "íœ‚µ‚Ü‚·");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			String name = e.getActionCommand();
-			//å‰Šé™¤
+			//íœ
 			userDao_.deleteByName(name); 
-			//ä¸€æ—¦ãƒˆãƒ©ãƒ³ã‚¶ã‚¯ã‚·ãƒ§ãƒ³ã‚’çµ‚äº†ã—ãªã„ã¨model_.executeQuery()ãŒã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆã«ãªã‚‹
+			//ˆê’Uƒgƒ‰ƒ“ƒUƒNƒVƒ‡ƒ“‚ğI—¹‚µ‚È‚¢‚Æmodel_.executeQuery()‚ªƒ^ƒCƒ€ƒAƒEƒg‚É‚È‚é
 			postProc();
 			preProc();
-			//JTableã‚’ãƒªãƒ•ãƒ¬ãƒƒã‚·ãƒ¥ã™ã‚‹
+			//JTable‚ğƒŠƒtƒŒƒbƒVƒ…‚·‚é
 			((DlgUserMaint)getOwner()).loadUsertblTable();
 
-			//MasterComboModelã‚’æ›´æ–°ã™ã‚‹
+			//MasterComboModel‚ğXV‚·‚é
 			MasterComboModel.refreshUser();
 			
 			getOwnerComponent().setVisible(false);
@@ -128,7 +128,7 @@ public class DlgUsertblDetail extends DlgTableMaintUpdateBase {
 	public void loadUsertbl(String name){
 		user_ = userDao_.findByName(name); 
 		if(user_ == null){
-			throw new AppException("ãƒ¦ãƒ¼ã‚¶="+name+" ã¯ã€æ—¢ã«å‰Šé™¤ã•ã‚Œã¦ã„ã¾ã™");
+			throw new AppException("ƒ†[ƒU="+name+" ‚ÍAŠù‚Éíœ‚³‚ê‚Ä‚¢‚Ü‚·");
 		}
 		setUsertbl(user_);
 		isUpdate_ = true;

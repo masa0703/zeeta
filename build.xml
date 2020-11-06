@@ -42,7 +42,7 @@
     <target name="update" depends="-build" >
         <mkdir dir="${dist}"/>
         <mkdir dir="${dist}/lib"/>
-        <!-- jar菴懈縲->
+        <!-- jar作成　-->
         <jar jarfile="${dist}/lib/${jar_name}.jar" manifest="${src}/META-INF/MANIFEST.MF" >
             <fileset dir="${bin}" >
                 <include name="**/*.*" />
@@ -89,7 +89,7 @@
     </target>
 
 	<!--
-    <target name="clean" description="build繝輔ぃ繧、繝ォ謗勁逕ィ">
+    <target name="clean" description="buildファイル掃除用">
         <delete dir="${bin}"/>
         <delete dir="${dist}"/>
     </target>

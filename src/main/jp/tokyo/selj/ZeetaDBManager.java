@@ -15,8 +15,8 @@ import org.seasar.framework.container.S2Container;
 public class ZeetaDBManager {
 	static Logger log_ = Logger.getLogger(ZeetaDBManager.class);
 	
-	//ãƒ«ãƒ¼ãƒ«ï¼šã“ã“ã‚’å¤‰æ›´ã™ã‚‹éš›ã¯ã€dbSetup.diconã‚‚åŒã˜ã‚ˆã†ã«å¤‰æ›´ã™ã‚‹
-	//ã€€dbSetup_v05.diconã¯ã€ä¸€æ™‚çš„ãªã‚‚ã®ãªã®ã§æ›´æ–°ã—ãªã„ã€‚
+	//ƒ‹[ƒ‹F‚±‚±‚ğ•ÏX‚·‚éÛ‚ÍAdbSetup.dicon‚à“¯‚¶‚æ‚¤‚É•ÏX‚·‚é
+	//@dbSetup_v05.dicon‚ÍAˆê“I‚È‚à‚Ì‚È‚Ì‚ÅXV‚µ‚È‚¢B
 	public static final String DB_VERSION = "616";
 	
 	static String dbVersion;
@@ -185,16 +185,16 @@ public class ZeetaDBManager {
 				+")",
 			},
 			{"610",
-				"INSERT INTO reviewStateType ( reviewStateTypeId, reviewStateTypeName ) VALUES (0,'æœªå¯¾å¿œ')",
+				"INSERT INTO reviewStateType ( reviewStateTypeId, reviewStateTypeName ) VALUES (0,'–¢‘Î‰')",
 			},
 			{"610",
-				"INSERT INTO reviewStateType ( reviewStateTypeId, reviewStateTypeName ) VALUES (20,'å¯¾å¿œæ¸ˆ')",
+				"INSERT INTO reviewStateType ( reviewStateTypeId, reviewStateTypeName ) VALUES (20,'‘Î‰Ï')",
 			},
 			{"610",
-				"INSERT INTO reviewStateType ( reviewStateTypeId, reviewStateTypeName ) VALUES (80,'å†é–‹')",
+				"INSERT INTO reviewStateType ( reviewStateTypeId, reviewStateTypeName ) VALUES (80,'ÄŠJ')",
 			},
 			{"610",
-				"INSERT INTO reviewStateType ( reviewStateTypeId, reviewStateTypeName ) VALUES (100,'ç¢ºèªæ¸ˆã¿')",
+				"INSERT INTO reviewStateType ( reviewStateTypeId, reviewStateTypeName ) VALUES (100,'Šm”FÏ‚İ')",
 			},
 			{"610",
 				"CREATE TABLE reviewDetail ("
@@ -318,13 +318,13 @@ public class ZeetaDBManager {
 		}
 		try{
 			loadSysZeeta(con);
-			//DBversionã‚’ç¢ºèª
+			//DBversion‚ğŠm”F
 			if(DB_VERSION.equals(dbVersion)){
 				log_.info("database version check ...OK!");
 				return;
 			}
 			
-			//version ã«å¿œã˜ãŸSQLã‚’ç™ºè¡Œã™ã‚‹ã®ã 
+			//version ‚É‰‚¶‚½SQL‚ğ”­s‚·‚é‚Ì‚¾
 			int verNum = Integer.parseInt(dbVersion);
 			Statement statement = con.createStatement();
 			for(int i=0; i<sqlList_.length; i++){
@@ -346,15 +346,15 @@ public class ZeetaDBManager {
 	}
 
 	public static Connection getConnection() {
-		//æ¥ç¶š
+		//Ú‘±
 		S2Container daoCont = SelJDaoContainer.SEL_DAO_CONT;
 		XADataSource ds = (XADataSource)daoCont.getComponent("xaDataSource");
 		Connection con = null;
 		try{
 			con = ds.getXAConnection().getConnection();
 		}catch(SQLException e){
-			//ã‚³ãƒã‚¯ã‚·ãƒ§ãƒ³ã‚¨ãƒ©ãƒ¼
-			return null;	//å¾Œã§ã‚¨ãƒ©ãƒ¼ã«ãªã‚‹ã®ã§ã“ã“ã§ã¯ç„¡è¦–
+			//ƒRƒlƒNƒVƒ‡ƒ“ƒGƒ‰[
+			return null;	//Œã‚ÅƒGƒ‰[‚É‚È‚é‚Ì‚Å‚±‚±‚Å‚Í–³‹
 		}
 		return con;
 	}
@@ -364,7 +364,7 @@ public class ZeetaDBManager {
 			try{
 				return con.getMetaData().getURL();
 			}catch(SQLException e){
-				//å¾Œã§ã‚¨ãƒ©ãƒ¼ã«ãªã‚‹ã®ã§ã“ã“ã§ã¯ç„¡è¦–
+				//Œã‚ÅƒGƒ‰[‚É‚È‚é‚Ì‚Å‚±‚±‚Å‚Í–³‹
 				e.printStackTrace();
 			}finally{
 				try{ con.close(); }catch(SQLException ex){}
@@ -380,12 +380,12 @@ public class ZeetaDBManager {
 			if(sysRs.next()){
 				dbVersion = sysRs.getString("version");
 			}else{
-				//ãƒ¬ã‚³ãƒ¼ãƒ‰ãŒæ¶ˆã•ã‚Œã¦ã„ã‚‹
+				//ƒŒƒR[ƒh‚ªÁ‚³‚ê‚Ä‚¢‚é
 				statement.execute(INSERT_DEFAULT_SYS_RECORD);
 				dbVersion = DB_VERSION;
 			}
-		}catch(SQLException e){		//sysZeetaãŒå­˜åœ¨ã—ãªã„å ´åˆã¨ã¿ãªã™
-			//version 0 ã§ãƒªã‚¿ãƒ³ã™ã‚‹
+		}catch(SQLException e){		//sysZeeta‚ª‘¶İ‚µ‚È‚¢ê‡‚Æ‚İ‚È‚·
+			//version 0 ‚ÅƒŠƒ^ƒ“‚·‚é
 		}	
 	}
 }

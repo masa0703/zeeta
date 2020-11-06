@@ -1,9 +1,9 @@
 @echo ----------------------------------------------------
-@echo è‡ªZeetaã®DBã‚’åˆæœŸåŒ–ã—ã¦ä»–ã®Zeetaã®DBã‚’ã‚³ãƒ”ãƒ¼ã™ã‚‹ã‚µãƒ³ãƒ—ãƒ«ã§ã™ã€‚
-@echo ã“ã®ä¾‹ã§ã¯ã€postgreSQLã®DBã‚’è‡ªDBã«ã‚³ãƒ”ãƒ¼ã—ã¾ã™ã€‚
-@echo å®Ÿè¡Œã«ã¯ã€postgreSQLã®JDBCãƒ‰ãƒ©ã‚¤ãƒãŒã‚«ãƒ¬ãƒ³ãƒˆãƒ•ã‚©ãƒ«ãƒ€ã«å¿…è¦ã§ã™ã€‚
-@echo ã‚ˆã‚ã—ã„ã§ã™ã‹ï¼Ÿ
-@echo ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã™ã‚‹å ´åˆã¯ã€CTRL+Cã‚’ã‚¿ã‚¤ãƒ—ã—ã¦ãã ã•ã„ã€‚
+@echo Ž©Zeeta‚ÌDB‚ð‰Šú‰»‚µ‚Ä‘¼‚ÌZeeta‚ÌDB‚ðƒRƒs[‚·‚éƒTƒ“ƒvƒ‹‚Å‚·B
+@echo ‚±‚Ì—á‚Å‚ÍApostgreSQL‚ÌDB‚ðŽ©DB‚ÉƒRƒs[‚µ‚Ü‚·B
+@echo ŽÀs‚É‚ÍApostgreSQL‚ÌJDBCƒhƒ‰ƒCƒo‚ªƒJƒŒƒ“ƒgƒtƒHƒ‹ƒ_‚É•K—v‚Å‚·B
+@echo ‚æ‚ë‚µ‚¢‚Å‚·‚©H
+@echo ƒLƒƒƒ“ƒZƒ‹‚·‚éê‡‚ÍACTRL+C‚ðƒ^ƒCƒv‚µ‚Ä‚­‚¾‚³‚¢B
 @echo ----------------------------------------------------
 @set CLS=../lib/selj.jar
 @pause

@@ -90,7 +90,7 @@ public class DlgCheckList extends JDialog implements ListSelectionListener{
 		public ActShowNewCheck(){
 			super();
 			putValue(Action.NAME, "C");
-			putValue(Action.SHORT_DESCRIPTION, "æ–°è¦ã®ãƒã‚§ãƒƒã‚¯ãƒªã‚¹ãƒˆã‚’ä½œæˆã™ã‚‹");
+			putValue(Action.SHORT_DESCRIPTION, "V‹K‚Ìƒ`ƒFƒbƒNƒŠƒXƒg‚ğì¬‚·‚é");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			getDlg().setVisible(true, lastSelected_, null);
@@ -108,12 +108,12 @@ public class DlgCheckList extends JDialog implements ListSelectionListener{
 		public ActShowUpdateCheck(){
 			super();
 			putValue(Action.NAME, "U");
-			putValue(Action.SHORT_DESCRIPTION, "ãƒã‚§ãƒƒã‚¯ãƒªã‚¹ãƒˆã‚’æ›´æ–°ã™ã‚‹");
+			putValue(Action.SHORT_DESCRIPTION, "ƒ`ƒFƒbƒNƒŠƒXƒg‚ğXV‚·‚é");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			Check check = (Check)getDspCheckList().getSelectedValue();
 			if(check == null){
-				throw new AppException("ã„ãšã‚Œã‹ã®ãƒã‚§ãƒƒã‚¯ã‚’é¸æŠã—ã¦ãã ã•ã„");
+				throw new AppException("‚¢‚¸‚ê‚©‚Ìƒ`ƒFƒbƒN‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢");
 			}
 			getDlg().setVisible(true, lastSelected_, check);
 		}
@@ -125,17 +125,17 @@ public class DlgCheckList extends JDialog implements ListSelectionListener{
 		public ActRemoveCheck(){
 			super();
 			putValue(Action.NAME, "D");
-			putValue(Action.SHORT_DESCRIPTION, "é¸æŠã—ãŸãƒã‚§ãƒƒã‚¯ã‚’å‰Šé™¤ã—ã¾ã™");
+			putValue(Action.SHORT_DESCRIPTION, "‘I‘ğ‚µ‚½ƒ`ƒFƒbƒN‚ğíœ‚µ‚Ü‚·");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			Check check = (Check)getDspCheckList().getSelectedValue();
 			if(check == null){
-				throw new AppException("ã„ãšã‚Œã‹ã®ãƒã‚§ãƒƒã‚¯ã‚’é¸æŠã—ã¦ãã ã•ã„");
+				throw new AppException("‚¢‚¸‚ê‚©‚Ìƒ`ƒFƒbƒN‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢");
 			}
 			if( JOptionPane.showConfirmDialog(
 					DlgCheckList.this
-					,"é¸æŠã—ãŸãƒã‚§ãƒƒã‚¯ã‚’å‰Šé™¤ã—ã¾ã™ã€‚\n" +
-					"ã‚ˆã‚ã—ã„ã§ã™ã‹ï¼Ÿ",""
+					,"‘I‘ğ‚µ‚½ƒ`ƒFƒbƒN‚ğíœ‚µ‚Ü‚·B\n" +
+					"‚æ‚ë‚µ‚¢‚Å‚·‚©H",""
 					,JOptionPane.YES_NO_OPTION
 					,JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
 				checkDao_.remove(check);
@@ -152,7 +152,7 @@ public class DlgCheckList extends JDialog implements ListSelectionListener{
 			super();
 			setEnabled(false);
 			putValue(Action.NAME, "apply all");
-			putValue(Action.SHORT_DESCRIPTION, "ãƒã‚§ãƒƒã‚¯çµæœã‚’æ›¸ãè¾¼ã¿ã¾ã™");
+			putValue(Action.SHORT_DESCRIPTION, "ƒ`ƒFƒbƒNŒ‹‰Ê‚ğ‘‚«‚İ‚Ü‚·");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			List<CheckDetail> details = checkDetailListModel_.checkDetails_;
@@ -163,7 +163,7 @@ public class DlgCheckList extends JDialog implements ListSelectionListener{
 		}
 	}
 
-	//ãƒã‚§ãƒƒã‚¯ãƒªã‚¹ãƒˆãƒ†ãƒ¼ãƒ–ãƒ«ãƒ¢ãƒ‡ãƒ«
+	//ƒ`ƒFƒbƒNƒŠƒXƒgƒe[ƒuƒ‹ƒ‚ƒfƒ‹
 	class CheckDetailListModel extends AbstractTableModel implements ListSelectionListener{
 		String[] columnNames_ = {"check point", "result", "date"};
 		List<CheckDetail> checkDetails_ = Collections.EMPTY_LIST;
@@ -222,11 +222,11 @@ public class DlgCheckList extends JDialog implements ListSelectionListener{
 		public void valueChanged(ListSelectionEvent e) {
 			Check selected = (Check)getDspCheckList().getSelectedValue();
 			if(lastSelected_ == selected ){
-				//2å›å‘¼ã³å‡ºã•ã‚Œã‚‹ç„¡é§„ã‚’æ’é™¤
+				//2‰ñŒÄ‚Ño‚³‚ê‚é–³‘Ê‚ğ”rœ
 				return;
 			}
 			lastSelected_ = selected;
-			//ã‚‚ã—å¤‰æ›´ã•ã‚Œã¦ã„ãŸã‚‰æ›´æ–°ã™ã‚‹
+			//‚à‚µ•ÏX‚³‚ê‚Ä‚¢‚½‚çXV‚·‚é
 			updateIfDarty();
 			setDarty(false);
 
@@ -246,11 +246,11 @@ public class DlgCheckList extends JDialog implements ListSelectionListener{
 			if(!isDarty_){
 				return;
 			}
-			// æ›´æ–°ã›ãªã‚ã‹ã‚“
+			// XV‚¹‚È‚ ‚©‚ñ
 			if( JOptionPane.showConfirmDialog(
 					DlgCheckList.this
-					,"å†…å®¹ãŒå¤‰æ›´ã•ã‚Œã¦ã„ã¾ã™ã€‚\n" +
-					"æ›´æ–°ã‚’åæ˜ ã—ã¾ã™ã‹ï¼Ÿ",""
+					,"“à—e‚ª•ÏX‚³‚ê‚Ä‚¢‚Ü‚·B\n" +
+					"XV‚ğ”½‰f‚µ‚Ü‚·‚©H",""
 					,JOptionPane.YES_NO_OPTION
 					,JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
 				new ActApplyAll().actionPerformed(null);
@@ -281,13 +281,13 @@ public class DlgCheckList extends JDialog implements ListSelectionListener{
 	}
 	
 	public void valueChanged(ListSelectionEvent e) {
-		//é¸æŠã•ã‚ŒãŸitem
+		//‘I‘ğ‚³‚ê‚½item
 		JList list = (JList)e.getSource();
 		if( !isShowing() || list.getSelectedValue() == null){
 			return;
 		}
 		if(list.getSelectedValue() == lastSelected_){
-			//ãªãœã‹åŒã˜ã‚¤ãƒ™ãƒ³ãƒˆãŒï¼’ã¤é€£ç¶šã™ã‚‹ãŸã‚
+			//‚È‚º‚©“¯‚¶ƒCƒxƒ“ƒg‚ª‚Q‚Â˜A‘±‚·‚é‚½‚ß
 			return;
 		}
 		log.debug("selected="+list.getSelectedValue());
@@ -298,7 +298,7 @@ public class DlgCheckList extends JDialog implements ListSelectionListener{
 	@Override
 	public void setVisible(boolean b) {
 		if(b){
-			throw new RuntimeException("setVisible(boolean b, Output output)ã‚’ã¤ã‹ã‚ãªã‚ã‹ã‚“");
+			throw new RuntimeException("setVisible(boolean b, Output output)‚ğ‚Â‚©‚í‚È‚ ‚©‚ñ");
 		}else{
 			super.setVisible(b);
 		}
@@ -312,7 +312,7 @@ public class DlgCheckList extends JDialog implements ListSelectionListener{
 		pnlOutput_.setOutput(lastSelected_);
 		
 		getCmdRemove().setEnabled(false);
-		//lastSelected_ã«é–¢é€£ã™ã‚‹Checkä¸€è¦§ã‚’CheckListã«ã‚»ãƒƒãƒˆ
+		//lastSelected_‚ÉŠÖ˜A‚·‚éCheckˆê——‚ğCheckList‚ÉƒZƒbƒg
 		List<Check> checks = checkDao_.findByOutputId(lastSelected_.getOutputId());
 		
 		getDspCheckList().setModel(new CheckListModel(checks));
@@ -322,7 +322,7 @@ public class DlgCheckList extends JDialog implements ListSelectionListener{
 	}
 
 	public void setup(){
-		//ãƒœã‚¿ãƒ³ã«ã‚¢ã‚¯ã‚·ãƒ§ãƒ³
+		//ƒ{ƒ^ƒ“‚ÉƒAƒNƒVƒ‡ƒ“
 		getCmdNew().setAction(new ActShowNewCheck());
 		getCmdUpdate().setAction(new ActShowUpdateCheck());
 		getCmdRemove().setAction(new ActRemoveCheck());
@@ -346,11 +346,11 @@ public class DlgCheckList extends JDialog implements ListSelectionListener{
 		dspCheckDetailList.setModel(checkDetailListModel_);
 		
 		TableColumn resultCol = dspCheckDetailList.getColumn("result");
-		//tableã®åˆ—å¹…è¨­å®š
+		//table‚Ì—ñ•İ’è
 		resultCol.setMaxWidth(100);
 		dspCheckDetailList.getColumn("date").setMaxWidth(100);
 		
-		//tableã®resultåˆ—
+		//table‚Ìresult—ñ
 		JComboBox comboBox = new JComboBox(MasterComboModel.newCheckStateComboBoxModel());
 		comboBox.setRenderer(
 			new DefaultListCellRenderer(){
@@ -367,7 +367,7 @@ public class DlgCheckList extends JDialog implements ListSelectionListener{
 			new DefaultCellEditor(comboBox)
 		);
 		
-		//WindowListenerç™»éŒ²
+		//WindowListener“o˜^
 		this.addWindowListener(
 			new WindowAdapter(){
 				public void windowClosing(WindowEvent e) {

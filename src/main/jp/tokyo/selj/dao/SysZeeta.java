@@ -16,10 +16,10 @@ public class SysZeeta implements Serializable {
     }
 	public void check(){
     	if(id != 1 ){
-    		throw new ModelCheckException("idã¯1ã—ã‹æŒ‡å®šã§ãã¾ã›ã‚“");
+    		throw new ModelCheckException("id‚Í1‚µ‚©w’è‚Å‚«‚Ü‚¹‚ñ");
     	}
     	if(version == null || (version.trim().length() <= 0) ){
-    		throw new ModelCheckException("versionãŒæœªæŒ‡å®šã§ã™");
+    		throw new ModelCheckException("version‚ª–¢w’è‚Å‚·");
     	}
 	}
 

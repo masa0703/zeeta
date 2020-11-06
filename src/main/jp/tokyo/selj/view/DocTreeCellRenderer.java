@@ -27,7 +27,7 @@ class DocTreeCellRenderer extends DefaultTreeCellRenderer {
 
 	Logger log = Logger.getLogger(this.getClass());
 	
-	//ä¸€æ™‚çš„ã«å°ã‚’ä»˜ã‘ã‚‹ãƒŽãƒ¼ãƒ‰
+	//ˆêŽž“I‚Éˆó‚ð•t‚¯‚éƒm[ƒh
 	DefaultMutableTreeNode markingNode_;
 	Border markBorder_ = null;
 	Border commonBorder_ = null;
@@ -61,7 +61,7 @@ class DocTreeCellRenderer extends DefaultTreeCellRenderer {
 			boolean sel, boolean expanded, boolean leaf, int row,
 			boolean hasFocus) {
 
-//		setOpaque(true); //ã“ã‚Œã‚’ã‚„ã‚‹ã¨é¸æŠžçŠ¶æ…‹ã®èƒŒæ™¯ãŒæç”»ã•ã‚Œãªã„
+//		setOpaque(true); //‚±‚ê‚ð‚â‚é‚Æ‘I‘ðó‘Ô‚Ì”wŒi‚ª•`‰æ‚³‚ê‚È‚¢
 		if (sel) {
 			setBackground(getBackgroundSelectionColor());
 			setForeground(getTextSelectionColor());
@@ -72,7 +72,7 @@ class DocTreeCellRenderer extends DefaultTreeCellRenderer {
 		setEnabled(tree.isEnabled());
 		
 		DocNode docNode = null;
-		if(value instanceof DocNode){	//JTreeã«ãƒ¢ãƒ‡ãƒ«ã‚’ã‚»ãƒƒãƒˆã™ã‚‹å‰ã¯Stringã‚’æç”»ã™ã‚‹ã‚‰ã—ã„
+		if(value instanceof DocNode){	//JTree‚Éƒ‚ƒfƒ‹‚ðƒZƒbƒg‚·‚é‘O‚ÍString‚ð•`‰æ‚·‚é‚ç‚µ‚¢
 			docNode = (DocNode)value;
 		}
 		if(docNode != null){
@@ -86,7 +86,7 @@ class DocTreeCellRenderer extends DefaultTreeCellRenderer {
 //			}			
 			
 			
-			//ã‚¢ã‚¤ã‚³ãƒ³ã®ã‚»ãƒƒãƒˆ
+			//ƒAƒCƒRƒ“‚ÌƒZƒbƒg
 			int flags = 0;
 			if( docNode.getParentCount() > 1){
 				flags += 1;
@@ -112,29 +112,29 @@ class DocTreeCellRenderer extends DefaultTreeCellRenderer {
 			decorateFont(tree, docNode);
 
 			setBorder(null);
-			//é¸æŠžä¸­ãƒŽãƒ¼ãƒ‰ã¨åŒã˜ID
+			//‘I‘ð’†ƒm[ƒh‚Æ“¯‚¶ID
 			if(!sel && (tree.getSelectionPath() != null) ){
 				if( docNode.getDoc().getDocId() ==
 					((DocNode)tree.getSelectionPath().getLastPathComponent()).getDoc().getDocId() ){
 					setBorder(getCommonBorder());
 				}
 			}
-			//ãƒžãƒ¼ã‚­ãƒ³ã‚°ãƒŽãƒ¼ãƒ‰ï¼Ÿ
+			//ƒ}[ƒLƒ“ƒOƒm[ƒhH
 			if(markingNode_ == value){
 				setBorder(getMarkBorder());
 			}
 		}
 
 //		setComponentOrientation(tree.getComponentOrientation());
-		selected = sel;	//JDKã®ã‚½ãƒ¼ã‚¹ã‚ˆã‚Šï¼ˆã“ã‚Œã‚’ã‚„ã‚‰ãªã„ã¨é¸æŠžçŠ¶æ…‹ã®è¡¨ç¤ºã«ãªã‚‰ãªã„ï¼‰
+		selected = sel;	//JDK‚Ìƒ\[ƒX‚æ‚èi‚±‚ê‚ð‚â‚ç‚È‚¢‚Æ‘I‘ðó‘Ô‚Ì•\Ž¦‚É‚È‚ç‚È‚¢j
 		return this;
 	}
 	protected void decorateFont(JTree tree, DocNode docNode){
 		if(docNode.getDoc().getDocTypeId() == Doc.LINK_TYPE){
 			setFont(cnvItalicFont(tree.getFont()));
 		}else{
-//			//ç‰¹æ®ŠPrefã®Fontã®ã‚»ãƒƒãƒˆ
-//			if(getText().startsWith("â‡’")
+//			//“ÁŽêPref‚ÌFont‚ÌƒZƒbƒg
+//			if(getText().startsWith("Ë")
 //				|| getText().startsWith("->") 
 //				|| getText().startsWith("=>") 
 //				){

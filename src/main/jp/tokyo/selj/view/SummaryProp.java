@@ -37,7 +37,7 @@ public class SummaryProp {
 		workTypes_ = workTypes;
 		outputPropTypes_ = outputPropTypes;
 		
-		//é›†è¨ˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆï¼ˆMapï¼‰ç”Ÿæˆ
+		//WŒvƒIƒuƒWƒFƒNƒgiMapj¶¬
 		for(Object obj:workTypes){
 			Map<String, BigDecimal> propsJitu = new HashMap<String, BigDecimal>();
 			Map<String, BigDecimal> propsYotei = new HashMap<String, BigDecimal>();
@@ -66,7 +66,7 @@ public class SummaryProp {
 				if(depth_ > 0 && parents.size() > depth_){
 					return false;
 				}
-				//ä¸€åº¦é›†è¨ˆã—ãŸãƒ‡ãƒ¼ã‚¿ã¯ã€å†åº¦ä¿®æ­£ã—ãªã„ã“ã¨ï¼
+				//ˆê“xWŒv‚µ‚½ƒf[ƒ^‚ÍAÄ“xC³‚µ‚È‚¢‚±‚ÆI
 				if(calcDocIds.contains(doc.getDocId())){
 					return false;
 				}
@@ -77,7 +77,7 @@ public class SummaryProp {
 				calcDocIds.add(doc.getDocId());
 				for(Object obj:workTypes_){
 					WorkType wt = (WorkType)obj;
-					//docã«é–¢é€£ã™ã‚‹ä½œæ¥­å±æ€§ã‚’æŠ½å‡º
+					//doc‚ÉŠÖ˜A‚·‚éì‹Æ‘®«‚ğ’Šo
 					List<WorkProp> wkProps = 
 						workPropDao_.findProps(doc.getDocId(), wt.getWorkTypeId());
 					for(WorkProp wp:wkProps){
@@ -86,7 +86,7 @@ public class SummaryProp {
 							if(opt.getOutputPropTypeId() == wp.getOutputPropTypeId()){
 								
 								
-								//é›†è¨ˆ
+								//WŒv
 								String wtId = "" + wp.getWorkTypeId();
 								String optId = "" + opt.getOutputPropTypeId();
 								Map<String, BigDecimal> opts = null;
@@ -101,7 +101,7 @@ public class SummaryProp {
 						}
 					}
 				}				
-				return true;	//ç¶šè¡Œ
+				return true;	//‘±s
 			}
 		}
 		Summary proc = new Summary(depth, wd);

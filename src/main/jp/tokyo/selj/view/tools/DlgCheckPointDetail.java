@@ -45,7 +45,7 @@ public class DlgCheckPointDetail extends DlgTableMaintUpdateBase {
 	boolean isUpdate_ = false;
 	CheckPointDao checkPointDao_ = null;  //  @jve:decl-index=0:
 	CheckPoint checkPoint_ = null;  //  @jve:decl-index=0:
-	//new, updateå…¼ç”¨
+	//new, updateŒ“—p
 	private class ActNewOrUpdate extends ActTransactionBase {
 		protected Component getOwnerComponent(){
 			return DlgCheckPointDetail.this;
@@ -53,7 +53,7 @@ public class DlgCheckPointDetail extends DlgTableMaintUpdateBase {
 		public ActNewOrUpdate(){
 			super();
 			putValue(Action.NAME, "commit");
-			putValue(Action.SHORT_DESCRIPTION, "æ–°è¦ç™»éŒ²ã¾ãŸã¯æ›´æ–°");
+			putValue(Action.SHORT_DESCRIPTION, "V‹K“o˜^‚Ü‚½‚ÍXV");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			checkPoint_.setSEQ(  ((Number)getInpSEQ().getValue()).intValue()  );
@@ -62,24 +62,24 @@ public class DlgCheckPointDetail extends DlgTableMaintUpdateBase {
 			checkPoint_.setDeleteFlg( getInpDeleteFlg().isSelected() );
 			checkPoint_.check();
 			if(isUpdate_){
-				//æ›´æ–°
+				//XV
 				checkPointDao_.update(checkPoint_);
 			}else{
-				//æ–°è¦è¿½åŠ 
+				//V‹K’Ç‰Á
 				checkPointDao_.insert(checkPoint_);
 			}
 			getOwnerComponent().setVisible(false);
-			//ä¸€æ—¦ãƒˆãƒ©ãƒ³ã‚¶ã‚¯ã‚·ãƒ§ãƒ³ã‚’çµ‚äº†ã—ãªã„ã¨model_.executeQuery()ãŒã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆã«ãªã‚‹
+			//ˆê’Uƒgƒ‰ƒ“ƒUƒNƒVƒ‡ƒ“‚ğI—¹‚µ‚È‚¢‚Æmodel_.executeQuery()‚ªƒ^ƒCƒ€ƒAƒEƒg‚É‚È‚é
 			postProc();
 			preProc();
-			//JTableã‚’ãƒªãƒ•ãƒ¬ãƒƒã‚·ãƒ¥ã™ã‚‹
+			//JTable‚ğƒŠƒtƒŒƒbƒVƒ…‚·‚é
 			((DlgCheckPointAndPropTypeMaint)getOwner()).refreshCheckPointTable();
 
-			//MasterComboModelã‚’æ›´æ–°ã™ã‚‹
+			//MasterComboModel‚ğXV‚·‚é
 			MasterComboModel.refreshCheckState();
 		}
 	}
-	//deleteç”¨
+	//delete—p
 	ActDelete actDelete_ = new ActDelete();  //  @jve:decl-index=0:
 
 	private JTextField inpCheckPointId = null;
@@ -99,16 +99,16 @@ public class DlgCheckPointDetail extends DlgTableMaintUpdateBase {
 		public ActDelete(){
 			super();
 			putValue(Action.NAME, "delete");
-			putValue(Action.SHORT_DESCRIPTION, "å‰Šé™¤ã—ã¾ã™");
+			putValue(Action.SHORT_DESCRIPTION, "íœ‚µ‚Ü‚·");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			String strId = e.getActionCommand();
-			//å‰Šé™¤
+			//íœ
 			checkPointDao_.deleteById(Long.parseLong(strId)); 
-			//ä¸€æ—¦ãƒˆãƒ©ãƒ³ã‚¶ã‚¯ã‚·ãƒ§ãƒ³ã‚’çµ‚äº†ã—ãªã„ã¨model_.executeQuery()ãŒã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆã«ãªã‚‹
+			//ˆê’Uƒgƒ‰ƒ“ƒUƒNƒVƒ‡ƒ“‚ğI—¹‚µ‚È‚¢‚Æmodel_.executeQuery()‚ªƒ^ƒCƒ€ƒAƒEƒg‚É‚È‚é
 			postProc();
 			preProc();
-			//JTableã‚’ãƒªãƒ•ãƒ¬ãƒƒã‚·ãƒ¥ã™ã‚‹
+			//JTable‚ğƒŠƒtƒŒƒbƒVƒ…‚·‚é
 			((DlgCheckPointAndPropTypeMaint)getOwner()).refreshCheckPointTable();
 
 			getOwnerComponent().setVisible(false);
@@ -122,7 +122,7 @@ public class DlgCheckPointDetail extends DlgTableMaintUpdateBase {
 		getInpDeleteFlg().setSelected(checkPoint.isDeleteFlg());
 		
 		if( checkPoint.getOutputType() == null){
-			//ä½œæ¥­ç¨®é¡ã®ãƒã‚¸ã‚·ãƒ§ãƒ‹ãƒ³ã‚°
+			//ì‹Æí—Ş‚Ìƒ|ƒWƒVƒ‡ƒjƒ“ƒO
 			DefaultComboBoxModel cmodel = (DefaultComboBoxModel)getInpOutputType().getModel();
 			for(int i=0; i < cmodel.getSize(); i++){
 				OutputType outputype = (OutputType)cmodel.getElementAt(i);
@@ -145,7 +145,7 @@ public class DlgCheckPointDetail extends DlgTableMaintUpdateBase {
 		getCmdCommit().setAction(new ActNewOrUpdate());
 		getInpOutputType().setModel(MasterComboModel.newOutputTypeComboBoxModel());
 	}
-	public void newCheckPoint(long outputTypeId /* åˆæœŸå€¤ */){
+	public void newCheckPoint(long outputTypeId /* ‰Šú’l */){
 		checkPoint_ = new CheckPoint();
 		checkPoint_.setOutputTypeId(outputTypeId);
 		setCheckPoint(checkPoint_);
@@ -154,7 +154,7 @@ public class DlgCheckPointDetail extends DlgTableMaintUpdateBase {
 	public void loadCheckPoint(long id){
 		checkPoint_ = checkPointDao_.findById(id); 
 		if(checkPoint_ == null){
-			throw new AppException("ãƒã‚§ãƒƒã‚¯é …ç›®ID="+id+" ã¯ã€æ—¢ã«å‰Šé™¤ã•ã‚Œã¦ã„ã¾ã™");
+			throw new AppException("ƒ`ƒFƒbƒN€–ÚID="+id+" ‚ÍAŠù‚Éíœ‚³‚ê‚Ä‚¢‚Ü‚·");
 		}
 		setCheckPoint(checkPoint_);
 		isUpdate_ = true;

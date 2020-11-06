@@ -14,7 +14,7 @@ public class User implements Serializable {
     }
 	public void check(){
     	if(userName == null || "".equals(userName.trim()) ){
-    		throw new ModelCheckException("nameã‚’å…¥åŠ›ã—ã¦ãã ã•ã„");
+    		throw new ModelCheckException("name‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢");
     	}
 	}
 
@@ -23,8 +23,8 @@ public class User implements Serializable {
     }
 //    public String toString() {
 //        StringBuffer buf = new StringBuffer();
-//        buf.append(ä½œæ¥­è€…å).append(", ");
-//        buf.append(æ‰€å±);
+//        buf.append(ì‹ÆÒ–¼).append(", ");
+//        buf.append(Š‘®);
 //        return buf.toString();
 //    }
 

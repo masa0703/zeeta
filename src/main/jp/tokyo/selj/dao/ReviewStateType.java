@@ -14,7 +14,7 @@ public class ReviewStateType implements Serializable {
     }
 	public void check(){
     	if(reviewStateTypeName == null || "".equals(reviewStateTypeName.trim()) ){
-    		throw new ModelCheckException("ãƒ¬ãƒ“ãƒ¥ãƒ¼çŠ¶æ…‹åç§°ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„");
+    		throw new ModelCheckException("ƒŒƒrƒ…[ó‘Ô–¼Ì‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢");
     	}
 	}
 
@@ -23,8 +23,8 @@ public class ReviewStateType implements Serializable {
     }
 //    public String toString() {
 //        StringBuffer buf = new StringBuffer();
-//        buf.append(ä½œæ¥­è€…å).append(", ");
-//        buf.append(æ‰€å±);
+//        buf.append(ì‹ÆÒ–¼).append(", ");
+//        buf.append(Š‘®);
 //        return buf.toString();
 //    }
 

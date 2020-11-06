@@ -49,7 +49,7 @@ public class SummaryPropModel extends SummaryProp implements TableModel{
 	}
 
 	public int getColumnCount() {
-		return 2 + workTypes_.length;		// 2 + ä½œæ¥­ç¨®é¡
+		return 2 + workTypes_.length;		// 2 + ì‹Æí—Ş
 	}
 	public int getRowCount() {
 		return outputPropTypes_.length + 1;
@@ -59,10 +59,10 @@ public class SummaryPropModel extends SummaryProp implements TableModel{
 	public String getColumnName(int col) {
 		String ret = null;
 		switch(col){
-		case 0:		//ä½œæ¥­å±æ€§
+		case 0:		//ì‹Æ‘®«
 			ret = "propType";
 			break;
-		case 1:		//åˆè¨ˆ
+		case 1:		//‡Œv
 			ret = "summary";
 			break;
 		default:
@@ -82,15 +82,15 @@ public class SummaryPropModel extends SummaryProp implements TableModel{
 		BigDecimal sum;
 		Object ret = null;
 		switch(col){
-		case 0:		//ä½œæ¥­å±æ€§
-			//ç¸¦åˆè¨ˆ
+		case 0:		//ì‹Æ‘®«
+			//c‡Œv
 			if(outputPropTypes_.length <= row){
 				ret = "summary";
 			}else{
 				ret = ((OutputPropType)outputPropTypes_[row]).getOutputPropTypeName();
 			}
 			break;
-		case 1:		//æ¨ªåˆè¨ˆ
+		case 1:		//‰¡‡Œv
 			if(outputPropTypes_.length <= row){
 				return null;
 			}
@@ -108,7 +108,7 @@ public class SummaryPropModel extends SummaryProp implements TableModel{
 			}
 			break;
 		default:
-			//ç¸¦åˆè¨ˆ
+			//c‡Œv
 			if(outputPropTypes_.length <= row){
 				sum = new BigDecimal(0); 
 				for(int i=0; i < row; i++){

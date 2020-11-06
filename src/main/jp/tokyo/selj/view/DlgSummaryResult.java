@@ -37,7 +37,7 @@ public class DlgSummaryResult extends JDialog {
 	class ActCopyToClipboard extends ActBase {
 		public ActCopyToClipboard() {
 			putValue(Action.NAME, "copy to clipboard");
-			putValue(Action.SHORT_DESCRIPTION, "çµæœã‚’ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ã¸ã‚³ãƒ”ãƒ¼ã—ã¾ã™");
+			putValue(Action.SHORT_DESCRIPTION, "Œ‹‰Ê‚ğƒNƒŠƒbƒvƒ{[ƒh‚ÖƒRƒs[‚µ‚Ü‚·");
 		}
 		@Override
 		public void actionPerformed2(ActionEvent e) {

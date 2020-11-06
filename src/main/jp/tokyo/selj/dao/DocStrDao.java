@@ -16,8 +16,8 @@ public interface DocStrDao {
     @Arguments( { "oyaDocId" })
     public List<DocStr> findByOyaDocId(long oyaYoukenID);
 
-//    @Query("oyaDocId=/*$dt.oyaDocId*/ /*IF $dt.orderByString!=null*/order by /*$dt.orderByString*/隕∽ｻｶ讒矩.SEQ/*END*/")
-//    public List<YoukenKouzou> find隕∽ｻｶ讒矩(YoukenKouzouSearchCondition dt);
+//    @Query("oyaDocId=/*$dt.oyaDocId*/ /*IF $dt.orderByString!=null*/order by /*$dt.orderByString*/要件構造.SEQ/*END*/")
+//    public List<YoukenKouzou> find要件構造(YoukenKouzouSearchCondition dt);
 
     @Sql("select docStr.*,doc.docTitle,doc.userName,doc.newDate from docStr join doc on doc.docId=docStr.koDocId where oyaDocId=/*$dt.docId*/ /*IF $dt.orderByString!=null*/order by /*$dt.orderByString*/docStr.SEQ/*END*/")
     public List<DocStr> findDocStr(DocStrSearchCondition dt);

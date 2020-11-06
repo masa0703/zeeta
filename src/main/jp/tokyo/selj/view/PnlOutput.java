@@ -96,7 +96,7 @@ public class PnlOutput extends JPanel {
 		this.setSize(505, 85);
 		this.setLayout(new GridBagLayout());
 		this.setBackground(new Color(198, 218, 238));
-		this.setToolTipText("ã‚ªãƒ¬ãƒ³ã‚¸ã®æ ã¯TreeNodeã¸ãƒªãƒ³ã‚¯ã—ã¦ã„ã‚‹æˆæœç‰©ã‚’æŒ‡ã—ã¾ã™");
+		this.setToolTipText("ƒIƒŒƒ“ƒW‚Ì˜g‚ÍTreeNode‚ÖƒŠƒ“ƒN‚µ‚Ä‚¢‚é¬‰Ê•¨‚ğw‚µ‚Ü‚·");
 		this.add(dspOutputId, gridBagConstraints);
 		this.add(dspName, gridBagConstraints4);
 		this.add(dspType, gridBagConstraints5);

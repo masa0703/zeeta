@@ -44,10 +44,10 @@ public class ReviewDetail implements Serializable {
     }
     public void check(){
 		if(updUserName == null || "".equals(updUserName.trim()) ){
-			throw new ModelCheckException("commentatorã‚’å…¥åŠ›ã—ã¦ãã ã•ã„");
+			throw new ModelCheckException("commentator‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢");
 		}
 		if(memo == null || "".equals(memo.trim()) ){
-			throw new ModelCheckException("commentã‚’å…¥åŠ›ã—ã¦ãã ã•ã„");
+			throw new ModelCheckException("comment‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢");
 		}
     }
 	public Timestamp getReviewDate() {

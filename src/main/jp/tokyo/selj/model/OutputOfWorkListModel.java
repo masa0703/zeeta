@@ -26,8 +26,8 @@ public class OutputOfWorkListModel extends OutputListModel{
 			Output output = outputDao_.findById(work.getOutputId());
 			if(output == null){
 				throw new RuntimeException("outputId="
-						+works.get(i).getOutputId()+"„ÅåÂ≠òÂú®„Åó„Åæ„Åõ„Çì„ÄÇ"
-						+"Ê¨°„ÅÆwork„É¨„Ç≥„Éº„Éâ„ÇíÂâäÈô§„Åó„Å¶„Åè„Å†„Åï„ÅÑ>"+works.get(i));
+						+works.get(i).getOutputId()+"Ç™ë∂ç›ÇµÇ‹ÇπÇÒÅB"
+						+"éüÇÃworkÉåÉRÅ[ÉhÇçÌèúÇµÇƒÇ≠ÇæÇ≥Ç¢>"+works.get(i));
 			}
 			work.setOutput(output);
 			addElement(work);
@@ -52,7 +52,7 @@ public class OutputOfWorkListModel extends OutputListModel{
 		work.setOutput(output);
 		work.setUserName(worker);
 		work.setWorkType(workType);
-		//DB„Å´ÁôªÈå≤
+		//DBÇ…ìoò^
 		workDao_.insert(work);
 		
 		addElementSeq(work);

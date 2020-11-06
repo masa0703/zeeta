@@ -52,7 +52,7 @@ public class DlgWait extends JDialog {
 	private JPanel getJContentPane() {
 		if (jContentPane == null) {
 			dspMsg = new JLabel();
-			dspMsg.setText("„Å°„Çá„Å£„Å®„Åæ„Å£„Å¶„Åè„Å†„Åï„ÅÑ");
+			dspMsg.setText("ÇøÇÂÇ¡Ç∆Ç‹Ç¡ÇƒÇ≠ÇæÇ≥Ç¢");
 			dspMsg.setBorder(new BevelBorder(BevelBorder.LOWERED));
 			dspMsg.setHorizontalAlignment(SwingConstants.CENTER);
 			jContentPane = new JPanel();

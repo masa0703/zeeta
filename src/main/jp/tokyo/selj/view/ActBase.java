@@ -43,7 +43,7 @@ public abstract class  ActBase extends AbstractAction {
 	    	trn_ = (TransactionManager)SelJDaoContainer.SEL_DAO_CONT.
 	    									getComponent(TransactionManager.class);
 			trn_.begin();
-			log.debug("ãƒˆãƒ©ãƒ³ã‚¶ã‚¯ã‚·ãƒ§ãƒ³é–‹å§‹");
+			log.debug("ƒgƒ‰ƒ“ƒUƒNƒVƒ‡ƒ“ŠJn");
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			throw new RuntimeException(e);
@@ -55,7 +55,7 @@ public abstract class  ActBase extends AbstractAction {
 		}
 		try {
 			trn_.commit();
-			log.debug("ãƒˆãƒ©ãƒ³ã‚¶ã‚¯ã‚·ãƒ§ãƒ³ã‚³ãƒŸãƒƒãƒˆ");
+			log.debug("ƒgƒ‰ƒ“ƒUƒNƒVƒ‡ƒ“ƒRƒ~ƒbƒg");
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			throw new RuntimeException(e);
@@ -65,9 +65,9 @@ public abstract class  ActBase extends AbstractAction {
 		if( useTransaction_ ){
 			try {
 				trn_.rollback();
-				log.debug("ãƒˆãƒ©ãƒ³ã‚¶ã‚¯ã‚·ãƒ§ãƒ³ãƒ­ãƒ¼ãƒ«ãƒãƒƒã‚¯");
+				log.debug("ƒgƒ‰ƒ“ƒUƒNƒVƒ‡ƒ“ƒ[ƒ‹ƒoƒbƒN");
 			} catch (Exception e) {
-				//ã“ã“ã®ã‚¨ãƒ©ãƒ¼ã¯ç„¡è¦–
+				//‚±‚±‚ÌƒGƒ‰[‚Í–³‹
 			}
 		}
 		MessageView.show(getOwnerComponent(), ex);

@@ -88,7 +88,7 @@ import org.seasar.framework.container.S2Container;
 import org.seasar.framework.exception.SQLRuntimeException;
 
 public class DlgOutputDetail extends JDialog {
-	static final int VALUE_SCALE = 2;	//valueã®å°æ•°ä»¥ä¸‹æ¡æ•°
+	static final int VALUE_SCALE = 2;	//value‚Ì¬”ˆÈ‰ºŒ…”
 	static final String DEVIDER_LOC_KEY1 = Util.getClassName(DlgOutputDetail.class) + "/devider_loc1";
 
 	Output newOutput_ = null;
@@ -124,7 +124,7 @@ public class DlgOutputDetail extends JDialog {
 	boolean isUpdate_ = false;
 	
 	
-	//Viewã®çŠ¶æ…‹ã‚’ç®¡ç†ã™ã‚‹
+	//View‚Ìó‘Ô‚ğŠÇ—‚·‚é
 	enum PropEditViewStateType {NEUTRAL, CREATING, UPDATING, DELETING}; 
 	class PropEditViewState implements ListSelectionListener{
 		WorkProp curWorkProp_ = null;
@@ -177,12 +177,12 @@ public class DlgOutputDetail extends JDialog {
 		}
 		public boolean canCurNodeHaveWorkProp(){
 			TreePath path = jTree.getSelectionPath();
-			//é¸æŠã—ã¦ã„ã‚‹ãƒãƒ¼ãƒ‰ãªã—
+			//‘I‘ğ‚µ‚Ä‚¢‚éƒm[ƒh‚È‚µ
 			if( path == null || path.getLastPathComponent() == null){
 				return false;
 			}
 			DocNode docNode = (DocNode)path.getLastPathComponent();
-			//ãƒ«ãƒ¼ãƒˆã¨ç›´ä¸‹ã®ãƒãƒ¼ãƒ‰ä»¥å¤–ã¯ã€å±æ€§ã‚’è¨­å®šã§ããªã„
+			//ƒ‹[ƒg‚Æ’¼‰º‚Ìƒm[ƒhˆÈŠO‚ÍA‘®«‚ğİ’è‚Å‚«‚È‚¢
 			if(docNode.getParent() == null || docNode.getLevel() != 1){
 				return false;
 			}
@@ -242,12 +242,12 @@ public class DlgOutputDetail extends JDialog {
 			}
 			curWorkProp_.setJissekiFlg((Boolean)inpJisseki.getModel().getSelectedItem());
 			
-			//JFormattedTextFieldã¯ã€å®Ÿéš›ã«ãƒ­ã‚¹ãƒˆãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã—ãªã„ã¨å€¤ãŒå–ã‚Šè¾¼ã¾ã‚Œãªã„
-			//ã‚‚ã—ãã¯ã€ä»¥ä¸‹ã®ã‚ˆã†ã«commitEditã‚’å‘¼ã³å‡ºã™å¿…è¦ãŒã‚ã‚‹ã€‚
+			//JFormattedTextField‚ÍAÀÛ‚ÉƒƒXƒgƒtƒH[ƒJƒX‚µ‚È‚¢‚Æ’l‚ªæ‚è‚Ü‚ê‚È‚¢
+			//‚à‚µ‚­‚ÍAˆÈ‰º‚Ì‚æ‚¤‚ÉcommitEdit‚ğŒÄ‚Ño‚·•K—v‚ª‚ ‚éB
 			try {
 				inpPropValue.commitEdit();
 			} catch (ParseException e1) {
-				//ç„¡è¦–
+				//–³‹
 			}
 			curWorkProp_.setValue((BigDecimal)inpPropValue.getValue());
 			curWorkProp_.setOutputPropType(
@@ -265,7 +265,7 @@ public class DlgOutputDetail extends JDialog {
 				return;
 			}
 			
-			//æˆæœç‰©ã‚’é¸æŠã—ã¦ã„ã‚‹å ´åˆã¯ã€ã©ã®ãƒœã‚¿ãƒ³ã‚‚ç„¡åŠ¹ã¨ã™ã‚‹
+			//¬‰Ê•¨‚ğ‘I‘ğ‚µ‚Ä‚¢‚éê‡‚ÍA‚Ç‚Ìƒ{ƒ^ƒ“‚à–³Œø‚Æ‚·‚é
 			TreePath path = jTree.getSelectionPath();
 			if( path == null || path.getLastPathComponent() == null){
 				return;
@@ -297,12 +297,12 @@ public class DlgOutputDetail extends JDialog {
 		}
 		public void updateIfDarty(){
 			if(propdocListener_.isDarty()){
-				log.debug("æ±šã‚Œã¦ã„ã‚‹ã‚. ");
-				// æ›´æ–°ã›ãªã‚ã‹ã‚“
+				log.debug("‰˜‚ê‚Ä‚¢‚é‚í. ");
+				// XV‚¹‚È‚ ‚©‚ñ
 				if( JOptionPane.showConfirmDialog(
 						DlgOutputDetail.this
-						,"ä½œæ¥­å±æ€§ãŒå¤‰æ›´ã•ã‚Œã¦ã„ã¾ã™ã€‚\n" +
-						"æ›´æ–°ã‚’åæ˜ ã—ã¾ã™ã‹ï¼Ÿ",""
+						,"ì‹Æ‘®«‚ª•ÏX‚³‚ê‚Ä‚¢‚Ü‚·B\n" +
+						"XV‚ğ”½‰f‚µ‚Ü‚·‚©H",""
 						,JOptionPane.YES_NO_OPTION
 						,JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
 					getCmdCommitProp().getAction().actionPerformed(null);
@@ -322,12 +322,12 @@ public class DlgOutputDetail extends JDialog {
 
 	private void updateIfDarty(){
 		if(docListener_.isDarty()){
-			log.debug("æ±šã‚Œã¦ã„ã‚‹ã‚. ");
-			// æ›´æ–°ã›ãªã‚ã‹ã‚“
+			log.debug("‰˜‚ê‚Ä‚¢‚é‚í. ");
+			// XV‚¹‚È‚ ‚©‚ñ
 			if( JOptionPane.showConfirmDialog(
 					DlgOutputDetail.this
-					,"æˆæœç‰©ã®å†…å®¹ãŒå¤‰æ›´ã•ã‚Œã¦ã„ã¾ã™ã€‚\n" +
-					"æ›´æ–°ã‚’åæ˜ ã—ã¾ã™ã‹ï¼Ÿ",""
+					,"¬‰Ê•¨‚Ì“à—e‚ª•ÏX‚³‚ê‚Ä‚¢‚Ü‚·B\n" +
+					"XV‚ğ”½‰f‚µ‚Ü‚·‚©H",""
 					,JOptionPane.YES_NO_OPTION
 					,JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
 				getCmdOk().getAction().actionPerformed(null);
@@ -343,12 +343,12 @@ public class DlgOutputDetail extends JDialog {
 		}
 		public void actionPerformed(ActionEvent e) {
 			JTree tree = jTree;
-			if(jTree.getSelectionPath() == null ){	//ä½•ã‚‚é¸æŠã•ã‚Œã¦ã„ãªã„
+			if(jTree.getSelectionPath() == null ){	//‰½‚à‘I‘ğ‚³‚ê‚Ä‚¢‚È‚¢
 				return;
 			}
 			DocNode node = (DocNode)tree.getSelectionPath().getLastPathComponent();
 			if(node.getDoc().getDocId() == ROOT_ID){
-				return;		//rootã¯æˆæœç‰©ãªã®ã§ã‚¹ã‚­ãƒƒãƒ—
+				return;		//root‚Í¬‰Ê•¨‚È‚Ì‚ÅƒXƒLƒbƒv
 			}
 			ZeetaMain.getMainView().showDocNode(node.getDoc().getDocId(), true);
 		}
@@ -356,21 +356,21 @@ public class DlgOutputDetail extends JDialog {
 	ActSelect actSelect_ = new ActSelect();
 	
     class FileDropListener implements DropTargetListener {
-        /** ãƒ‰ãƒ©ãƒƒã‚°ã•ã‚ŒãŸã‚‚ã®ãŒå…¥ã£ã¦ããŸã€‚*/
+        /** ƒhƒ‰ƒbƒO‚³‚ê‚½‚à‚Ì‚ª“ü‚Á‚Ä‚«‚½B*/
         public void dragEnter(DropTargetDragEvent e) {
-            // ãƒ•ã‚¡ã‚¤ãƒ«ãƒªã‚¹ãƒˆã¨æ–‡å­—åˆ—ãªã‚‰å—ã‘å…¥ã‚Œã‚‹
+            // ƒtƒ@ƒCƒ‹ƒŠƒXƒg‚Æ•¶š—ñ‚È‚çó‚¯“ü‚ê‚é
             if (e.isDataFlavorSupported(DataFlavor.javaFileListFlavor)){
-                e.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE); // å—ã‘å…¥ã‚Œã‚‹
+                e.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE); // ó‚¯“ü‚ê‚é
             }
         }
         public void dragExit(DropTargetEvent e) {}
         public void dragOver(DropTargetDragEvent e) {}
         public void dropActionChanged(DropTargetDragEvent e) {}
 
-        /** ãƒ‰ãƒ­ãƒƒãƒ—ã•ã‚ŒãŸã€‚Transferableã‹ã‚‰ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—ã™ã‚‹ã€‚*/
+        /** ƒhƒƒbƒv‚³‚ê‚½BTransferable‚©‚çƒf[ƒ^‚ğæ“¾‚·‚éB*/
         public void drop(DropTargetDropEvent e) {
             try {
-                // ãƒ•ã‚¡ã‚¤ãƒ«ãƒªã‚¹ãƒˆã®ã¨ã
+                // ƒtƒ@ƒCƒ‹ƒŠƒXƒg‚Ì‚Æ‚«
                 if (e.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
                     e.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
                     Transferable t = e.getTransferable();
@@ -379,7 +379,7 @@ public class DlgOutputDetail extends JDialog {
                     	return;
                     }
                     if(files.size() > 1){
-                    	throw new AppException("ï¼‘ã¤ã®ãƒ•ã‚¡ã‚¤ãƒ«ã—ã‹ãƒ‰ãƒ­ãƒƒãƒ—ã§ãã¾ã›ã‚“");
+                    	throw new AppException("‚P‚Â‚Ìƒtƒ@ƒCƒ‹‚µ‚©ƒhƒƒbƒv‚Å‚«‚Ü‚¹‚ñ");
                     }
                     File file = (File) files.get(0);
                     getPnlOutput().inpName.setText(file.getName());
@@ -402,7 +402,7 @@ public class DlgOutputDetail extends JDialog {
 		public ActNewOrUpdateOutput(){
 			super();
 			putValue(Action.NAME, "commit");
-			putValue(Action.SHORT_DESCRIPTION, "æˆæœç‰©ã®æ›´æ–°ã¾ãŸã¯æ–°è¦ç™»éŒ²ã‚’è¡Œã„ã¾ã™");
+			putValue(Action.SHORT_DESCRIPTION, "¬‰Ê•¨‚ÌXV‚Ü‚½‚ÍV‹K“o˜^‚ğs‚¢‚Ü‚·");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			commitOutput(e);
@@ -416,7 +416,7 @@ public class DlgOutputDetail extends JDialog {
 		public ActShowReviewList(){
 			super();
 			putValue(Action.NAME, "review");
-			putValue(Action.SHORT_DESCRIPTION, "æˆæœç‰©ãƒ¬ãƒ“ãƒ¥ãƒ¼ãƒªã‚¹ãƒˆã‚’è¡¨ç¤º");
+			putValue(Action.SHORT_DESCRIPTION, "¬‰Ê•¨ƒŒƒrƒ…[ƒŠƒXƒg‚ğ•\¦");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			if(dlgList_ == null){
@@ -435,7 +435,7 @@ public class DlgOutputDetail extends JDialog {
 		public ActShowCheckList(){
 			super();
 			putValue(Action.NAME, "check");
-			putValue(Action.SHORT_DESCRIPTION, "æˆæœç‰©ãƒã‚§ãƒƒã‚¯ãƒªã‚¹ãƒˆã‚’è¡¨ç¤º");
+			putValue(Action.SHORT_DESCRIPTION, "¬‰Ê•¨ƒ`ƒFƒbƒNƒŠƒXƒg‚ğ•\¦");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			if(dlgCheckList_ == null){
@@ -453,11 +453,11 @@ public class DlgOutputDetail extends JDialog {
 //		public ActNewProp(){
 //			super();
 //			putValue(Action.NAME, "new");
-//			putValue(Action.SHORT_DESCRIPTION, "ä½œæ¥­å±æ€§ã‚’è¿½åŠ ã—ã¾ã™");
+//			putValue(Action.SHORT_DESCRIPTION, "ì‹Æ‘®«‚ğ’Ç‰Á‚µ‚Ü‚·");
 //		}
 //		public void actionPerformed2(ActionEvent e) {
 //			if(getJTree().getSelectionPath() == null){
-//				throw new AppException("Treeä¸Šã®ãƒãƒ¼ãƒ‰ã‚’é¸æŠã—ã¦ãã ã•ã„");
+//				throw new AppException("Treeã‚Ìƒm[ƒh‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢");
 //			}
 //			
 //			Doc doc = ((DocNode)getJTree().getSelectionPath().getLastPathComponent()).getDoc();
@@ -479,11 +479,11 @@ public class DlgOutputDetail extends JDialog {
 			super();
 			setEnabled(false);
 			putValue(Action.NAME, "commit");
-			putValue(Action.SHORT_DESCRIPTION, "ãƒã‚§ãƒƒã‚¯çµæœã‚’æ›¸ãè¾¼ã¿ã¾ã™");
+			putValue(Action.SHORT_DESCRIPTION, "ƒ`ƒFƒbƒNŒ‹‰Ê‚ğ‘‚«‚İ‚Ü‚·");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			if(inpPropType.getModel().getSelectedItem() == null){
-				throw new ModelCheckException("ä½œæ¥­å±æ€§ç¨®é¡ã‚’é¸æŠã—ã¦ãã ã•ã„");
+				throw new ModelCheckException("ì‹Æ‘®«í—Ş‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢");
 			}
 
 			WorkProp wp = viewState_.getWorkProp();
@@ -493,11 +493,11 @@ public class DlgOutputDetail extends JDialog {
 			wp.check();
 			
 			if(viewState_.isCreating()){
-				//æ–°è¦ç™»éŒ²ã®å ´åˆ
+				//V‹K“o˜^‚Ìê‡
 				workPropDao_.insert(wp);
 			}else{
-				//updateã®å ´åˆ
-				//äºˆå®Ÿã‚„propTypeãŒå¤‰æ›´ã•ã‚Œã¦ã„ã‚‹å ´åˆãŒã‚ã‚‹
+				//update‚Ìê‡
+				//—\À‚âpropType‚ª•ÏX‚³‚ê‚Ä‚¢‚éê‡‚ª‚ ‚é
 				WorkProp wp2 = workPropDao_.findWithoutVersion(wp);
 				if(wp2 == null){
 					wp.setVersionNo(0);
@@ -508,7 +508,7 @@ public class DlgOutputDetail extends JDialog {
 				}
 			}
 			viewState_.setIgnoreChangeValue();
-			//detailListã‚’ãƒªãƒ•ãƒ¬ãƒƒã‚·ãƒ¥
+			//detailList‚ğƒŠƒtƒŒƒbƒVƒ…
 			propListModel_.refresh();
 
 			viewState_.setNeutral();
@@ -517,7 +517,7 @@ public class DlgOutputDetail extends JDialog {
 		protected void handleException(Exception ex) {
 			if( ex instanceof SQLRuntimeException){
 				if(((SQLRuntimeException)ex).getMessageCode().equals("ESSR0071")){
-					ex = new AppException("ä½œæ¥­å±æ€§ã®ç¨®é¡ãŒé‡è¤‡ã—ã¦ã„ã¾ã™");
+					ex = new AppException("ì‹Æ‘®«‚Ìí—Ş‚ªd•¡‚µ‚Ä‚¢‚Ü‚·");
 				}
 			}
 			super.handleException(ex);
@@ -531,21 +531,21 @@ public class DlgOutputDetail extends JDialog {
 			super();
 			setEnabled(false);
 			putValue(Action.NAME, "remove");
-			putValue(Action.SHORT_DESCRIPTION, "ä½œæ¥­å±æ€§ã‚’å‰Šé™¤ã—ã¾ã™");
+			putValue(Action.SHORT_DESCRIPTION, "ì‹Æ‘®«‚ğíœ‚µ‚Ü‚·");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			if(getDspPropList().getSelectedRow() < 0){
-				throw new AppException("ã„ãšã‚Œã‹ã®ä½œæ¥­å±æ€§ã‚’é¸æŠã—ã¦ãã ã•ã„");
+				throw new AppException("‚¢‚¸‚ê‚©‚Ìì‹Æ‘®«‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢");
 			}
 			if( JOptionPane.showConfirmDialog(
 					DlgOutputDetail.this
-					,"é¸æŠã—ãŸä½œæ¥­å±æ€§ã‚’å‰Šé™¤ã—ã¾ã™ã€‚\n" +
-					"ã‚ˆã‚ã—ã„ã§ã™ã‹ï¼Ÿ",""
+					,"‘I‘ğ‚µ‚½ì‹Æ‘®«‚ğíœ‚µ‚Ü‚·B\n" +
+					"‚æ‚ë‚µ‚¢‚Å‚·‚©H",""
 					,JOptionPane.YES_NO_OPTION
 					,JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
 
 				workPropDao_.delete(viewState_.curWorkProp_);
-				//detailListã‚’ãƒªãƒ•ãƒ¬ãƒƒã‚·ãƒ¥
+				//detailList‚ğƒŠƒtƒŒƒbƒVƒ…
 				propListModel_.refresh();
 
 				viewState_.setNeutral();
@@ -561,18 +561,18 @@ public class DlgOutputDetail extends JDialog {
 		public ActOpenFile(){
 			super();
 			putValue(Action.NAME, "open");
-			putValue(Action.SHORT_DESCRIPTION, "ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ã‚ªãƒ¼ãƒ—ãƒ³ã—ã¾ã™ï¼ˆWindows onlyï¼‰");
+			putValue(Action.SHORT_DESCRIPTION, "ƒtƒ@ƒCƒ‹‚ğƒI[ƒvƒ“‚µ‚Ü‚·iWindows onlyj");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			String path = getPnlOutput().getInpPath().getText();
 			if(path == null || path.trim().length() <= 0){
-				throw new AppException("pathã‚’æŒ‡å®šã—ã¦ãã ã•ã„");
+				throw new AppException("path‚ğw’è‚µ‚Ä‚­‚¾‚³‚¢");
 			}
-			//å®Ÿé¨“
+			//ÀŒ±
 			Runtime rt = Runtime.getRuntime();
 			try{
-				//pathã«ç©ºç™½ãŒå«ã¾ã‚Œã¦ã„ã‚‹ã¨ã†ã¾ãèµ·å‹•ã—ãªã„ã€‚pathã®å‰ã« "" ã‚’å…¥ã‚Œã¦ã€pathã‚’"ã§
-				//å›²ã‚€ã¨ã„ã„ã‚‰ã—ã„ã€‚ã¸ã‚“ãªã®ãƒ»ãƒ»ãƒ»
+				//path‚É‹ó”’‚ªŠÜ‚Ü‚ê‚Ä‚¢‚é‚Æ‚¤‚Ü‚­‹N“®‚µ‚È‚¢Bpath‚Ì‘O‚É "" ‚ğ“ü‚ê‚ÄApath‚ğ"‚Å
+				//ˆÍ‚Ş‚Æ‚¢‚¢‚ç‚µ‚¢B‚Ö‚ñ‚È‚ÌEEE
 				Process pr = rt.exec(new String[] {"cmd", "/c", "start", "\"\" \""+path+"\""});
 				log.debug("cmd /c start "+ path);
 				pr.waitFor();
@@ -596,32 +596,32 @@ public class DlgOutputDetail extends JDialog {
 	}
 	PropTypeComboBoxModel propTypeComboModel_ = new PropTypeComboBoxModel();
 	
-	//ã‚µãƒ–ã‚¯ãƒ©ã‚¹ã§ä½¿ç”¨ã™ã‚‹ãŸã‚ã«åˆ†é›¢
+	//ƒTƒuƒNƒ‰ƒX‚Åg—p‚·‚é‚½‚ß‚É•ª—£
 	protected void commitOutput(ActionEvent e){
 		Output output = getPnlOutput().getOutput();
 		output.check();
 		if(isUpdate_){
-			//æ›´æ–°
+			//XV
 			model_.updateOutput(output);
 			DlgOutputDetail.this.setVisible(false);
 		}else{
-			//æ–°è¦è¿½åŠ 
+			//V‹K’Ç‰Á
 			model_.insertOutput(output);
 			DlgOutputDetail.this.setVisible(false);
 			newOutput_ = output;
 		}
-		//MasterComboModelã‚’æ›´æ–°ã™ã‚‹
+		//MasterComboModel‚ğXV‚·‚é
 //		MasterComboModel.refreshOutputType();
 		
-		//Listenerã«é€šçŸ¥
+		//Listener‚É’Ê’m
 		for(Iterator<CommitListener> it = listeners_.iterator(); it.hasNext();){
 			it.next().commitOutput(newOutput_);
 		}
 		docListener_.reset();
 	}
 	/**
-	 * æ–°è¦ä½œæˆã—ãŸæˆæœç‰©ã‚’è¿”å´ã™ã‚‹ã€‚
-	 * æ–°è¦ä½œæˆã—ã¦ã„ãªã„å ´åˆã¯ã€null
+	 * V‹Kì¬‚µ‚½¬‰Ê•¨‚ğ•Ô‹p‚·‚éB
+	 * V‹Kì¬‚µ‚Ä‚¢‚È‚¢ê‡‚ÍAnull
 	 * @return
 	 */
 	public Output getNewOutput(){
@@ -662,7 +662,7 @@ public class DlgOutputDetail extends JDialog {
 		Doc curDoc_;
 		List<WorkProp> workProps_ = Collections.EMPTY_LIST;
 		final String[] colNames_ = 
-			new String[] {"äºˆå®Ÿ", "propType", "value", "unit", "desc."};
+			new String[] {"—\À", "propType", "value", "unit", "desc."};
 		
 		void setCurDoc(Doc doc){
 			curDoc_ = doc;
@@ -750,9 +750,9 @@ public class DlgOutputDetail extends JDialog {
 			switch(arg1){
 			case 0:
 				if(wp.isJissekiFlg()){
-					ret = "å®Ÿç¸¾";
+					ret = "ÀÑ";
 				}else{
-					ret = "äºˆå®š";
+					ret = "—\’è";
 				}
 				break;
 			case 1:		//propType
@@ -791,7 +791,7 @@ public class DlgOutputDetail extends JDialog {
 			
 			if(e.getPath() != null ){
 				docNode = (DocNode)e.getPath().getLastPathComponent();
-				//æˆæœç‰©ãŒé¸æŠã•ã‚ŒãŸï¼ˆrootãƒãƒ¼ãƒ‰ï¼‰
+				//¬‰Ê•¨‚ª‘I‘ğ‚³‚ê‚½irootƒm[ƒhj
 				if(docNode.isRoot()){
 					calcSummary(docNode);
 				}else{
@@ -832,18 +832,18 @@ public class DlgOutputDetail extends JDialog {
 		workPropDao_ = (WorkPropDao)daoCont_.getComponent(WorkPropDao.class);
 		outputTypePropTypeDao_ = (OutputTypePropTypeDao)daoCont_.getComponent(OutputTypePropTypeDao.class);
 
-		//WorkPropæ“ä½œãƒœã‚¿ãƒ³
+		//WorkProp‘€ìƒ{ƒ^ƒ“
 //		getCmdNewProp().setAction(new ActNewProp());
 		getCmdCommitProp().setAction(new ActCommitProp());
 		getCmdRemoveProp().setAction(new ActRemoveProp());
 		
-		//Treeãƒ¢ãƒ‡ãƒ«
+		//Treeƒ‚ƒfƒ‹
         docModel_ = new DocModel();
         
-		//==== jTreeã®è¨­å®š
+		//==== jTree‚Ìİ’è
         getJTree().setModel(docModel_);
         getJTree().setCellRenderer(new DocTreeCellRenderer4Work(docModel_));
-		//ãƒªã‚¹ãƒŠç™»éŒ²
+		//ƒŠƒXƒi“o˜^
         getJTree().addTreeExpansionListener(new javax.swing.event.TreeExpansionListener() {
 			public void treeExpanded(javax.swing.event.TreeExpansionEvent e) {
 				log.debug("treeExpanded");
@@ -859,10 +859,10 @@ public class DlgOutputDetail extends JDialog {
     	getDspPropList().setModel(propListModel_);
     	getJTree().addTreeSelectionListener(propListModel_);
         
-        //tableã®åˆæœŸåŒ–
+        //table‚Ì‰Šú‰»
     	setupTable();
     	
-		//WindowListenerç™»éŒ²
+		//WindowListener“o˜^
 		this.addWindowListener(
 			new WindowAdapter(){
 				public void windowClosing(WindowEvent e) {
@@ -878,7 +878,7 @@ public class DlgOutputDetail extends JDialog {
 		docListener_.reset();
 		viewState_.propdocListener_.reset();
 
-		//prop editéƒ¨ã®æ›´æ–°çŠ¶æ…‹ã‚’ç›£è¦–ã™ã‚‹
+		//prop edit•”‚ÌXVó‘Ô‚ğŠÄ‹‚·‚é
 		getInpJisseki().getModel().addListDataListener(viewState_.propdocListener_);
 		getInpPropType().getModel().addListDataListener(viewState_.propdocListener_);
 		getInpPropValue().getDocument().addDocumentListener(viewState_.propdocListener_);
@@ -893,7 +893,7 @@ public class DlgOutputDetail extends JDialog {
 		pref_ = new PreferenceWindowHelper(this);
 		pref_.restoreForm();
 		
-		//ã‚¹ãƒ—ãƒªãƒƒãƒˆãƒ‘ãƒãƒ«ã®çŠ¶æ…‹ã‚’å¾©å…ƒ
+		//ƒXƒvƒŠƒbƒgƒpƒlƒ‹‚Ìó‘Ô‚ğ•œŒ³
 		getCntSplitNodeTree().setDividerLocation(
 			Integer.parseInt(
 				pref_.getPriference().get(DEVIDER_LOC_KEY1, 
@@ -906,10 +906,10 @@ public class DlgOutputDetail extends JDialog {
 		
 //		dspPropList.getColumn("date").setMaxWidth(100);
 		
-		//ä½œæ¥­å±æ€§ä¸€è¦§ã«ãƒªã‚¹ãƒŠãƒ¼ç™»éŒ²
+		//ì‹Æ‘®«ˆê——‚ÉƒŠƒXƒi[“o˜^
 		dspPropList.getSelectionModel().addListSelectionListener(viewState_);
 
-		dspPropList.getColumn("äºˆå®Ÿ").setMaxWidth(40);
+		dspPropList.getColumn("—\À").setMaxWidth(40);
 		dspPropList.getColumn("propType").setMinWidth(120);
 		dspPropList.getColumn("value").setMaxWidth(100);
 		dspPropList.getColumn("unit").setMaxWidth(100);
@@ -934,7 +934,7 @@ public class DlgOutputDetail extends JDialog {
         getJTree().setModel(docModel_);
         docListener_.reset();
 	}
-	//workTypeIdã«é–¢é€£ã™ã‚‹æˆæœç‰©ç¨®é¡ã—ã‹é¸æŠã§ããªã„ã‚ˆã†ã«ã™ã‚‹
+	//workTypeId‚ÉŠÖ˜A‚·‚é¬‰Ê•¨í—Ş‚µ‚©‘I‘ğ‚Å‚«‚È‚¢‚æ‚¤‚É‚·‚é
 	public void resetOutputTypeList(long workTypeId){
 		getPnlOutput().resetOutputTypeList(workTypeId);
 	}
@@ -945,7 +945,7 @@ public class DlgOutputDetail extends JDialog {
 	public void loadOutput(long outputId){
 		Output output = outputDao_.findById(outputId); 
 		if(output == null){
-			throw new RuntimeException("æˆæœç‰©ID="+outputId+" ã¯ã€æ—¢ã«å‰Šé™¤ã•ã‚Œã¦ã„ã¾ã™");
+			throw new RuntimeException("¬‰Ê•¨ID="+outputId+" ‚ÍAŠù‚Éíœ‚³‚ê‚Ä‚¢‚Ü‚·");
 		}
 		getPnlOutput().setOutput(output);
 		refreshDocTree(output);
@@ -969,7 +969,7 @@ public class DlgOutputDetail extends JDialog {
 		getCmdShowReview().setAction(new ActShowReviewList());
 		getCmdOpenFile().setAction(new ActOpenFile());
 
-		// ãƒ‰ãƒ­ãƒƒãƒ—å¯èƒ½ãªã‚¿ãƒ¼ã‚²ãƒƒãƒˆã¨ã—ã¦ç™»éŒ²
+		// ƒhƒƒbƒv‰Â”\‚Èƒ^[ƒQƒbƒg‚Æ‚µ‚Ä“o˜^
 		FileDropListener l = new FileDropListener();
         new DropTarget(this, DnDConstants.ACTION_COPY_OR_MOVE, l, true);
         new DropTarget(getPnlOutput().inpName, DnDConstants.ACTION_COPY_OR_MOVE, l, true);
@@ -1139,20 +1139,18 @@ public class DlgOutputDetail extends JDialog {
 			jTree = new JTree();
 			jTree.setShowsRootHandles(true);
 			jTree.setRootVisible(true);
-			jTree.setToggleClickCount(0);
-			jTree.setToolTipText("Enterã‚­ãƒ¼,ãƒ€ãƒ–ãƒ«ã‚¯ãƒªãƒƒã‚¯,Popupãƒ¡ãƒ‹ãƒ¥ãƒ¼ã§æ­£ãƒ„ãƒªãƒ¼ã‚’ãƒã‚¤ãƒ³ãƒˆã—ã¾ã™ã€‚");
+			jTree.setToggleClickCount(2);
+			jTree.setToolTipText("EnterƒL[,ƒ_ƒuƒ‹ƒNƒŠƒbƒN,Popupƒƒjƒ…[‚ÅMain Tree‚ğƒ|ƒCƒ“ƒg‚µ‚Ü‚·B");
 			jTree.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(MouseEvent e) {
-					if(e.getButton() == MouseEvent.BUTTON3){	//å³ãƒœã‚¿ãƒ³
+					if(e.getButton() == MouseEvent.BUTTON3){	//‰Eƒ{ƒ^ƒ“
 						if(jTree.getSelectionPath() != null){
 							getMnuTreePopup().show(jTree, e.getX(), e.getY());
 						}
-					}else if(e.getClickCount() >= 2){
-						actSelect_.actionPerformed(null);
 					}
 				}
 			});
-			//Enterã‚­ãƒ¼ã§jump
+			//EnterƒL[‚Åjump
 			jTree.getInputMap().
 				put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,0), "select");
 			jTree.getActionMap().put("select", actSelect_);
@@ -1161,14 +1159,14 @@ public class DlgOutputDetail extends JDialog {
 	}
 	void refreshDocTree(Output output){
 		
-		//outputã«ç´ä»˜ãOutputPropTypeã‚’å–å¾—
+		//output‚É•R•t‚­OutputPropType‚ğæ“¾
 		List<OutputTypePropType> propTypes = outputTypePropTypeDao_.findByOutputTypeId(output.getOutputTypeId());
 		propTypeComboModel_.setOutputTypePropTypes(propTypes);
 		
-		//outputã«é–¢é€£ã™ã‚‹Docä¸€è¦§ã‚’å–å¾—
+		//output‚ÉŠÖ˜A‚·‚éDocˆê——‚ğæ“¾
 		List<Doc> docs = docDao_.findByOutputId(output.getOutputId());
 		
-		//rootã¯ãƒ€ãƒŸãƒ¼
+		//root‚Íƒ_ƒ~[
 		DocNode root = new DocNode(new Doc(ROOT_ID, output.getName()));
 		docModel_.setRoot(root);
 		for(int i=0; i<docs.size(); i++){
@@ -1264,7 +1262,7 @@ public class DlgOutputDetail extends JDialog {
 			cmdNewProp.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
 					if(getJTree().getSelectionPath() == null){
-						throw new AppException("Treeä¸Šã®ãƒãƒ¼ãƒ‰ã‚’é¸æŠã—ã¦ãã ã•ã„");
+						throw new AppException("Treeã‚Ìƒm[ƒh‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢");
 					}
 					viewState_.setCreating(true);
 				}
@@ -1355,9 +1353,9 @@ public class DlgOutputDetail extends JDialog {
 					public Component getListCellRendererComponent(JList arg0, Object val, int arg2, boolean arg3, boolean arg4) {
 						super.getListCellRendererComponent(arg0, val, arg2, arg3, arg4);
 						if(((Boolean)val).booleanValue()){
-							setText("å®Ÿç¸¾");
+							setText("ÀÑ");
 						}else{
-							setText("äºˆå®š");
+							setText("—\’è");
 						}
 						return this;
 					}

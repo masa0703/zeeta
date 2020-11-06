@@ -57,12 +57,12 @@ public class DlgLinkDocTree extends JDialog implements ListSelectionListener{
 		}
 		public void actionPerformed(ActionEvent e) {
 			JTree tree = jTree;
-			if(jTree.getSelectionPath() == null ){	//ä½•ã‚‚é¸æŠã•ã‚Œã¦ã„ãªã„
+			if(jTree.getSelectionPath() == null ){	//‰½‚à‘I‘ğ‚³‚ê‚Ä‚¢‚È‚¢
 				return;
 			}
 			DocNode node = (DocNode)tree.getSelectionPath().getLastPathComponent();
 			if(node.getDoc().getDocId() == ROOT_ID){
-				return;		//rootã¯æˆæœç‰©ãªã®ã§ã‚¹ã‚­ãƒƒãƒ—
+				return;		//root‚Í¬‰Ê•¨‚È‚Ì‚ÅƒXƒLƒbƒv
 			}
 			mainView_.showDocNode(node.getDoc().getDocId(), true);
 		}
@@ -104,7 +104,7 @@ public class DlgLinkDocTree extends JDialog implements ListSelectionListener{
 	private JPanel getJContentPane() {
 		if (jContentPane == null) {
 			jLabel = new JLabel();
-			jLabel.setText("double click/enter key/popup menuã§MainTreeã‚’ãƒã‚¤ãƒ³ãƒˆ");
+			jLabel.setText("double click/enter key/popup menu‚ÅMainTree‚ğƒ|ƒCƒ“ƒg");
 			jLabel.setFont(new Font("Dialog", Font.PLAIN, 12));
 			jContentPane = new JPanel();
 			jContentPane.setLayout(new BorderLayout());
@@ -138,10 +138,10 @@ public class DlgLinkDocTree extends JDialog implements ListSelectionListener{
 			jTree.setShowsRootHandles(true);
 			jTree.setRootVisible(true);
 			jTree.setToggleClickCount(0);
-			jTree.setToolTipText("Enterã‚­ãƒ¼ã§æ­£ãƒ„ãƒªãƒ¼ã‚’ãƒã‚¤ãƒ³ãƒˆã—ã¾ã™ã€‚");
+			jTree.setToolTipText("EnterƒL[‚ÅMain Tree‚ğƒ|ƒCƒ“ƒg‚µ‚Ü‚·B");
 			jTree.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(MouseEvent e) {
-					if(e.getButton() == MouseEvent.BUTTON3){	//å³ãƒœã‚¿ãƒ³
+					if(e.getButton() == MouseEvent.BUTTON3){	//‰Eƒ{ƒ^ƒ“
 						if(jTree.getSelectionPath() != null){
 							getMnuTreePopup().show(jTree, e.getX(), e.getY());
 						}
@@ -150,7 +150,7 @@ public class DlgLinkDocTree extends JDialog implements ListSelectionListener{
 					}
 				}
 			});
-			//Enterã‚­ãƒ¼ã§jump
+			//EnterƒL[‚Åjump
 			jTree.getInputMap().
 				put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,0), "select");
 			jTree.getActionMap().put("select", actSelect_);
@@ -167,13 +167,13 @@ public class DlgLinkDocTree extends JDialog implements ListSelectionListener{
 	private JLabel jLabel = null;
 
 	public void valueChanged(ListSelectionEvent e) {
-		//é¸æŠã•ã‚ŒãŸitem
+		//‘I‘ğ‚³‚ê‚½item
 		JList list = (JList)e.getSource();
 		if( !isShowing() || list.getSelectedValue() == null){
 			return;
 		}
 		if(list.getSelectedValue() == lastSelected_){
-			//ãªãœã‹åŒã˜ã‚¤ãƒ™ãƒ³ãƒˆãŒï¼’ã¤é€£ç¶šã™ã‚‹ãŸã‚
+			//‚È‚º‚©“¯‚¶ƒCƒxƒ“ƒg‚ª‚Q‚Â˜A‘±‚·‚é‚½‚ß
 			return;
 		}
 		log.debug("selected="+list.getSelectedValue());
@@ -181,10 +181,10 @@ public class DlgLinkDocTree extends JDialog implements ListSelectionListener{
 		refreshDocList();
 	}
 	void refreshDocList(){
-		//lastSelected_ã«é–¢é€£ã™ã‚‹Docä¸€è¦§ã‚’å–å¾—
+		//lastSelected_‚ÉŠÖ˜A‚·‚éDocˆê——‚ğæ“¾
 		List<Doc> docs = docDao_.findByOutputId(lastSelected_.getOutputId());
 		
-		//rootã¯ãƒ€ãƒŸãƒ¼
+		//root‚Íƒ_ƒ~[
 		DocNode root = new DocNode(new Doc(ROOT_ID, lastSelected_.getName()));
 		docModel_.setRoot(root);
 		for(int i=0; i<docs.size(); i++){
@@ -196,7 +196,7 @@ public class DlgLinkDocTree extends JDialog implements ListSelectionListener{
 	@Override
 	public void setVisible(boolean b) {
 		if(b){
-			throw new RuntimeException("setVisible(boolean b, Output output)ã‚’ã¤ã‹ã‚ãªã‚ã‹ã‚“");
+			throw new RuntimeException("setVisible(boolean b, Output output)‚ğ‚Â‚©‚í‚È‚ ‚©‚ñ");
 		}else{
 			super.setVisible(b);
 		}
@@ -211,14 +211,14 @@ public class DlgLinkDocTree extends JDialog implements ListSelectionListener{
 		mainView_ = mainView;
 		docDao_ = (DocDao) daoCont_.getComponent(DocDao.class);
 
-		//Treeãƒ¢ãƒ‡ãƒ«
+		//Treeƒ‚ƒfƒ‹
         docModel_ = new DocModel();
 //        docModel_.initializeReverseModel(docNode);
         
-		//==== jTreeã®è¨­å®š
+		//==== jTree‚Ìİ’è
         getJTree().setModel(docModel_);
         getJTree().setCellRenderer(new DocTreeCellRenderer(docModel_));
-		//ãƒªã‚¹ãƒŠç™»éŒ²
+		//ƒŠƒXƒi“o˜^
         getJTree().addTreeExpansionListener(new javax.swing.event.TreeExpansionListener() {
 			public void treeExpanded(javax.swing.event.TreeExpansionEvent e) {
 				log.debug("treeExpanded");

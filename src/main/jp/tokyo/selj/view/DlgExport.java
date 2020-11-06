@@ -74,7 +74,7 @@ public class DlgExport extends JDialog {
 //	WorkPropDao workPropDao_ = null;
 //	OutputPropTypeDao outputPropTypeDao_ = null;
 
-	//ãƒ•ã‚¡ã‚¤ãƒ«é¸æŠãƒ•ã‚£ãƒ«ã‚¿ãƒ¼
+	//ƒtƒ@ƒCƒ‹‘I‘ğƒtƒBƒ‹ƒ^[
 	class CsvFilter extends FileFilter{
 		@Override
 		public boolean accept(File f) {
@@ -86,12 +86,12 @@ public class DlgExport extends JDialog {
 		}
 	}
 	
-	//ãƒ•ã‚¡ã‚¤ãƒ«é¸æŠ
+	//ƒtƒ@ƒCƒ‹‘I‘ğ
 	class ActChooseFile extends AbstractAction {
 		JFileChooser chooser_=null;
 		public ActChooseFile(){
 			putValue(Action.NAME, "choose file");
-			putValue(Action.SHORT_DESCRIPTION, "å‡ºåŠ›å…ˆ");
+			putValue(Action.SHORT_DESCRIPTION, "o—Íæ");
 		}
 		public void actionPerformed(ActionEvent e) {
 			if(chooser_ == null){
@@ -112,15 +112,15 @@ public class DlgExport extends JDialog {
 	class ActExportToCsv extends AbstractAction {
 		public ActExportToCsv(){
 			putValue(Action.NAME, "export");
-			putValue(Action.SHORT_DESCRIPTION, "CSV/TSVãƒ•ã‚¡ã‚¤ãƒ«ä½œæˆ");
+			putValue(Action.SHORT_DESCRIPTION, "CSV/TSVƒtƒ@ƒCƒ‹ì¬");
 		}
 		public void actionPerformed(ActionEvent ev) {
 			Writer writer = null;
 			try{ 
-				//å‡ºåŠ›å…ˆ
+				//o—Íæ
 				if(inpSelectFile.isSelected()){
 					if("".equals( inpFilePath.getText().trim() )){
-						throw new AppException("ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„");
+						throw new AppException("ƒtƒ@ƒCƒ‹ƒpƒX‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢");
 					}
 					
 					writer = new FileWriter(inpFilePath.getText());
@@ -141,7 +141,7 @@ public class DlgExport extends JDialog {
 			}
 			JOptionPane.showMessageDialog(
 					DlgExport.this
-					,"exportå®Œäº†",""
+					,"exportŠ®—¹",""
 					,JOptionPane.INFORMATION_MESSAGE);
 			
 			setVisible(false);
@@ -181,7 +181,7 @@ public class DlgExport extends JDialog {
 	@Override
 	public void setVisible(boolean b) {
 		super.setVisible(b);
-		getInpSpecString().selectAll();		//ãªã‚“ã‹æ„å‘³ãªã„ã‹ã‚‚
+		getInpSpecString().selectAll();		//‚È‚ñ‚©ˆÓ–¡‚È‚¢‚©‚à
 	}
 
 	void exportToCsv(Writer writer, int depth) {
@@ -195,7 +195,7 @@ public class DlgExport extends JDialog {
 				|| inpChkDate.isSelected()
 			 )
 		){
-			throw new AppException("1ã¤ä»¥ä¸Šã®columnã‚’ãƒã‚§ãƒƒã‚¯ã—ã¦ãã ã•ã„");
+			throw new AppException("1‚ÂˆÈã‚Ìcolumn‚ğƒ`ƒFƒbƒN‚µ‚Ä‚­‚¾‚³‚¢");
 		}
 		
 		
@@ -213,19 +213,19 @@ public class DlgExport extends JDialog {
 					return false;
 				}
 				boolean ret = true;
-				if(inpExpectDoubleExport.isSelected()){	//ä¸€åº¦å±•é–‹ã—ãŸãƒ‡ãƒ¼ã‚¿ã¯ã€å†åº¦å±•é–‹ã—ãªã„
+				if(inpExpectDoubleExport.isSelected()){	//ˆê“x“WŠJ‚µ‚½ƒf[ƒ^‚ÍAÄ“x“WŠJ‚µ‚È‚¢
 					if(calcDocIds.contains(doc.getDocId())){
 						doc.setDocTitle(
 								inpExpectCaption.getText()
 								+doc.getDocTitle());
-						ret = false;	//å­ä¾›ã¯å‡¦ç†ã—ãªã„
+						ret = false;	//q‹Ÿ‚Íˆ—‚µ‚È‚¢
 					}
 				}
-				if(inpNoExpandLinkNode.isSelected()){	//ãƒªãƒ³ã‚¯ãƒãƒ¼ãƒ‰ã¯å±•é–‹ã—ãªã„
-					//ãŸã ã—ã€ãƒªãƒ³ã‚¯ãƒãƒ¼ãƒ‰ã®å­ä¾›ã¯å‡ºåŠ›ã™ã‚‹ã®ã§ã€Œè¦ªãŒãƒªãƒ³ã‚¯ãƒãƒ¼ãƒ‰ã‹ï¼Ÿã€ã§åˆ¤å®š
+				if(inpNoExpandLinkNode.isSelected()){	//ƒŠƒ“ƒNƒm[ƒh‚Í“WŠJ‚µ‚È‚¢
+					//‚½‚¾‚µAƒŠƒ“ƒNƒm[ƒh‚Ìq‹Ÿ‚Ío—Í‚·‚é‚Ì‚Åue‚ªƒŠƒ“ƒNƒm[ƒh‚©Hv‚Å”»’è
 					if(parents.size() > 0){
 						if(parents.get(parents.size()-1).getDocTypeId() == Doc.LINK_TYPE ){
-							ret = false;	//å­ä¾›ã¯å‡¦ç†ã—ãªã„
+							ret = false;	//q‹Ÿ‚Íˆ—‚µ‚È‚¢
 						}
 					}
 				}
@@ -255,7 +255,7 @@ public class DlgExport extends JDialog {
 					if(inpChkTitle.isSelected()){
 						writer_.write(separator);
 //						writer_.write(doubleQuote);
-						//è¦ªã®æ•°åˆ†indentã‚’ä»˜åŠ 
+						//e‚Ì”•ªindent‚ğ•t‰Á
 						for(int i=0; i<parents.size(); i++){
 							if(getInpChkTab().isSelected()){
 								writer_.write("\t");
@@ -303,7 +303,7 @@ public class DlgExport extends JDialog {
 				} catch (IOException e) {
 					throw new RuntimeException(e);
 				}
-				return ret;	//ç¶šè¡Œ
+				return ret;	//‘±s
 			}
 		}
 		CsvMaker proc = new CsvMaker(writer, depth);
@@ -330,7 +330,7 @@ public class DlgExport extends JDialog {
 		buttonGroupIndent_.add(getInpSelectComma());
 		buttonGroupTo_.add(getInpSelectFile());
 		buttonGroupTo_.add(getInpSelectClipboard());
-		inpSelectFile.setSelected(true);	//inpSelectFileã®changeã‚¨ãƒ™ãƒ³ãƒˆã‚’å‹•ä½œã•ã›ã‚‹
+		inpSelectFile.setSelected(true);	//inpSelectFile‚ÌchangeƒGƒxƒ“ƒg‚ğ“®ì‚³‚¹‚é
 		inpSelectClipboard.setSelected(true);
 	}
 
@@ -769,7 +769,7 @@ public class DlgExport extends JDialog {
 			inpDepth.setMajorTickSpacing(5);
 			inpDepth.setPaintTicks(true);
 			inpDepth.setPaintLabels(false);
-			inpDepth.setToolTipText("0ã®å ´åˆã¯æœ«ç«¯ã®éšå±¤ã¾ã§exportã—ã¾ã™");
+			inpDepth.setToolTipText("0‚Ìê‡‚Í––’[‚ÌŠK‘w‚Ü‚Åexport‚µ‚Ü‚·");
 			inpDepth.setSnapToTicks(true);
 			inpDepth.setValue(0);
 		}
@@ -784,7 +784,7 @@ public class DlgExport extends JDialog {
 	private JCheckBox getInpExpectDoubleExport() {
 		if (inpExpectDoubleExport == null) {
 			inpExpectDoubleExport = new JCheckBox();
-			inpExpectDoubleExport.setText("å…±æœ‰ãƒãƒ¼ãƒ‰ã¯2åº¦exportã—ãªã„ â‡’");
+			inpExpectDoubleExport.setText("‹¤—Lƒm[ƒh‚Í2“xexport‚µ‚È‚¢ Ë");
 		}
 		return inpExpectDoubleExport;
 	}
@@ -797,8 +797,8 @@ public class DlgExport extends JDialog {
 	private JTextField getInpExpectCaption() {
 		if (inpExpectCaption == null) {
 			inpExpectCaption = new JTextField();
-			inpExpectCaption.setBorder(new TitledBorder("2åº¦ç›®ä»¥é™ã®ãƒ—ãƒ¬ãƒ•ã‚£ã‚¯ã‚¹"));
-			inpExpectCaption.setText("ï¼»æ—¢å‡ºï¼½->");
+			inpExpectCaption.setBorder(new TitledBorder("2“x–ÚˆÈ~‚ÌƒvƒŒƒtƒBƒNƒX"));
+			inpExpectCaption.setText("mŠùon->");
 		}
 		return inpExpectCaption;
 	}
@@ -829,7 +829,7 @@ public class DlgExport extends JDialog {
 	private JCheckBox getInpNoExpandLinkNode() {
 		if (inpNoExpandLinkNode == null) {
 			inpNoExpandLinkNode = new JCheckBox();
-			inpNoExpandLinkNode.setText("link nodeé…ä¸‹ã¯å±•é–‹ã—ãªã„");
+			inpNoExpandLinkNode.setText("link node”z‰º‚Í“WŠJ‚µ‚È‚¢");
 		}
 		return inpNoExpandLinkNode;
 	}

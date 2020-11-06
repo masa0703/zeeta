@@ -1,7 +1,7 @@
 @call setenv.bat
 @echo ----------------------------------------------------
-@echo DBã‚’åˆæœŸåŒ–ã—ã¾ã™ã€‚ã‚ˆã‚ã—ã„ã§ã™ã‹ï¼Ÿ
-@echo ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã™ã‚‹å ´åˆã¯ã€CTRL+Cã‚’ã‚¿ã‚¤ãƒ—ã—ã¦ãã ã•ã„ã€‚
+@echo DB‚ð‰Šú‰»‚µ‚Ü‚·B‚æ‚ë‚µ‚¢‚Å‚·‚©H
+@echo ƒLƒƒƒ“ƒZƒ‹‚·‚éê‡‚ÍACTRL+C‚ðƒ^ƒCƒv‚µ‚Ä‚­‚¾‚³‚¢B
 @echo ----------------------------------------------------
 @pause
 @java -cp %CLS% jp.tokyo.selj.util.DbSetup

@@ -1,6 +1,6 @@
 @echo ----------------------------------------------------
-@echo H2ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ãƒ•ã‚¡ã‚¤ãƒ«ã‚’æœ€é©åŒ–ã—ã¾ã™ã€‚ã‚ˆã‚ã—ã„ã§ã™ã‹ï¼Ÿ
-@echo ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã™ã‚‹å ´åˆã¯ã€CTRL+Cã‚’ã‚¿ã‚¤ãƒ—ã—ã¦ãã ã•ã„ã€‚
+@echo H2ƒf[ƒ^ƒx[ƒXƒtƒ@ƒCƒ‹‚ðÅ“K‰»‚µ‚Ü‚·B‚æ‚ë‚µ‚¢‚Å‚·‚©H
+@echo ƒLƒƒƒ“ƒZƒ‹‚·‚éê‡‚ÍACTRL+C‚ðƒ^ƒCƒv‚µ‚Ä‚­‚¾‚³‚¢B
 @echo ----------------------------------------------------
 @pause
 @java -cp ../lib/selj.jar jp.tokyo.selj.util.CompactDb

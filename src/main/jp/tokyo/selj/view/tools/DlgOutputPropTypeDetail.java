@@ -38,7 +38,7 @@ public class DlgOutputPropTypeDetail extends DlgTableMaintUpdateBase {
 	boolean isUpdate_ = false;
 	OutputPropTypeDao workPropTypeDao_ = null;  //  @jve:decl-index=0:
 	OutputPropType workPropType_ = null;  //  @jve:decl-index=0:
-	//new, updateå…¼ç”¨
+	//new, updateŒ“—p
 	private class ActNewOrUpdate extends ActTransactionBase {
 		protected Component getOwnerComponent(){
 			return DlgOutputPropTypeDetail.this;
@@ -46,7 +46,7 @@ public class DlgOutputPropTypeDetail extends DlgTableMaintUpdateBase {
 		public ActNewOrUpdate(){
 			super();
 			putValue(Action.NAME, "commit");
-			putValue(Action.SHORT_DESCRIPTION, "æ–°è¦ç™»éŒ²ã¾ãŸã¯æ›´æ–°");
+			putValue(Action.SHORT_DESCRIPTION, "V‹K“o˜^‚Ü‚½‚ÍXV");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			workPropType_.setOutputPropTypeName( getInpWorkPropTypeName().getText() );
@@ -55,24 +55,24 @@ public class DlgOutputPropTypeDetail extends DlgTableMaintUpdateBase {
 			workPropType_.setSeq( ((Number)getInpSeq().getValue()).intValue() );
 			workPropType_.check();
 			if(isUpdate_){
-				//æ›´æ–°
+				//XV
 				workPropTypeDao_.update(workPropType_);
 			}else{
-				//æ–°è¦è¿½åŠ 
+				//V‹K’Ç‰Á
 				workPropTypeDao_.insert(workPropType_);
 			}
 			getOwnerComponent().setVisible(false);
-			//ä¸€æ—¦ãƒˆãƒ©ãƒ³ã‚¶ã‚¯ã‚·ãƒ§ãƒ³ã‚’çµ‚äº†ã—ãªã„ã¨model_.executeQuery()ãŒã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆã«ãªã‚‹
+			//ˆê’Uƒgƒ‰ƒ“ƒUƒNƒVƒ‡ƒ“‚ğI—¹‚µ‚È‚¢‚Æmodel_.executeQuery()‚ªƒ^ƒCƒ€ƒAƒEƒg‚É‚È‚é
 			postProc();
 			preProc();
-			//JTableã‚’ãƒªãƒ•ãƒ¬ãƒƒã‚·ãƒ¥ã™ã‚‹
+			//JTable‚ğƒŠƒtƒŒƒbƒVƒ…‚·‚é
 			((DlgCheckPointAndPropTypeMaint)getOwner()).refreshOutputPropTypeTable();
 
-			//MasterComboModelã‚’æ›´æ–°ã™ã‚‹
+			//MasterComboModel‚ğXV‚·‚é
 //			MasterComboModel.refreshUser();
 		}
 	}
-	//deleteç”¨
+	//delete—p
 	ActDelete actDelete_ = new ActDelete();  //  @jve:decl-index=0:
 
 	private JTextField inpDesc = null;
@@ -90,19 +90,19 @@ public class DlgOutputPropTypeDetail extends DlgTableMaintUpdateBase {
 		public ActDelete(){
 			super();
 			putValue(Action.NAME, "delete");
-			putValue(Action.SHORT_DESCRIPTION, "å‰Šé™¤ã—ã¾ã™");
+			putValue(Action.SHORT_DESCRIPTION, "íœ‚µ‚Ü‚·");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			String id_str = e.getActionCommand();
-			//å‰Šé™¤
+			//íœ
 			workPropTypeDao_.deleteById(Long.parseLong(id_str)); 
-			//ä¸€æ—¦ãƒˆãƒ©ãƒ³ã‚¶ã‚¯ã‚·ãƒ§ãƒ³ã‚’çµ‚äº†ã—ãªã„ã¨model_.executeQuery()ãŒã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆã«ãªã‚‹
+			//ˆê’Uƒgƒ‰ƒ“ƒUƒNƒVƒ‡ƒ“‚ğI—¹‚µ‚È‚¢‚Æmodel_.executeQuery()‚ªƒ^ƒCƒ€ƒAƒEƒg‚É‚È‚é
 			postProc();
 			preProc();
-			//ä¸€è¦§ã‚’ãƒªãƒ•ãƒ¬ãƒƒã‚·ãƒ¥ã™ã‚‹
+			//ˆê——‚ğƒŠƒtƒŒƒbƒVƒ…‚·‚é
 			((DlgCheckPointAndPropTypeMaint)getOwner()).refreshOutputPropTypeTable();
 
-			//MasterComboModelã‚’æ›´æ–°ã™ã‚‹
+			//MasterComboModel‚ğXV‚·‚é
 //			MasterComboModel.refreshUser();
 //			getOwnerComponent().setVisible(false);
 		}
@@ -132,7 +132,7 @@ public class DlgOutputPropTypeDetail extends DlgTableMaintUpdateBase {
 		isUpdate_ = false;
 	}
 	public void deleteWorkPropType(long id){
-		//ãƒˆãƒ©ãƒ³ã‚¶ã‚¯ã‚·ãƒ§ãƒ³ã‚’ä½¿ã†ã®ã§ã‚ã–ã‚ã–Actionã‚’ä½¿ç”¨ã™ã‚‹
+		//ƒgƒ‰ƒ“ƒUƒNƒVƒ‡ƒ“‚ğg‚¤‚Ì‚Å‚í‚´‚í‚´Action‚ğg—p‚·‚é
 		actDelete_.actionPerformed(new ActionEvent(this, 0, ""+id));
 	}
 

@@ -1,5 +1,7 @@
 package jp.tokyo.selj;
 
+import java.util.UUID;
+
 import javax.swing.JFrame;
 
 import jp.tokyo.selj.common.MessageView;
@@ -12,6 +14,7 @@ import org.apache.log4j.Logger;
 public class ZeetaMain  {
 	Logger log_ = Logger.getLogger(this.getClass());
 	static FrmZeetaMain mainView_;
+	static UUID PROCESS_ID = UUID.randomUUID();		//ƒm[ƒh‚ÌƒRƒsƒy§Œä‚Ì‚½‚ß‚É•K—v‚É‚È‚Á‚½
 	
 	public static FrmZeetaMain getMainView(){
 		return mainView_;
@@ -26,7 +29,7 @@ public class ZeetaMain  {
 		main.go();
 	}
 	protected FrmZeetaMain newMainView(){
-		//version check, ã“ã“ã§sysZeetaãƒ†ãƒ¼ãƒ–ãƒ«ã®å†…å®¹ãŒãƒ­ãƒ¼ãƒ‰ã•ã‚Œã‚‹
+		//version check, ‚±‚±‚ÅsysZeetaƒe[ƒuƒ‹‚Ì“à—e‚ªƒ[ƒh‚³‚ê‚é
 		ZeetaDBManager.check();
 		
 		ZeetaUI.setup();
@@ -38,38 +41,38 @@ public class ZeetaMain  {
 	void go(){
 		log_.trace("start zeeta.");
 		
-		//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆä¾‹å¤–ãƒãƒ³ãƒ‰ãƒ©ç™»éŒ²
+		//ƒfƒtƒHƒ‹ƒg—áŠOƒnƒ“ƒhƒ‰“o˜^
 		Thread.setDefaultUncaughtExceptionHandler(
 			new Thread.UncaughtExceptionHandler(){
 				public void uncaughtException(Thread t, Throwable e) {
 					log_.error("Exception",e);
-					if(mainView_ == null){	//ãƒ¡ã‚¤ãƒ³ç”»é¢ãŒè¡¨ç¤ºã•ã‚Œã‚‹å‰ã®ã‚¨ãƒ©ãƒ¼
+					if(mainView_ == null){	//ƒƒCƒ“‰æ–Ê‚ª•\¦‚³‚ê‚é‘O‚ÌƒGƒ‰[
 						MessageView.show(new JFrame(), e);
 						System.exit(1);
 					}else{
 						MessageView.show(mainView_, e);
 					}
 					
-					if( e instanceof ModelCheckException){		//å…¥åŠ›ãƒã‚§ãƒƒã‚¯ã‚¨ãƒ©ãƒ¼
-						//ä½•ã‚‚ã—ãªã„
+					if( e instanceof ModelCheckException){		//“ü—Íƒ`ƒFƒbƒNƒGƒ‰[
+						//‰½‚à‚µ‚È‚¢
 					}else{
-						//çŠ¶æ…‹ã‚’åˆæœŸåŒ–ã™ã‚‹
+						//ó‘Ô‚ğ‰Šú‰»‚·‚é
 //						mainView_.initState();
-						//Docã®insert/updateã§æ¡ã‚ãµã‚Œã‚¨ãƒ©ãƒ¼ã§ã‚‚ã“ã“ã«ãã‚‹ã®ã§ã€
-						//ã¸ãŸã«åˆæœŸåŒ–ã—ãªã„æ–¹ãŒã„ã„
+						//Doc‚Ìinsert/update‚ÅŒ…‚ ‚Ó‚êƒGƒ‰[‚Å‚à‚±‚±‚É‚­‚é‚Ì‚ÅA
+						//‚Ö‚½‚É‰Šú‰»‚µ‚È‚¢•û‚ª‚¢‚¢
 					}
 				}
 			}
 		);
 		
-		//splashç”»é¢è¡¨ç¤ºã€œMeinç”»é¢è¡¨ç¤º
+		//splash‰æ–Ê•\¦`Mein‰æ–Ê•\¦
 		new Splash(){
 			@Override
 			public void execute() {
 				log_.trace("creating MainView...");
 				mainView_ = newMainView();
 				mainView_.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//				mainView_.setLocationRelativeTo(null);	//ç”»é¢ã®ä¸­å¤®ã«è¡¨ç¤º
+//				mainView_.setLocationRelativeTo(null);	//‰æ–Ê‚Ì’†‰›‚É•\¦
 				mainView_.setVisible(true);
 				log_.trace("show MainView.");
 			}
@@ -83,5 +86,9 @@ public class ZeetaMain  {
 //				thisClass.setVisible(true);
 //			}
 //		});
+	}
+
+	public static String getProcessId() {
+		return PROCESS_ID.toString();
 	}
 }

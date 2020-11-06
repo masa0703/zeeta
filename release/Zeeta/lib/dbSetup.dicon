@@ -38,11 +38,11 @@
   orderSent       varchar(128),
   PRIMARY KEY (sortTypeId)
 )",
-"INSERT INTO sortType ( sortTypeId, sortTypeName, orderSent ) VALUES (0,'æŒ‡å®šé †','docStr.SEQ')",
-"INSERT INTO sortType ( sortTypeId, sortTypeName, orderSent ) VALUES (10,'ä½œæˆæ—¥æ˜‡é †','doc.newDate')",
-"INSERT INTO sortType ( sortTypeId, sortTypeName, orderSent ) VALUES (11,'ä½œæˆæ—¥é™é †','doc.newDate DESC')",
-"INSERT INTO sortType ( sortTypeId, sortTypeName, orderSent ) VALUES (20,'ã‚¿ã‚¤ãƒˆãƒ«æ˜‡é †','doc.docTitle')",
-"INSERT INTO sortType ( sortTypeId, sortTypeName, orderSent ) VALUES (21,'ã‚¿ã‚¤ãƒˆãƒ«é™é †','doc.docTitle DESC')",
+"INSERT INTO sortType ( sortTypeId, sortTypeName, orderSent ) VALUES (0,'w’è‡','docStr.SEQ')",
+"INSERT INTO sortType ( sortTypeId, sortTypeName, orderSent ) VALUES (10,'ì¬“ú¸‡','doc.newDate')",
+"INSERT INTO sortType ( sortTypeId, sortTypeName, orderSent ) VALUES (11,'ì¬“ú~‡','doc.newDate DESC')",
+"INSERT INTO sortType ( sortTypeId, sortTypeName, orderSent ) VALUES (20,'ƒ^ƒCƒgƒ‹¸‡','doc.docTitle')",
+"INSERT INTO sortType ( sortTypeId, sortTypeName, orderSent ) VALUES (21,'ƒ^ƒCƒgƒ‹~‡','doc.docTitle DESC')",
 
 "drop table if exists doc",
 "CREATE TABLE doc (
@@ -266,10 +266,10 @@
    reviewStateTypeName VARCHAR(100) NOT NULL,
    PRIMARY KEY (reviewStateTypeId)
 )",
-"INSERT INTO reviewStateType ( reviewStateTypeId, reviewStateTypeName ) VALUES (0,'æœªå¯¾å¿œ')",
-"INSERT INTO reviewStateType ( reviewStateTypeId, reviewStateTypeName ) VALUES (20,'å¯¾å¿œæ¸ˆ')",
-"INSERT INTO reviewStateType ( reviewStateTypeId, reviewStateTypeName ) VALUES (80,'å†é–‹')",
-"INSERT INTO reviewStateType ( reviewStateTypeId, reviewStateTypeName ) VALUES (100,'ç¢ºèªæ¸ˆã¿')",
+"INSERT INTO reviewStateType ( reviewStateTypeId, reviewStateTypeName ) VALUES (0,'–¢‘Î‰')",
+"INSERT INTO reviewStateType ( reviewStateTypeId, reviewStateTypeName ) VALUES (20,'‘Î‰Ï')",
+"INSERT INTO reviewStateType ( reviewStateTypeId, reviewStateTypeName ) VALUES (80,'ÄŠJ')",
+"INSERT INTO reviewStateType ( reviewStateTypeId, reviewStateTypeName ) VALUES (100,'Šm”FÏ‚İ')",
 
 "drop table if exists reviewDetail",
 "CREATE TABLE reviewDetail (

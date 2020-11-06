@@ -52,7 +52,7 @@ public class PnlTableMaint extends JPanel {
 		getCmdNew().setAction(this.getActionMap().get(ACTION_KEY_NEW));
 		getCmdUpdate().setAction(this.getActionMap().get(ACTION_KEY_UPDATE));
 		getCmdDelete().setAction(this.getActionMap().get(ACTION_KEY_DELETE));
-		//popup menu„Å´„ÇÇËøΩÂä†„Åô„Çã
+		//popup menuÇ…Ç‡í«â¡Ç∑ÇÈ
 	}
 	public void hideButtons(){
 		getCmdDelete().setVisible(false);

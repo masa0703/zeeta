@@ -22,7 +22,7 @@ import org.seasar.framework.container.S2Container;
 
 /**
  * 
- * ãƒã‚¹ã‚¿ãƒ¡ãƒ³ãƒ†ã®JTableç”¨ã®Model
+ * ƒ}ƒXƒ^ƒƒ“ƒe‚ÌJTable—p‚ÌModel
  *
  * @author 
  */
@@ -55,7 +55,7 @@ public abstract class DBTableModel extends AbstractTableModel {
 	public Object getValueAt(int row, String columnName){
 		int index = getColumnIndex(columnName);
 		if(index == -1){
-			throw new RuntimeException(columnName + "ã¯ã€èª­ã¿è¾¼ã‚“ã§ã„ã¾ã›ã‚“");
+			throw new RuntimeException(columnName + "‚ÍA“Ç‚İ‚ñ‚Å‚¢‚Ü‚¹‚ñ");
 		}
 		return getValueAt(row, index);
 	}
@@ -84,7 +84,7 @@ public abstract class DBTableModel extends AbstractTableModel {
 	}
 	public void executeQuery(XADataSource ds) {
 		String query = getQuerySql();
-		// letâ€™s parse result of query
+		// letfs parse result of query
 		versionNo_index_ = -1;
 		Connection con = null;
 		try {
@@ -128,7 +128,7 @@ public abstract class DBTableModel extends AbstractTableModel {
 				try{
 					con.close();
 				}catch(Exception e){
-					//ã“ã®ã‚¨ãƒ©ãƒ¼ã¯ç„¡è¦–
+					//‚±‚ÌƒGƒ‰[‚Í–³‹
 				}
 			}
 		}

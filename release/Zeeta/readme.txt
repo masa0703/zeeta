@@ -1,1 +1,0 @@
-startup/run.bat ‚ğ‹N“®‚µ‚Ä‚­‚¾‚³‚¢B

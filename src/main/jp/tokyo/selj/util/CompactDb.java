@@ -35,7 +35,7 @@ public class CompactDb {
         new File(FILE_NAME).delete();
     }
 	static void printDot(){
-    	//è©¦ã—ã«ã‚„ã£ã¦ã¿ã‚ˆãƒ¼
+    	//‚µ‚É‚â‚Á‚Ä‚İ‚æ[
     	Thread t = new Thread(){
 			public void run() {
 				while(!endflag){

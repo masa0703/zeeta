@@ -167,7 +167,7 @@ public class OutputListModel extends CommonListModel{
 	}
 	public void outputChanged(Output output) {
 		int index = searchIndex(output.getOutputId());
-		set(index, output);		//å…¥ã‚Œæ›¿ãˆã‚‹
+		set(index, output);		//“ü‚ê‘Ö‚¦‚é
 		fireContentsChanged(this, index, index);
 	}
 	protected int searchIndex(long outputId){

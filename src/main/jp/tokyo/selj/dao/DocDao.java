@@ -34,9 +34,9 @@ public interface DocDao {
     	" where doc.docid=?  and doc.sortTypeId = sortType.sortTypeId")
     public Doc findByDocId(long docId);
 
-    //ä»¥ä¸‹ã®ãƒ¡ã‚½ãƒƒãƒ‰ã¯ã€é«˜é€ŸåŒ–ã®ãŸã‚ã«ä½œæˆã—ã¦ã¿ãŸãŒã€H2ã§ã¯é€†ã«ã‹ãªã‚Šé…ããªã£ãŸã†ãˆã«
-    //postgresã§ã¯ã‚·ãƒ³ã‚¿ãƒƒã‚¯ã‚¹ã‚¨ãƒ©ãƒ¼ã«ãªã‚‹ãŸã‚æ­¢ã‚ãŸã€‚
-    //ä½¿ã£ã¦ã„ãŸã®ã¯ã€DocModel#addChildDocFromDb, DocModel#addAllParentDocFromDb
+    //ˆÈ‰º‚Ìƒƒ\ƒbƒh‚ÍA‚‘¬‰»‚Ì‚½‚ß‚Éì¬‚µ‚Ä‚İ‚½‚ªAH2‚Å‚Í‹t‚É‚©‚È‚è’x‚­‚È‚Á‚½‚¤‚¦‚É
+    //postgres‚Å‚ÍƒVƒ“ƒ^ƒbƒNƒXƒGƒ‰[‚É‚È‚é‚½‚ß~‚ß‚½B
+    //g‚Á‚Ä‚¢‚½‚Ì‚ÍADocModel#addChildDocFromDb, DocModel#addAllParentDocFromDb
 //    @Sql("select doc.* " +
 //        	",sortType.sorttypeid AS sorttypeid_0" +
 //        	",sortType.ordersent AS ordersent_0" +

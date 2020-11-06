@@ -30,7 +30,7 @@ public class DlgUserMaint extends JDialog {
 	UsertblModel userModel_ = null;
 
 	ActionMap actionMap_ = new ActionMap();
-	//Actionã®è¦ªã‚¯ãƒ©ã‚¹
+	//Action‚ÌeƒNƒ‰ƒX
 	private abstract class ActBase2 extends ActBase {
 		ActBase2(ActionMap map){
 			super(map);
@@ -47,7 +47,7 @@ public class DlgUserMaint extends JDialog {
 		public ActUsertblShowNewDlg(ActionMap map){
 			super(map);
 			putValue(Action.NAME, "new");
-			putValue(Action.SHORT_DESCRIPTION, "ãƒ¦ãƒ¼ã‚¶ã‚’è¿½åŠ ã—ã¾ã™(Ins)");
+			putValue(Action.SHORT_DESCRIPTION, "ƒ†[ƒU‚ğ’Ç‰Á‚µ‚Ü‚·(Ins)");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			getDlg().newUsertbl();
@@ -66,12 +66,12 @@ public class DlgUserMaint extends JDialog {
 		public ActUsertblShowUpdateDlg(ActionMap map){
 			super(map);
 			putValue(Action.NAME, "update");
-			putValue(Action.SHORT_DESCRIPTION, "ãƒ¦ãƒ¼ã‚¶ã‚’æ›´æ–°ã—ã¾ã™");
+			putValue(Action.SHORT_DESCRIPTION, "ƒ†[ƒU‚ğXV‚µ‚Ü‚·");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			JTable table = getCntUsertbl().getJTable();
 			if(table.getSelectedRow() < 0){
-				throw new AppException("ãƒ¦ãƒ¼ã‚¶ã‚’é¸æŠã—ã¦ãã ã•ã„"); 
+				throw new AppException("ƒ†[ƒU‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢"); 
 			}
 			int nameIndex = userModel_.getColumnIndex("userName");
 			String name = (String)table.getValueAt(table.getSelectedRow(), nameIndex);
@@ -83,13 +83,13 @@ public class DlgUserMaint extends JDialog {
 		public ActUsertblRemove(ActionMap map){
 			super(map);
 			putValue(Action.NAME, "remove");
-			putValue(Action.SHORT_DESCRIPTION, "ãƒ¦ãƒ¼ã‚¶ã‚’å‰Šé™¤ã—ã¾ã™(Del)");
+			putValue(Action.SHORT_DESCRIPTION, "ƒ†[ƒU‚ğíœ‚µ‚Ü‚·(Del)");
 		}
 		public void actionPerformed2(ActionEvent e) {
-			//ãƒ¦ãƒ¼ã‚¶ã®å‰Šé™¤ã‚’è¡Œã†
+			//ƒ†[ƒU‚Ìíœ‚ğs‚¤
 			JTable table = getCntUsertbl().getJTable();
 			if(table.getSelectedRow() < 0){
-				throw new AppException("work typeã‚’é¸æŠã—ã¦ãã ã•ã„"); 
+				throw new AppException("work type‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢"); 
 			}
 			int nameIndex = userModel_.getColumnIndex("userName");
 			String name = (String)table.getValueAt(
@@ -97,8 +97,8 @@ public class DlgUserMaint extends JDialog {
 
 			if( JOptionPane.showConfirmDialog(
 					DlgUserMaint.this
-					,"é¸æŠä¸­ã®ãƒ¦ãƒ¼ã‚¶ã‚’å‰Šé™¤ã—ã¾ã™ã€‚\n" +
-					"ã‚ˆã‚ã—ã„ã§ã™ã‹ï¼Ÿ",""
+					,"‘I‘ğ’†‚Ìƒ†[ƒU‚ğíœ‚µ‚Ü‚·B\n" +
+					"‚æ‚ë‚µ‚¢‚Å‚·‚©H",""
 					,JOptionPane.YES_NO_OPTION
 					,JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
 						
@@ -108,7 +108,7 @@ public class DlgUserMaint extends JDialog {
 		}
 	}
 
-	//ãƒ¦ãƒ¼ã‚¶ãƒ†ãƒ¼ãƒ–ãƒ«ãƒ¢ãƒ‡ãƒ«
+	//ƒ†[ƒUƒe[ƒuƒ‹ƒ‚ƒfƒ‹
 	class UsertblModel extends DBTableModel{
 		@Override
 		public String getTableName() {
@@ -129,7 +129,7 @@ public class DlgUserMaint extends JDialog {
 		userModel_ = new UsertblModel();
 		getCntUsertbl().getJTable().setModel(userModel_);
 		
-		//workTypeã®Actionã‚»ãƒƒãƒˆ
+		//workType‚ÌActionƒZƒbƒg
 		getCntUsertbl().getActionMap().put(PnlTableMaint.ACTION_KEY_NEW, 
 				new ActUsertblShowNewDlg(actionMap_));
 		getCntUsertbl().getActionMap().put(PnlTableMaint.ACTION_KEY_UPDATE, 
@@ -194,7 +194,7 @@ public class DlgUserMaint extends JDialog {
 		
 		userModel_.executeQuery();
 			
-		//é¸æŠçŠ¶æ…‹ã‚’å¾©å…ƒ
+		//‘I‘ğó‘Ô‚ğ•œŒ³
 		if((selectedIndex >= 0) && ( userModel_.getRowCount() > selectedIndex)){
 			table.getSelectionModel().addSelectionInterval(selectedIndex, selectedIndex);
 		}

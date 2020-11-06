@@ -39,11 +39,11 @@ public class DlgNodeInfo extends JDialog implements TreeSelectionListener{
 
 	
 	public void valueChanged(TreeSelectionEvent e) {
-		//é¸æŠã•ã‚ŒãŸitem
+		//‘I‘ğ‚³‚ê‚½item
 		if( !isShowing() || e.getPath().getLastPathComponent() == null){
 			return;
 		}
-		//é¸æŠã•ã‚ŒãŸãƒãƒ¼ãƒ‰ã‚’detailã«è¡¨ç¤º
+		//‘I‘ğ‚³‚ê‚½ƒm[ƒh‚ğdetail‚É•\¦
 		refreshNodeInfo((DocNode)e.getPath().getLastPathComponent());
 	}
 	
@@ -116,7 +116,7 @@ public class DlgNodeInfo extends JDialog implements TreeSelectionListener{
 	@Override
 	public void setVisible(boolean b) {
 		if(b){
-			throw new RuntimeException("setVisible(boolean b, DocNode docNode)ã‚’ã¤ã‹ã‚ãªã‚ã‹ã‚“");
+			throw new RuntimeException("setVisible(boolean b, DocNode docNode)‚ğ‚Â‚©‚í‚È‚ ‚©‚ñ");
 		}else{
 			super.setVisible(b);
 		}
@@ -131,17 +131,17 @@ public class DlgNodeInfo extends JDialog implements TreeSelectionListener{
 		pref_.restoreForm();
 	}
 	public void refreshNodeInfo(DocNode curNode){
-		//è¦ªDocNodeãƒªã‚¹ãƒˆä½œæˆ
+		//eDocNodeƒŠƒXƒgì¬
 		parents_.clear();
 		DocNode node = (DocNode)curNode.getParent();
 		while(node != null){
 			parents_.add(0, node);
 			node = (DocNode)node.getParent();
 		}
-		//è‡ªèº«ã‚‚è¿½åŠ 
+		//©g‚à’Ç‰Á
 		parents_.add(curNode);
 
-		//è¦ªDocãƒªã‚¹ãƒˆä½œæˆ
+		//eDocƒŠƒXƒgì¬
 		List<Doc> docs = new ArrayList<Doc>();
 		for(DocNode dn: parents_){
 			docs.add(dn.getDoc());

@@ -28,7 +28,7 @@ public class DocTreeCellRenderer4Work extends DocTreeCellRenderer {
 				tree, value,sel, expanded, leaf, row, hasFocus);
 		
 		DocNode docNode = null;
-		if(value instanceof DocNode){	//JTreeã«ãƒ¢ãƒ‡ãƒ«ã‚’ã‚»ãƒƒãƒˆã™ã‚‹å‰ã¯Stringã‚’æç”»ã™ã‚‹ã‚‰ã—ã„
+		if(value instanceof DocNode){	//JTree‚Éƒ‚ƒfƒ‹‚ğƒZƒbƒg‚·‚é‘O‚ÍString‚ğ•`‰æ‚·‚é‚ç‚µ‚¢
 			docNode = (DocNode)value;
 		}
 		if(docNode != null && work_ != null){

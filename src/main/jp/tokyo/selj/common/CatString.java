@@ -6,10 +6,10 @@ import java.util.List;
 public class CatString {
 
 	/**
-	 * è¤‡æ•°ã‚¨ãƒ³ãƒˆãƒªã«åˆ†å‰²ã•ã‚Œã¦ã„ã‚‹è¡Œã‚’ï¼‘ã‚¨ãƒ³ãƒˆãƒªã«ã¾ã¨ã‚ã‚‹<br>
+	 * •¡”ƒGƒ“ƒgƒŠ‚É•ªŠ„‚³‚ê‚Ä‚¢‚és‚ğ‚PƒGƒ“ƒgƒŠ‚É‚Ü‚Æ‚ß‚é<br>
 	 * <li>
-	 * <ul>1."ã§å›²ã¾ã‚ŒãŸéƒ¨åˆ†ã¯ã€è¡ŒãŒåˆ†ã‹ã‚Œã¦ã„ã¦ã‚‚æ¬¡ã®"ã¾ã§ã‚’æŠ½å‡ºã™ã‚‹</ul>
-	 * <ul>2.1ã§æŠ½å‡ºã—ãŸå¾Œã«æ®‹ã£ãŸæ–‡å­—ã¯ã€æ”¹è¡Œã¾ã§ã‚’</ul>
+	 * <ul>1."‚ÅˆÍ‚Ü‚ê‚½•”•ª‚ÍAs‚ª•ª‚©‚ê‚Ä‚¢‚Ä‚àŸ‚Ì"‚Ü‚Å‚ğ’Šo‚·‚é</ul>
+	 * <ul>2.1‚Å’Šo‚µ‚½Œã‚Éc‚Á‚½•¶š‚ÍA‰üs‚Ü‚Å‚ğ</ul>
 	 * </li>
 	 * @param lines
 	 * @return
@@ -25,20 +25,20 @@ public class CatString {
 			int tabCount = countTab(lines[index]);
 			while(!"".equals(line)){
 				line = line.trim();
-				//å…ˆé ­ãŒ"ã§å§‹ã¾ã‚‹
+				//æ“ª‚ª"‚Ån‚Ü‚é
 				if(line.startsWith("\"")){
-					//åŒã˜è¡Œã§æ¬¡ã®"ã‚’æ¢ã™
+					//“¯‚¶s‚ÅŸ‚Ì"‚ğ’T‚·
 					int pos = line.indexOf('\"', 1);
 					if(pos >= 0){
 						catLine += (isFirstLine)? tabs(tabCount):"\t";
 						catLine += line.substring(1, pos);
 						line = line.substring(pos+1);
 					}else{
-						//æ¬¡è¡Œã«ã¾ãŸãŒã‚‹å ´åˆ
+						//Ÿs‚É‚Ü‚½‚ª‚éê‡
 						catLine += (isFirstLine)? tabs(tabCount):"\t";
 						catLine += line.substring(1);
 		    			line = "";
-						//"ãŒå‡ºã¦ãã‚‹ã¾ã§catLineã«é€£çµ
+						//"‚ªo‚Ä‚­‚é‚Ü‚ÅcatLine‚É˜AŒ‹
 						boolean loop = true;
 						while(loop && ((index+1) < lines.length)){
 							index++;
@@ -51,13 +51,13 @@ public class CatString {
 				    		}
 			    			catLine += "\n" + line.substring(0, to);
 			    			line = line.substring(to);
-			    			if(!loop){	//"ãŒã¿ã¤ã‹ã£ãŸå ´åˆã¯ã€"ã‚’å‰Šé™¤
+			    			if(!loop){	//"‚ª‚İ‚Â‚©‚Á‚½ê‡‚ÍA"‚ğíœ
 				    			line = line.substring(1);
 			    			}
 						}
 					}
 				}else{
-					//å…ˆé ­ãŒ"ã§å§‹ã¾ã‚‰ãªã„å ´åˆã¯tabã¾ã§ã‚’ã‚¿ã‚¤ãƒˆãƒ«ã¨ã™ã‚‹
+					//æ“ª‚ª"‚Ån‚Ü‚ç‚È‚¢ê‡‚Ítab‚Ü‚Å‚ğƒ^ƒCƒgƒ‹‚Æ‚·‚é
 		    		int to = line.indexOf('\t');
 		    		if(to <= -1){
 		    			to = line.length();
@@ -75,7 +75,7 @@ public class CatString {
 
 		String[] ret = new String[newLines.size()];
 		ret = newLines.toArray(ret);
-		//ç½®æ›ã—ã¦ãŠã„ãŸ"ã‚’å…ƒã«æˆ»ã™
+		//’uŠ·‚µ‚Ä‚¨‚¢‚½"‚ğŒ³‚É–ß‚·
 		for(int i=0; i<ret.length; i++){
 			ret[i] = ret[i].replaceAll("&h0000", "\"");
 		}

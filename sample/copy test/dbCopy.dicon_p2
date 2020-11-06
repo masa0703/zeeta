@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components.dtd">
+<components namespace="dbSetups">
+    <include path="j2ee.dicon"/>
+    <component name="dbSetup" class="jp.tokyo.selj.util.DbSetup">
+        <arg>{
+"--"
+,"ALTER TABLE doc Drop constraint doc_fk1"
+,"ALTER TABLE outputType Drop constraint outputType_fk1"
+,"ALTER TABLE work Drop constraint work_fk1"
+,"ALTER TABLE work Drop constraint work_fk2"
+,"ALTER TABLE work Drop constraint work_fk3"
+
+,"CREATE LINKED TABLE lnk_work('org.postgresql.Driver', 'jdbc:postgresql://localhost:5432/zeeta', 'zeeta', 'zeeta', 'work') "
+,"CREATE LINKED TABLE lnk_output('org.postgresql.Driver', 'jdbc:postgresql://localhost:5432/zeeta', 'zeeta', 'zeeta', 'output') "
+,"CREATE LINKED TABLE lnk_doc('org.postgresql.Driver', 'jdbc:postgresql://localhost:5432/zeeta', 'zeeta', 'zeeta', 'Doc') "
+,"CREATE LINKED TABLE lnk_docStr('org.postgresql.Driver', 'jdbc:postgresql://localhost:5432/zeeta', 'zeeta', 'zeeta', 'DocStr') "
+,"CREATE LINKED TABLE lnk_workType('org.postgresql.Driver', 'jdbc:postgresql://localhost:5432/zeeta', 'zeeta', 'zeeta', 'workType') "
+,"CREATE LINKED TABLE lnk_outputType('org.postgresql.Driver', 'jdbc:postgresql://localhost:5432/zeeta', 'zeeta', 'zeeta', 'outputType') "
+
+,"insert into doc select * from lnk_doc"
+,"insert into docStr select * from lnk_docStr"
+,"insert into workType select * from lnk_workType"
+,"insert into outputType select * from lnk_outputType"
+,"insert into work select * from lnk_work"
+,"insert into output select * from lnk_output"
+
+,"CREATE LINKED TABLE lnk_usertbl('org.postgresql.Driver', 'jdbc:postgresql://localhost:5432/zeeta', 'zeeta', 'zeeta', 'usertbl') "
+,"insert into usertbl select * from lnk_usertbl"
+
+,"ALTER TABLE doc ADD CONSTRAINT doc_fk1
+ FOREIGN KEY(sortTypeId) REFERENCES sortType(sortTypeId)"
+,"ALTER TABLE output ADD CONSTRAINT output_fk1
+ FOREIGN KEY(outputTypeId) REFERENCES outputType(outputTypeId)"
+,"ALTER TABLE work ADD CONSTRAINT work_fk1
+ FOREIGN KEY(workTypeId) REFERENCES workType(workTypeId)"
+,"ALTER TABLE Work ADD CONSTRAINT work_fk2
+ FOREIGN KEY(DocID) REFERENCES Doc(DocID) ON DELETE CASCADE"
+,"ALTER TABLE Work ADD CONSTRAINT work_fk3
+ FOREIGN KEY(OutputID) REFERENCES Output(OutputID) ON DELETE CASCADE"
+
+            }
+        </arg>
+    </component>
+</components>
+

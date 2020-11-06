@@ -58,7 +58,7 @@ public class DlgNewReview extends JDialog {
 		public ActCreateReviewList(){
 			super();
 			putValue(Action.NAME, "commit");
-			putValue(Action.SHORT_DESCRIPTION, "ãƒ¬ãƒ“ãƒ¥ãƒ¼ã‚’ä½œæˆãƒ»æ›´æ–°ã™ã‚‹");
+			putValue(Action.SHORT_DESCRIPTION, "ƒŒƒrƒ…[‚ğì¬EXV‚·‚é");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			header_ = getReview();
@@ -141,7 +141,7 @@ public class DlgNewReview extends JDialog {
 	@Override
 	public void setVisible(boolean b) {
 		if(b){
-			throw new RuntimeException("setVisible(boolean b, Output output)ã‚’ã¤ã‹ã‚ãªã‚ã‹ã‚“");
+			throw new RuntimeException("setVisible(boolean b, Output output)‚ğ‚Â‚©‚í‚È‚ ‚©‚ñ");
 		}else{
 			super.setVisible(b);
 		}
@@ -149,7 +149,7 @@ public class DlgNewReview extends JDialog {
 	public void setVisible(boolean b, Output output) {
 		isCreate_ = true;
 		Review review = new Review();
-		review.setReviewi(output.getUserName());	//åˆæœŸå€¤
+		review.setReviewi(output.getUserName());	//‰Šú’l
 		review.setOutputId(output.getOutputId());
 		this.setVisible(b, output, review);
 

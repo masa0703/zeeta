@@ -39,7 +39,7 @@ public class WorkType implements Serializable {
     
     public void check(){
     	if(workTypeName == null || "".equals(workTypeName.trim())){
-    		throw new AppException("workTypeNameã¯çœç•¥ã§ãã¾ã›ã‚“");
+    		throw new AppException("workTypeName‚ÍÈ—ª‚Å‚«‚Ü‚¹‚ñ");
     	}
     }
 

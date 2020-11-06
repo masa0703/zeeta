@@ -18,7 +18,7 @@ public abstract class Splash {
             }
         });
 
-        //ã“ã‚Œã‚’å…¥ã‚Œãªã„ã¨æ ã—ã‹å‡ºãªã„å ´åˆãŒã‚ã‚‹
+        //‚±‚ê‚ğ“ü‚ê‚È‚¢‚Æ˜g‚µ‚©o‚È‚¢ê‡‚ª‚ ‚é
         try{
             Thread.sleep(20);
         }catch(InterruptedException e) {

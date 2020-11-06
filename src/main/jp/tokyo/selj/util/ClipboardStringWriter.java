@@ -40,7 +40,7 @@ public class ClipboardStringWriter extends Writer implements ClipboardOwner{
 		buf_.append(str);
 	}
 	public void lostOwnership(Clipboard clipboard, Transferable contents) {
-		log.debug("ã‚ˆã°ã‚ŒãŸãƒ¼");
+		log.debug("‚æ‚Î‚ê‚½[");
 		buf_ = null;
 	}
 }
@@ -65,11 +65,11 @@ class MyTransferable implements Transferable{
 	}
 	public Object getTransferData(DataFlavor flavor) 
 			throws UnsupportedFlavorException, IOException {
-		//1ç¨®é¡ã—ã‹ã‚µãƒãƒ¼ãƒˆã—ã¦ãªã„ã®ã§flavorã®åˆ¤å®šã¯ã„ã‚‰ã‚“ã ã‚ã†
+		//1í—Ş‚µ‚©ƒTƒ|[ƒg‚µ‚Ä‚È‚¢‚Ì‚Åflavor‚Ì”»’è‚Í‚¢‚ç‚ñ‚¾‚ë‚¤
 		return data_;
 	}
 	public DataFlavor[] getTransferDataFlavors() {
-		log.debug("ã‚ˆã°ã‚ŒãŸã—");
+		log.debug("‚æ‚Î‚ê‚½‚µ");
 		return localFlavors;
 	}
 	public boolean isDataFlavorSupported(DataFlavor flavor) {

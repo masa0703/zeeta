@@ -30,7 +30,7 @@ public class DlgReviewStateTypeMaint extends JDialog {
 	ReviewModel tableModel_ = null;
 
 	ActionMap actionMap_ = new ActionMap();
-	//Actionã®è¦ªã‚¯ãƒ©ã‚¹
+	//Action‚ÌeƒNƒ‰ƒX
 	private abstract class ActBase2 extends ActBase {
 		ActBase2(ActionMap map){
 			super(map);
@@ -45,7 +45,7 @@ public class DlgReviewStateTypeMaint extends JDialog {
 		public ActReviewStateTypeShowNewDlg(ActionMap map){
 			super(map);
 			putValue(Action.NAME, "new");
-			putValue(Action.SHORT_DESCRIPTION, "ãƒ¬ãƒ“ãƒ¥ãƒ¼çŠ¶æ…‹ç¨®é¡ã‚’è¿½åŠ ã—ã¾ã™(Ins)");
+			putValue(Action.SHORT_DESCRIPTION, "ƒŒƒrƒ…[ó‘Ôí—Ş‚ğ’Ç‰Á‚µ‚Ü‚·(Ins)");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			getDlg().newReviewStateType();
@@ -64,12 +64,12 @@ public class DlgReviewStateTypeMaint extends JDialog {
 		public ActReviewStateTypeShowUpdateDlg(ActionMap map){
 			super(map);
 			putValue(Action.NAME, "update");
-			putValue(Action.SHORT_DESCRIPTION, "ãƒ¬ãƒ“ãƒ¥ãƒ¼çŠ¶æ…‹ç¨®é¡ã‚’æ›´æ–°ã—ã¾ã™");
+			putValue(Action.SHORT_DESCRIPTION, "ƒŒƒrƒ…[ó‘Ôí—Ş‚ğXV‚µ‚Ü‚·");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			JTable table = getCntUsertbl().getJTable();
 			if(table.getSelectedRow() < 0){
-				throw new AppException("ãƒ¬ãƒ“ãƒ¥ãƒ¼çŠ¶æ…‹ã‚’é¸æŠã—ã¦ãã ã•ã„"); 
+				throw new AppException("ƒŒƒrƒ…[ó‘Ô‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢"); 
 			}
 			int nameIndex = tableModel_.getColumnIndex("reviewStateTypeId");
 			Number id = (Number)table.getValueAt(table.getSelectedRow(), nameIndex);
@@ -81,21 +81,21 @@ public class DlgReviewStateTypeMaint extends JDialog {
 		public ActReviewStateTypeRemove(ActionMap map){
 			super(map);
 			putValue(Action.NAME, "remove");
-			putValue(Action.SHORT_DESCRIPTION, "ãƒ¬ãƒ“ãƒ¥ãƒ¼çŠ¶æ…‹ç¨®é¡ã‚’å‰Šé™¤ã—ã¾ã™(Del)");
+			putValue(Action.SHORT_DESCRIPTION, "ƒŒƒrƒ…[ó‘Ôí—Ş‚ğíœ‚µ‚Ü‚·(Del)");
 		}
 		public void actionPerformed2(ActionEvent e) {
-			//ãƒ¦ãƒ¼ã‚¶ã®å‰Šé™¤ã‚’è¡Œã†
+			//ƒ†[ƒU‚Ìíœ‚ğs‚¤
 			JTable table = getCntUsertbl().getJTable();
 			if(table.getSelectedRow() < 0){
-				throw new AppException("ãƒ¬ãƒ“ãƒ¥ãƒ¼çŠ¶æ…‹ç¨®é¡ã‚’é¸æŠã—ã¦ãã ã•ã„"); 
+				throw new AppException("ƒŒƒrƒ…[ó‘Ôí—Ş‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢"); 
 			}
 			int nameIndex = tableModel_.getColumnIndex("reviewStateTypeId");
 			Number id = (Number)table.getValueAt(table.getSelectedRow(), nameIndex);
 
 			if( JOptionPane.showConfirmDialog(
 					DlgReviewStateTypeMaint.this
-					,"é¸æŠä¸­ã®ãƒ¬ãƒ“ãƒ¥ãƒ¼çŠ¶æ…‹ç¨®é¡ã‚’å‰Šé™¤ã—ã¾ã™ã€‚\n" +
-					"ã‚ˆã‚ã—ã„ã§ã™ã‹ï¼Ÿ",""
+					,"‘I‘ğ’†‚ÌƒŒƒrƒ…[ó‘Ôí—Ş‚ğíœ‚µ‚Ü‚·B\n" +
+					"‚æ‚ë‚µ‚¢‚Å‚·‚©H",""
 					,JOptionPane.YES_NO_OPTION
 					,JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
 						
@@ -105,7 +105,7 @@ public class DlgReviewStateTypeMaint extends JDialog {
 		}
 	}
 
-	//ãƒ†ãƒ¼ãƒ–ãƒ«ãƒ¢ãƒ‡ãƒ«
+	//ƒe[ƒuƒ‹ƒ‚ƒfƒ‹
 	class ReviewModel extends DBTableModel{
 		@Override
 		public String getTableName() {
@@ -126,7 +126,7 @@ public class DlgReviewStateTypeMaint extends JDialog {
 		tableModel_ = new ReviewModel();
 		getCntUsertbl().getJTable().setModel(tableModel_);
 		
-		//Actionã‚»ãƒƒãƒˆ
+		//ActionƒZƒbƒg
 		getCntUsertbl().getActionMap().put(PnlTableMaint.ACTION_KEY_NEW, 
 				new ActReviewStateTypeShowNewDlg(actionMap_));
 		getCntUsertbl().getActionMap().put(PnlTableMaint.ACTION_KEY_UPDATE, 
@@ -191,7 +191,7 @@ public class DlgReviewStateTypeMaint extends JDialog {
 		
 		tableModel_.executeQuery();
 			
-		//é¸æŠçŠ¶æ…‹ã‚’å¾©å…ƒ
+		//‘I‘ğó‘Ô‚ğ•œŒ³
 		if((selectedIndex >= 0) && ( tableModel_.getRowCount() > selectedIndex)){
 			table.getSelectionModel().addSelectionInterval(selectedIndex, selectedIndex);
 		}

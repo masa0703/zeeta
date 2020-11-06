@@ -44,13 +44,13 @@ public class DlgDebug extends JDialog {
 	private JLabel dspNodeCount = null;
 
 	public String getTitle(){
-		return "ã‚ˆãã¿ã¤ã‘ãŸã‚ã­ã€‚ã‚ã‚“ãŸã€‚";
+		return "‚æ‚­‚İ‚Â‚¯‚½‚í‚ËB‚ ‚ñ‚½B";
 	}
-	//H2ç”¨ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—
+	//H2—pƒoƒbƒNƒAƒbƒv
 	class ActBackup extends AbstractAction {
 		public ActBackup() {
 			putValue(Action.NAME, "backup db");
-			putValue(Action.SHORT_DESCRIPTION, FILE_NAME+"ã‚’ä½œæˆã™ã‚‹(H2 Only)");
+			putValue(Action.SHORT_DESCRIPTION, FILE_NAME+"‚ğì¬‚·‚é(H2 Only)");
 		}
 		public void actionPerformed(ActionEvent e) {
 	        String url = "jdbc:h2:db/sel";
@@ -61,16 +61,16 @@ public class DlgDebug extends JDialog {
 						,"Backup complete.",""
 						,JOptionPane.INFORMATION_MESSAGE);
 			} catch (SQLException e1) {
-				throw new RuntimeException("ã“ã®æ©Ÿèƒ½ã¯ã€H2&db/sel ã§ã—ã‹ä½¿ç”¨ã§ãã¾ã›ã‚“ã€‚",e1);
+				throw new RuntimeException("‚±‚Ì‹@”\‚ÍAH2&db/sel ‚Å‚µ‚©g—p‚Å‚«‚Ü‚¹‚ñB",e1);
 			}
 	    }
 
 	}
-	//H2ç”¨ã‚³ãƒ³ãƒ‘ã‚¯ãƒˆ
+	//H2—pƒRƒ“ƒpƒNƒg
 	class ActCompact extends AbstractAction {
 		public ActCompact() {
 			putValue(Action.NAME, "compct db");
-			putValue(Action.SHORT_DESCRIPTION, FILE_NAME+"ã‚’ä½œæˆã™ã‚‹(H2 Only)");
+			putValue(Action.SHORT_DESCRIPTION, FILE_NAME+"‚ğì¬‚·‚é(H2 Only)");
 		}
 		public void actionPerformed(ActionEvent e) {
 	        String url = "jdbc:h2:db/sel";
@@ -84,7 +84,7 @@ public class DlgDebug extends JDialog {
 						,"DB Compact complete.",""
 						,JOptionPane.INFORMATION_MESSAGE);
 			} catch (SQLException e1) {
-				throw new RuntimeException("ã“ã®æ©Ÿèƒ½ã¯ã€H2&db/sel ã§ã—ã‹ä½¿ç”¨ã§ãã¾ã›ã‚“ã€‚",e1);
+				throw new RuntimeException("‚±‚Ì‹@”\‚ÍAH2&db/sel ‚Å‚µ‚©g—p‚Å‚«‚Ü‚¹‚ñB",e1);
 			}
 	    }
 
@@ -92,7 +92,7 @@ public class DlgDebug extends JDialog {
 	class ActCountNode extends AbstractAction {
 		public ActCountNode() {
 			putValue(Action.NAME, "countNode");
-			putValue(Action.SHORT_DESCRIPTION, "å±•é–‹ã—ã¦ã„ã‚‹Nodeæ•°ã‚’å…±æœ‰Nodeã‚‚é‡è¤‡ã—ã¦ã‚«ã‚¦ãƒ³ãƒˆã™ã‚‹");
+			putValue(Action.SHORT_DESCRIPTION, "“WŠJ‚µ‚Ä‚¢‚éNode”‚ğ‹¤—LNode‚àd•¡‚µ‚ÄƒJƒEƒ“ƒg‚·‚é");
 		}
 		public void actionPerformed(ActionEvent e) {
 			viewState_.getCurrentNode();
@@ -102,7 +102,7 @@ public class DlgDebug extends JDialog {
 					public boolean process(DocNode node) {
 						count++;
 						dspNodeCount.setText(""+count);
-						return true;	//ç¶šè¡Œ
+						return true;	//‘±s
 					}
 				};
 			

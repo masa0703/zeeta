@@ -52,14 +52,14 @@ public class DocModel extends DefaultTreeModel{
 			}
 		};
 
-	static final String ROOT_TITLE = "ï¼ˆæ–°è¦ãƒ‡ãƒ¼ã‚¿ï¼‰";
+	static final String ROOT_TITLE = "iV‹Kƒf[ƒ^j";
 	
 	public static interface NodeProcessor{
-		/** @return true-ç¶šè¡Œã€false-åœæ­¢ */
+		/** @return true-‘±sAfalse-’â~ */
 		public boolean process(DocNode node);
 	}
 	public static interface DocProcessor{
-		/** @return true-ç¶šè¡Œã€false-åœæ­¢ */
+		/** @return true-‘±sAfalse-’â~ */
 		public boolean process(Doc doc, List<Doc> parents);
 	}
 	public DocModel(){
@@ -71,102 +71,36 @@ public class DocModel extends DefaultTreeModel{
 	public DocStr getDocStr(long parent, long child){
 		return docStrDao_.find(parent, child);
 	}	
-	public void initializeReverseModel(DocNode curNode) {
-		DocNode node = new DocNode(curNode.getDoc());	//ç´ ã®Nodeã‚’ä½œæˆã›ã«ã‚ƒã‚ã‹ã‚“
-		
-		//è¦ªè¦ä»¶ã‚’å…¨ã¦è¿½åŠ 
-//		DocNode top = addAllParentDocFromDb(node);
-		
-		//å­è¦ä»¶ã‚’è¿½åŠ 
-		DocNode top = addParentDocFromDb(node);
-		
-		//å­«è¦ä»¶ã‚’è¿½åŠ 
-		top = addJijiDocFromDb(top);
-		
-		setRoot(top);
-		reload(top);
-		
-	}
-/*
-	//0.9.04ä»¥å‰ã«é€†ãƒ„ãƒªãƒ¼è¡¨ç¤ºã«ä½¿ç”¨ã—ã¦ã„ãŸ
-	public DocNode addAllParentDocFromDb(DocNode node){
-		log.trace("start");
-		if(node == null){
-			throw new IllegalArgumentException("node is null.");
-		}
-		
-		DocDao docDao = (DocDao) daoCont_.getComponent(DocDao.class);
-		DocStrDao docStrDao = (DocStrDao) daoCont_.getComponent(DocStrDao.class);
-
-		Doc doc = node.getDoc();
-		List<DocStr> parents = docStrDao.findOyaDocStr(
-					new DocStrSearchCondition(doc.getDocId(),
-							(doc.getSortType()==null)? null:doc.getSortType().getOrderSent())
-				);
-
-//		if(parents.isEmpty()){
-//			return node;
-//		}
-//		long[] ids = new long[parents.size()];
-//		for(int i=0;i < parents.size() ; i++){
-//			ids[i] = parents.get(i).getOyaDocId();
-//		}
-//		List<Doc> oyas = docDao.findByDocIds(ids);
-//		for(int i=0;i < oyas.size() ; i++){
-//			DocNode newDocNode = new DocNode(oyas.get(i));
-//			newDocNode.resetParentCount(docStrDao_);
-//			
-//			addAllParentDocFromDb(newDocNode);
-//			
-//			node.add(newDocNode);
-//		}
-		
-		for(int i=0;i < parents.size() ; i++){
-			DocStr docStr = parents.get(i);
-			
-			//æ³¨ï¼šè¦ä»¶æ§‹é€ ãŒå–å¾—ã™ã‚‹å­è¦ä»¶ãƒ»è¦ªè¦ä»¶ã¯ã€SotrTypeãŒèª­ã¿è¾¼ã¾ã‚Œã¦ã„ãªã„ï¼
-			Doc oyaDoc = docDao.findByDocId(docStr.getOyaDocId());
-			
-			DocNode newDocNode = new DocNode(oyaDoc);
-			newDocNode.resetParentCount(docStrDao_);
-			
-			addAllParentDocFromDb(newDocNode);
-			
-			node.add(newDocNode);
-		}
-		log.trace("end");
-		return node;
-	}
-*/
-	
 	
 	public void initialize() {
-		//rootè¦ä»¶ã‚’è¿½åŠ 
-		Doc root;
+		//root—vŒ‚ğ’Ç‰Á
 		List roots = docDao_.findByDocTypeId(Doc.ROOT_TYPE);
-		if( roots.size() <= 0 ){	//ãƒ«ãƒ¼ãƒˆãªã—ï¼ˆæ–°è¦ä½œæˆæ™‚ï¼‰
-			//ä¸€æ—¦DBã«æ›¸ãè¾¼ã‚“ã§å†èª­ã¿è¾¼ã¿
+		if( roots.size() <= 0 ){	//ƒ‹[ƒg‚È‚µiV‹Kì¬j
+			//ˆê’UDB‚É‘‚«‚ñ‚ÅÄ“Ç‚İ‚İ
 			Doc tempRoot = new Doc();
 			tempRoot.setDocTypeId(Doc.ROOT_TYPE);
 			tempRoot.setDocTitle(ROOT_TITLE);
-			tempRoot.setDocCont("created at "+new Date());
+			tempRoot.setDocCont("created on "+new Date());
 			docDao_.insert(tempRoot);
 			roots = docDao_.findByDocTypeId(Doc.ROOT_TYPE);
 		}
-		root = (Doc)roots.get(0);
-		//s2daoã¯ã€é–¢é€£ãƒ†ãƒ¼ãƒ–ãƒ«ï¼‘ã¤åˆ†ã®ãƒªãƒ³ã‚¯ã—ã‹joinã—ãªã„ãŸã‚ã€ã“ã“ã§Docã‚’ãƒªãƒ­ãƒ¼ãƒ‰
-		root = docDao_.findByDocId(root.getDocId());
-		DocNode node = new DocNode(root);
+		initialize( ((Doc)roots.get(0)).getDocId() );
 		
-		//å­è¦ä»¶ã‚’è¿½åŠ 
+	}
+	public void initialize(long docId) {
+		//s2dao‚ÍAŠÖ˜Aƒe[ƒuƒ‹‚P‚Â•ª‚ÌƒŠƒ“ƒN‚µ‚©join‚µ‚È‚¢‚½‚ßA‚±‚±‚ÅDoc‚ğƒŠƒ[ƒh
+		Doc doc = docDao_.findByDocId(docId);
+		DocNode node = new DocNode(doc);
+
+		//q—vŒ‚ğ’Ç‰Á
 		DocNode top = addChildDocFromDb(node);
 		
-		//å­«è¦ä»¶ã‚’è¿½åŠ 
+		//‘·—vŒ‚ğ’Ç‰Á
 		top = addMagoDocFromDb(top);
 		
 		setRoot(top);
 	}
-	//TreeNodeä¸Šã§docã¨ä¸€è‡´ã™ã‚‹ãƒãƒ¼ãƒ‰ã‚’å…¨ã¦reloadã™ã‚‹
+	//TreeNodeã‚Ådoc‚Æˆê’v‚·‚éƒm[ƒh‚ğ‘S‚Äreload‚·‚é
 	public void docChanged(Doc doc){
 		log.trace("start");
 		class Reloader implements NodeProcessor{
@@ -179,7 +113,7 @@ public class DocModel extends DefaultTreeModel{
 				Doc target = targetNode.getDoc();
 				if( doc_.getDocId() == target.getDocId()){
 					target.copyDoc(doc_);
-					//è¦ªã®æ•°ã‚’ã“ã“ã§å…¥ã‚Œã¦ãŠã
+					//e‚Ì”‚ğ‚±‚±‚Å“ü‚ê‚Ä‚¨‚­
 					if( parents_ == -1){
 						targetNode.resetParentCount(docStrDao_);
 						parents_ = targetNode.getParentCount();
@@ -188,7 +122,7 @@ public class DocModel extends DefaultTreeModel{
 					}
 					nodeChanged(targetNode);
 				}
-				return true;	//ç¶šè¡Œ
+				return true;	//‘±s
 			}
 		}
 		processAllNode(new Reloader(doc));
@@ -207,9 +141,9 @@ public class DocModel extends DefaultTreeModel{
 				Doc target = node.getDoc();
 				if( id_ == target.getDocId()){
 					node_ = node;
-					return false;	//çµ‚äº†
+					return false;	//I—¹
 				}
-				return true;	//ç¶šè¡Œ
+				return true;	//‘±s
 			}
 		}
 		Searcher proc = new Searcher(id);
@@ -223,8 +157,8 @@ public class DocModel extends DefaultTreeModel{
 		if( path != null){
 			path.add(0, startNode.getDoc().getDocId());
 		}else{
-			throw new AppException("ã‚«ãƒ¬ãƒ³ãƒˆãƒãƒ¼ãƒ‰ã‹ã‚‰ id=" + id 
-					+" ã¸è‡³ã‚‹ãƒ‘ã‚¹ãŒã€ä»–ã®ã‚»ãƒƒã‚·ãƒ§ãƒ³ã«ã‚ˆã£ã¦å¤‰æ›´ã•ã‚Œã¦ã„ã¾ã™ã€‚");
+			throw new AppException("ƒJƒŒƒ“ƒgƒm[ƒh‚©‚ç id=" + id 
+					+" ‚ÖŠ‚éƒpƒX‚ªA‘¼‚ÌƒZƒbƒVƒ‡ƒ“‚É‚æ‚Á‚Ä•ÏX‚³‚ê‚Ä‚¢‚Ü‚·B");
 		}
 		return path;
 	}
@@ -237,7 +171,7 @@ public class DocModel extends DefaultTreeModel{
 					return path;
 				}
 			}
-			//è¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸå ´åˆå­ä¾›ã‚’æ¤œç´¢
+			//Œ©‚Â‚©‚ç‚È‚©‚Á‚½ê‡q‹Ÿ‚ğŒŸõ
 			for(DocStr docStr: children){
 				Doc doc = docDao_.findByDocId(docStr.getKoDocId());
 				List<Long> ret = getPathTo( path, doc, id);
@@ -254,18 +188,18 @@ public class DocModel extends DefaultTreeModel{
 		List<Long> path = new ArrayList<Long>();
 		path = getPathToDocRoot(path, id);
 		
-		//å…ˆé ­ãŒRootã‚¿ã‚¤ãƒ—ã‹æ¤œæŸ»ã™ã‚‹
+		//æ“ª‚ªRootƒ^ƒCƒv‚©ŒŸ¸‚·‚é
 		if( path.size() <= 0 ){
-			throw new RuntimeException("getPathToDocRoot()ã®ã‚¨ãƒ³ãƒˆãƒªãŒ0");
+			throw new RuntimeException("getPathToDocRoot()‚ÌƒGƒ“ƒgƒŠ‚ª0");
 		}else{
 			Doc doc = docDao_.findByDocId(path.get(0));
 			if( doc == null ){
 				throw new AppException("id=" + path.get(0) 
-						+" ã¯ã€ä»–ã®ã‚»ãƒƒã‚·ãƒ§ãƒ³ã«ã‚ˆã£ã¦æ—¢ã«å‰Šé™¤ã•ã‚Œã¦ã„ã¾ã™ã€‚");
+						+" ‚ÍA‘¼‚ÌƒZƒbƒVƒ‡ƒ“‚É‚æ‚Á‚ÄŠù‚Éíœ‚³‚ê‚Ä‚¢‚Ü‚·B");
 			}else{
 				if( doc.getDocTypeId() != Doc.ROOT_TYPE){
 					throw new AppException("id=" + id 
-							+" ã¸è‡³ã‚‹ãƒ‘ã‚¹ãŒã€ä»–ã®ã‚»ãƒƒã‚·ãƒ§ãƒ³ã«ã‚ˆã£ã¦å¤‰æ›´ã•ã‚Œã¦ã„ã¾ã™ã€‚");
+							+" ‚ÖŠ‚éƒpƒX‚ªA‘¼‚ÌƒZƒbƒVƒ‡ƒ“‚É‚æ‚Á‚Ä•ÏX‚³‚ê‚Ä‚¢‚Ü‚·B");
 				}
 			}
 		}
@@ -276,7 +210,7 @@ public class DocModel extends DefaultTreeModel{
 		List<DocStr> parents = docStrDao_.findByKoDocId(id);
 		
 		if(parents.size() > 0){
-			//ä¸€ç•ªæµ…ã„Pathã‚’é¸æŠã™ã‚‹
+			//ˆê”Ôó‚¢Path‚ğ‘I‘ğ‚·‚é
 			int size = Integer.MAX_VALUE;
 			List<Long> miniPath = new ArrayList<Long>();
 			for(int i=0; i<parents.size(); i++){
@@ -295,12 +229,12 @@ public class DocModel extends DefaultTreeModel{
 		return path;
 	}	
 	
-	//rooté…ä¸‹ã®å…¨ãƒãƒ¼ãƒ‰ã«å¯¾ã—Leafã‹ã‚‰NodeProcessorã‚’è¡Œã†
+	//root”z‰º‚Ì‘Sƒm[ƒh‚É‘Î‚µLeaf‚©‚çNodeProcessor‚ğs‚¤
 	public void processAllNode(NodeProcessor procNode){
 		DocNode node = (DocNode)getRoot();
 		processAllNode(node, procNode);
 	}
-	//æŒ‡å®šnodeé…ä¸‹ã®å…¨ãƒãƒ¼ãƒ‰ã«å¯¾ã—Leafã‹ã‚‰NodeProcessorã‚’è¡Œã†
+	//w’ènode”z‰º‚Ì‘Sƒm[ƒh‚É‘Î‚µLeaf‚©‚çNodeProcessor‚ğs‚¤
 	public boolean processAllNode(DocNode node, NodeProcessor procNode){
 		Enumeration children = node.children();
 		while(children.hasMoreElements()){
@@ -312,7 +246,7 @@ public class DocModel extends DefaultTreeModel{
 		return procNode.process(node);
 	}
 	
-	//æŒ‡å®šnodeé…ä¸‹ã®å…¨ãƒãƒ¼ãƒ‰ã«å¯¾ã—æã‹ã‚‰NodeProcessorã‚’è¡Œã†
+	//w’ènode”z‰º‚Ì‘Sƒm[ƒh‚É‘Î‚µ}‚©‚çNodeProcessor‚ğs‚¤
 	public boolean processAllNode2(DocNode node, NodeProcessor procNode){
 		if( ! procNode.process(node) ){
 			return false;
@@ -328,11 +262,11 @@ public class DocModel extends DefaultTreeModel{
 		}
 		return ret;
 	}
-	//DBä¸Šã®æŒ‡å®šdocé…ä¸‹ã®å…¨Docã«å¯¾ã—æã‹ã‚‰DocProcessorã‚’è¡Œã†
+	//DBã‚Ìw’èdoc”z‰º‚Ì‘SDoc‚É‘Î‚µ}‚©‚çDocProcessor‚ğs‚¤
 	public void processAllDoc2(Doc startDoc, DocProcessor procDoc, List<Doc> parents){
 		log.trace("start");
 		if( ! procDoc.process(startDoc, parents) ){
-			return;		//å­ä¾›ã¯å‡¦ç†ã—ãªã„
+			return;		//q‹Ÿ‚Íˆ—‚µ‚È‚¢
 		}
 
 		//get children
@@ -345,7 +279,7 @@ public class DocModel extends DefaultTreeModel{
 		for(int i=0;i < children.size() ; i++){
 			DocStr docStr = children.get(i);
 			
-			//æ³¨ï¼šè¦ä»¶æ§‹é€ ãŒå–å¾—ã™ã‚‹å­è¦ä»¶ãƒ»è¦ªè¦ä»¶ã¯ã€SotrTypeãŒèª­ã¿è¾¼ã¾ã‚Œã¦ã„ãªã„ï¼
+			//’F—vŒ\‘¢‚ªæ“¾‚·‚éq—vŒEe—vŒ‚ÍASotrType‚ª“Ç‚İ‚Ü‚ê‚Ä‚¢‚È‚¢I
 			Doc doc = docDao_.findByDocId(docStr.getKoDocId());
 			processAllDoc2(doc, procDoc, tempParents);
 		}
@@ -364,17 +298,6 @@ public class DocModel extends DefaultTreeModel{
 		log.trace("end");
 		return node;
 	}
-	//é€†ãƒ„ãƒªãƒ¼ç”¨
-	public DocNode addJijiDocFromDb(DocNode node){
-		log.trace("start");
-		Enumeration parents =node.children();
-		while(parents.hasMoreElements()){
-			DocNode parent = (DocNode)parents.nextElement();
-			parent = addParentDocFromDb(parent);
-		}
-		log.trace("end");
-		return node;
-	}
 	public DocNode addChildDocFromDb(DocNode oyaNode){
 		log.trace("start");
 //		long t = System.currentTimeMillis();
@@ -385,7 +308,7 @@ public class DocModel extends DefaultTreeModel{
 		if(oyaNode.getDoc() == null){
 			throw new IllegalArgumentException("node.getDoc() is null.");
 		}
-		if(oyaNode.getChildCount() > 0){	//ã™ã§ã«å­ä¾›ãŒã„ã‚‹å ´åˆã¯ã€è¿½åŠ ã—ãªã„
+		if(oyaNode.getChildCount() > 0){	//‚·‚Å‚Éq‹Ÿ‚ª‚¢‚éê‡‚ÍA’Ç‰Á‚µ‚È‚¢
 			return oyaNode;
 		}
 		
@@ -418,7 +341,7 @@ public class DocModel extends DefaultTreeModel{
 		for(int i=0;i < children.size() ; i++){
 			DocStr yk = children.get(i);
 			
-			//æ³¨ï¼šè¦ä»¶æ§‹é€ ãŒå–å¾—ã™ã‚‹å­è¦ä»¶ãƒ»è¦ªè¦ä»¶ã¯ã€SotrTypeãŒèª­ã¿è¾¼ã¾ã‚Œã¦ã„ãªã„ï¼
+			//’F—vŒ\‘¢‚ªæ“¾‚·‚éq—vŒEe—vŒ‚ÍASotrType‚ª“Ç‚İ‚Ü‚ê‚Ä‚¢‚È‚¢I
 			Doc doc = docDao_.findByDocId(yk.getKoDocId());
 			DocNode newDocNode = new DocNode(doc);
 			newDocNode.resetParentCount(docStrDao_);
@@ -428,8 +351,8 @@ public class DocModel extends DefaultTreeModel{
 		log.trace("end");
 		return oyaNode;
 	}
-	//é€†ãƒ„ãƒªãƒ¼ç”¨
-	public DocNode addParentDocFromDb(DocNode koNode){
+	//descent search—pi‘S¢‘ãj
+	public DocNode addParentDocFromDbAll(DocNode koNode){
 		log.trace("start");
 		
 		if(koNode == null){
@@ -438,7 +361,7 @@ public class DocModel extends DefaultTreeModel{
 		if(koNode.getDoc() == null){
 			throw new IllegalArgumentException("node.getDoc() is null.");
 		}
-		if(koNode.getChildCount() > 0){	//ã™ã§ã«è¦ªï¼ˆå®Ÿéš›ã¯å­ä¾›ï¼‰ãŒã„ã‚‹å ´åˆã¯ã€è¿½åŠ ã—ãªã„
+		if(koNode.getChildCount() > 0){	//‚·‚Å‚ÉeiÀÛ‚Íq‹Ÿj‚ª‚¢‚éê‡‚ÍA’Ç‰Á‚µ‚È‚¢
 			return koNode;
 		}
 		
@@ -452,16 +375,20 @@ public class DocModel extends DefaultTreeModel{
 		for(int i=0;i < parents.size() ; i++){
 			DocStr yk = parents.get(i);
 			
-			//æ³¨ï¼šè¦ä»¶æ§‹é€ ãŒå–å¾—ã™ã‚‹å­è¦ä»¶ãƒ»è¦ªè¦ä»¶ã¯ã€SotrTypeãŒèª­ã¿è¾¼ã¾ã‚Œã¦ã„ãªã„ï¼
+			//’F—vŒ\‘¢‚ªæ“¾‚·‚éq—vŒEe—vŒ‚ÍASotrType‚ª“Ç‚İ‚Ü‚ê‚Ä‚¢‚È‚¢I
 			Doc doc = docDao_.findByDocId(yk.getOyaDocId());
 			DocNode newDocNode = new DocNode(doc);
 			newDocNode.resetParentCount(docStrDao_);
 			koNode.add(newDocNode);
+			
+			if(!newDocNode.getDoc().isRoot()){	//ƒ‹[ƒgƒm[ƒhˆÈŠO‚Ìê‡‚ÍAX‚Ée‚ğ’Ç‰Á
+				addParentDocFromDbAll(newDocNode);
+			}
 		}
 		log.trace("end");
 		return koNode;
 	}
-	// expectNodeã®idã¨ä¸€è‡´ã™ã‚‹ã€expectNodeä»¥å¤–ã®ãƒãƒ¼ãƒ‰ã‚’èª­ã¿è¾¼ã¿ãªãŠã™
+	// expectNode‚Ìid‚Æˆê’v‚·‚éAexpectNodeˆÈŠO‚Ìƒm[ƒh‚ğ“Ç‚İ‚İ‚È‚¨‚·
 	void refreshChildrenFromDb(DocNode expectNode){
 		long id = expectNode.getDoc().getDocId();
 		log.trace("start id="+id);
@@ -480,19 +407,19 @@ public class DocModel extends DefaultTreeModel{
 				if( oyaNodeId_ == nodeDoc.getDocId()){
 					node.removeAllChildren();
 					reload(node);
-					//å­è¦ä»¶ã‚’è¿½åŠ 
+					//q—vŒ‚ğ’Ç‰Á
 					addChildDocFromDb(node);
-					//å­«è¦ä»¶ã‚’è¿½åŠ 
+					//‘·—vŒ‚ğ’Ç‰Á
 					addMagoDocFromDb(node);
 				}
-				return true;	//ç¶šè¡Œ
+				return true;	//‘±s
 			}
 		}
 		Inserter proc = new Inserter(id, expectNode);
 		processAllNode(proc);
 		log.trace("end");
 	}
-	// idã¨ä¸€è‡´ã™ã‚‹ã€ãƒãƒ¼ãƒ‰ã®è¦ªæ•°ã‚’countã«æ›´æ–°ã™ã‚‹
+	// id‚Æˆê’v‚·‚éAƒm[ƒh‚Ìe”‚ğcount‚ÉXV‚·‚é
 	void refreshParentCount(long id, int count){
 		log.trace("start id="+id);
 		class ParentCountSetter implements NodeProcessor{
@@ -507,14 +434,14 @@ public class DocModel extends DefaultTreeModel{
 				if( targetId_ == nodeDoc.getDocId()){
 					node.setParentCount(count_);
 				}
-				return true;	//ç¶šè¡Œ
+				return true;	//‘±s
 			}
 		}
 		ParentCountSetter proc = new ParentCountSetter(id, count);
 		processAllNode(proc);
 		log.trace("end");
 	}
-	// idã¨ä¸€è‡´ã™ã‚‹ã€ãƒãƒ¼ãƒ‰ã®ä½œæ¥­æ•°ã‚’countã«æ›´æ–°ã™ã‚‹
+	// id‚Æˆê’v‚·‚éAƒm[ƒh‚Ìì‹Æ”‚ğcount‚ÉXV‚·‚é
 	public void refreshWorkCount(long id, int count){
 		log.trace("start id="+id);
 		class WorkParentCountSetter implements NodeProcessor{
@@ -529,7 +456,7 @@ public class DocModel extends DefaultTreeModel{
 				if( targetId_ == nodeDoc.getDocId()){
 					nodeDoc.setWorkCount(count_);
 				}
-				return true;	//ç¶šè¡Œ
+				return true;	//‘±s
 			}
 		}
 		WorkParentCountSetter proc = new WorkParentCountSetter(id, count);
@@ -549,7 +476,7 @@ public class DocModel extends DefaultTreeModel{
 //			try{
 				newDocNode = insertDocFromAnotherProcess2(idMap, oyaNode, node, copyCopyData);
 //			}catch(DoNothingException e){
-				//æ—¢ã«å­˜åœ¨ã™ã‚‹ãƒãƒ¼ãƒ‰ã®å ´åˆã¯ã€ã“ã®ä¾‹å¤–ãŒã‚¹ãƒ­ãƒ¼ã•ã‚Œã‚‹ã®ã§ç„¡è¦–ã™ã‚‹ã€‚
+				//Šù‚É‘¶İ‚·‚éƒm[ƒh‚Ìê‡‚ÍA‚±‚Ì—áŠO‚ªƒXƒ[‚³‚ê‚é‚Ì‚Å–³‹‚·‚éB
 //				newDocNode = node;
 //			}
 			trn_.commit();
@@ -566,7 +493,7 @@ public class DocModel extends DefaultTreeModel{
 				try {
 					trn_.rollback();
 				} catch (Exception e1) {
-					//ã“ã“ã®ä¾‹å¤–ã¯ç„¡è¦–
+					//‚±‚±‚Ì—áŠO‚Í–³‹
 				}
 			}
 		}
@@ -575,7 +502,9 @@ public class DocModel extends DefaultTreeModel{
 		throws AppException{
 		
 		Doc impDoc = impNode.getDoc();
-		impDoc.setDocTypeId(0);	//ãƒ«ãƒ¼ãƒˆã®å¯èƒ½æ€§ã‚‚ã‚ã‚‹ã®ã§ã‚¯ãƒªã‚¢
+		if(impDoc.getDocTypeId() == Doc.ROOT_TYPE){
+			impDoc.setDocTypeId(0);	//ƒ‹[ƒg‚¾‚Á‚½‚çƒNƒŠƒA
+		}
 		boolean isInsertedDoc = false;
     	long impDocId = impDoc.getDocId();
     	if( idMap.containsKey(impDocId)){
@@ -592,9 +521,9 @@ public class DocModel extends DefaultTreeModel{
     	try{
     		newDocNode = insertDoc2(oyaNode, impDoc);
 		}catch(DoNothingException e){
-			//æ—¢ã«å­˜åœ¨ã™ã‚‹ãƒãƒ¼ãƒ‰ã®å ´åˆã¯ã€ã“ã®ä¾‹å¤–ãŒã‚¹ãƒ­ãƒ¼ã•ã‚Œã‚‹ã®ã§ç„¡è¦–ã™ã‚‹ã€‚
+			//Šù‚É‘¶İ‚·‚éƒm[ƒh‚Ìê‡‚ÍA‚±‚Ì—áŠO‚ªƒXƒ[‚³‚ê‚é‚Ì‚Å–³‹‚·‚éB
     		if(copyCopyData){
-        		//CopyDataãƒãƒƒãƒã§ã‚³ãƒ”ãƒ¼ã—ã¦ç·¨é›†å¾Œã«å†åº¦ã‚ªãƒªã‚¸ãƒŠãƒ«Zeetaã¸ã‚³ãƒ”ãƒ¼ã—ãŸå ´åˆ
+        		//CopyDataƒoƒbƒ`‚ÅƒRƒs[‚µ‚Ä•ÒWŒã‚ÉÄ“xƒIƒŠƒWƒiƒ‹Zeeta‚ÖƒRƒs[‚µ‚½ê‡
     		}else{
     			throw e;
     		}
@@ -602,7 +531,7 @@ public class DocModel extends DefaultTreeModel{
 
 		idMap.put(impDocId, newDocNode.getDoc().getDocId());
 		
-		if( isInsertedDoc ){	//ä¸€æ—¦è¿½åŠ æ¸ˆã¿ã®Docã®å ´åˆã€å­ä¾›ã‚’è¿½åŠ ã™ã‚‹å¿…è¦ã¯ãªã„
+		if( isInsertedDoc ){	//ˆê’U’Ç‰ÁÏ‚İ‚ÌDoc‚Ìê‡Aq‹Ÿ‚ğ’Ç‰Á‚·‚é•K—v‚Í‚È‚¢
 			return newDocNode;
 		}
 
@@ -615,9 +544,9 @@ public class DocModel extends DefaultTreeModel{
 	}
 	private Doc setExistDocId(Doc doc) {
 		long newId = -1;
-		//idã ã‘ã§æ¤œç´¢ã—ã¦ã‚‚ã‚³ãƒ”ãƒ¼å…ƒã§ã‚‚è¿½åŠ ã—ã¦ã„ã‚‹åˆ¥ãªãƒãƒ¼ãƒ‰ãŒhitã™ã‚‹å¯èƒ½æ€§ãŒã‚ã‚‹ã®ã§
-		//ãã®ä»–ã®å±æ€§ã‚‚ä¸€è‡´ã—ã¦ã„ã‚‹ã‚‚ã®ã‚’æ¤œç´¢ã™ã‚‹ã€‚ãŸã ã—ã€textéƒ¨åˆ†ã¯ã€æ›´æ–°ã•ã‚Œã¦ã„ã‚‹
-		//å¯èƒ½æ€§ãŒã‚ã‚‹ã®ã§ä¸ä¸€è‡´ã§ã‚‚ã‹ã¾ã‚ãªã„ã¨ã—ã¦ã„ã‚‹ã€‚
+		//id‚¾‚¯‚ÅŒŸõ‚µ‚Ä‚àƒRƒs[Œ³‚Å‚à’Ç‰Á‚µ‚Ä‚¢‚é•Ê‚Èƒm[ƒh‚ªhit‚·‚é‰Â”\«‚ª‚ ‚é‚Ì‚Å
+		//‚»‚Ì‘¼‚Ì‘®«‚àˆê’v‚µ‚Ä‚¢‚é‚à‚Ì‚ğŒŸõ‚·‚éB‚½‚¾‚µAtext•”•ª‚ÍAXV‚³‚ê‚Ä‚¢‚é
+		//‰Â”\«‚ª‚ ‚é‚Ì‚Å•sˆê’v‚Å‚à‚©‚Ü‚í‚È‚¢‚Æ‚µ‚Ä‚¢‚éB
 		List<Doc> existDocs = docDao_.findSameDoc(doc);
 		if(existDocs != null){
 			switch(existDocs.size()){
@@ -627,11 +556,11 @@ public class DocModel extends DefaultTreeModel{
 				newId = existDocs.get(0).getDocId();
 //log.debug("impId=" + doc.getDocId() + ", existId="+newId);
 //if( doc.getDocId() != newId){
-//	log.debug("@@@@@@@@@@@@@@@@@ ã¡ãŒã†ãã‡ doc="+doc);
+//	log.debug("@@@@@@@@@@@@@@@@@ ‚¿‚ª‚¤‚¼‚¥ doc="+doc);
 //}
 				break;
 			default:
-				throw new AppException("<html>textä»¥å¤–ãŒå…¨ãåŒã˜NodeãŒè¤‡æ•°å­˜åœ¨ã—ã¾ã™ã€‚" +
+				throw new AppException("<html>textˆÈŠO‚ª‘S‚­“¯‚¶Node‚ª•¡”‘¶İ‚µ‚Ü‚·B" +
 						"<pre>" +
 						" doc="+doc);
 			}
@@ -653,7 +582,7 @@ public class DocModel extends DefaultTreeModel{
 		boolean isNewNode = false;
 		//insert into DB
 		if(docDao_.findByDocId(doc.getDocId())== null){
-			log.debug("å­˜åœ¨ã—ãªã„ã®ã§insert new="+doc);
+			log.debug("‘¶İ‚µ‚È‚¢‚Ì‚Åinsert new="+doc);
 			if(log.isDebugEnabled()) log.debug("\tnewDoc="+doc);
 			doc.check();
 			docDao_.insert(doc);
@@ -662,29 +591,29 @@ public class DocModel extends DefaultTreeModel{
 
 		//Node link 
 		if( !linkDoc(oyaNode, doc, !isNewNode) ){
-			//ã“ã®ã‚±ãƒ¼ã‚¹ã¯ã€oyaNodeé…ä¸‹ã«æ—¢ã«å­˜åœ¨ã™ã‚‹ã®ã§linkDocã—ãªã‹ã£ãŸã‚±ãƒ¼ã‚¹
+			//‚±‚ÌƒP[ƒX‚ÍAoyaNode”z‰º‚ÉŠù‚É‘¶İ‚·‚é‚Ì‚ÅlinkDoc‚µ‚È‚©‚Á‚½ƒP[ƒX
 			Enumeration children = oyaNode.children();
 			while(children.hasMoreElements()){
 				DocNode existNode = (DocNode)children.nextElement();
 				if(existNode.getDoc().getDocId() == doc.getDocId()){
-					//ã“ã®ã¾ã¾existNodeã‚’ãƒªã‚¿ãƒ³ã™ã‚‹ã¨ctrl+Xã§ç§»å‹•ã®å ´åˆã€
-					//existNodeã‚’å‰Šé™¤ã—ã¦ã—ã¾ã†ãƒã‚°ãŒã‚ã£ãŸã€‚
-					//ã“ã®ãŸã‚ã€åŒã˜ä½ç½®ã«ç§»å‹•ã™ã‚‹å ´åˆã¯ã€ä¾‹å¤–ã‚’ã‚¹ãƒ­ãƒ¼ã—ã¦
-					//é€šçŸ¥ã™ã‚‹ã“ã¨ã«ã™ã‚‹ã€‚
+					//‚±‚Ì‚Ü‚ÜexistNode‚ğƒŠƒ^ƒ“‚·‚é‚Æctrl+X‚ÅˆÚ“®‚Ìê‡A
+					//existNode‚ğíœ‚µ‚Ä‚µ‚Ü‚¤ƒoƒO‚ª‚ ‚Á‚½B
+					//‚±‚Ì‚½‚ßA“¯‚¶ˆÊ’u‚ÉˆÚ“®‚·‚éê‡‚ÍA—áŠO‚ğƒXƒ[‚µ‚Ä
+					//’Ê’m‚·‚é‚±‚Æ‚É‚·‚éB
 //					return existNode;
 					throw new DoNothingException(existNode);
 				}
 			}
-			//oyaNodeãŒæ–°ã—ã„ãƒãƒ¼ãƒ‰å ´åˆã¯ã€è¦‹ã¤ã‹ã‚‰ãªã„ã®ã§ä¸‹ã§ä½œæˆã™ã‚‹
+			//oyaNode‚ªV‚µ‚¢ƒm[ƒhê‡‚ÍAŒ©‚Â‚©‚ç‚È‚¢‚Ì‚Å‰º‚Åì¬‚·‚é
 		}
 		
-		//Modelæ›´æ–°
+		//ModelXV
 		DocNode newDocNode = new DocNode(doc);
 		insertNodeInto(newDocNode, oyaNode, oyaNode.getChildCount());
 		newDocNode.resetParentCount(docStrDao_);
 		
 //		if(!isNewNode){
-			//ä»–ã®è¦ªã®è¡¨ç¤ºã‚’æ›´æ–°
+			//‘¼‚Ìe‚Ì•\¦‚ğXV
 			refreshChildrenFromDb( oyaNode );
 			refreshParentCount(
 					newDocNode.getDoc().getDocId(),
@@ -694,21 +623,21 @@ public class DocModel extends DefaultTreeModel{
 		return newDocNode;
 		
 	}
-	// true-linkã‚’ä½œæˆã—ãŸã€false-linkã‚’ä½œæˆã—ã¦ã„ãªã„
+	// true-link‚ğì¬‚µ‚½Afalse-link‚ğì¬‚µ‚Ä‚¢‚È‚¢
 	boolean linkDoc(DocNode oyaNode, Doc doc, boolean needCheck) 
 		throws AppException{
 		Doc oyaDoc = oyaNode.getDoc();
 
 		if( needCheck ){
-			//è¿½åŠ ã§ãã‚‹ã‹ãƒã‚§ãƒƒã‚¯ã™ã‚‹
+			//’Ç‰Á‚Å‚«‚é‚©ƒ`ƒFƒbƒN‚·‚é
 			switch(canInsert(oyaDoc, doc)){
-			case 1:		//ã™ã§ã«linkãŒã‚ã‚‹
+			case 1:		//‚·‚Å‚Élink‚ª‚ ‚é
 				return false;
 			case 0:
 				break;
 			default:
-				log.error("å¾ªç’°å‚ç…§ã€€p="+oyaDoc+",c="+doc);
-				throw new AppException("å¾ªç’°å‚ç…§ã«ãªã‚‹ãŸã‚ãƒãƒ¼ãƒ‰ã®é–¢é€£ã‚’ä½œæˆã§ãã¾ã›ã‚“ã€‚");
+				log.error("zŠÂQÆ@p="+oyaDoc+",c="+doc);
+				throw new AppException("zŠÂQÆ‚É‚È‚é‚½‚ßƒm[ƒh‚ÌŠÖ˜A‚ğì¬‚Å‚«‚Ü‚¹‚ñB");
 			}
 		}
 		
@@ -723,25 +652,25 @@ public class DocModel extends DefaultTreeModel{
 		
 		return true;
 	}
-	// ret = 1:ã™ã§ã«é–¢ä¿‚ãŒã‚ã‚‹ã€0:é–¢ä¿‚ãŒãªã„ã®ã§ä½œæˆã—ã¦ã‚ˆã„ã€-1:å¾ªç’°å‚ç…§
+	// ret = 1:‚·‚Å‚ÉŠÖŒW‚ª‚ ‚éA0:ŠÖŒW‚ª‚È‚¢‚Ì‚Åì¬‚µ‚Ä‚æ‚¢A-1:zŠÂQÆ
 	int canInsert(Doc oyaDoc, Doc doc){
 		Set<Long> idSet = new HashSet<Long>();
 		
-		//oyaDocã®å­ä¾›ã‚’é›†ã‚ã‚‹
+		//oyaDoc‚Ìq‹Ÿ‚ğW‚ß‚é
 		List kouzouList = docStrDao_.findByOyaDocId(oyaDoc.getDocId());
 		for(Iterator<DocStr> it = kouzouList.iterator(); it.hasNext();){
 			idSet.add(it.next().getKoDocId());
 		}
 		
-		//ã“ã“ã§ä¸€æ—¦ãƒã‚§ãƒƒã‚¯
+		//‚±‚±‚Åˆê’Uƒ`ƒFƒbƒN
 		if(idSet.contains(doc.getDocId())){
 			return 1;
 		}
 		
-		//è¦ªè¦ä»¶ã®å…ˆç¥–ã‚’å…¨ã¦é›†ã‚ã‚‹
+		//e—vŒ‚Ìæ‘c‚ğ‘S‚ÄW‚ß‚é
 		idSet = collectParent(idSet, oyaDoc.getDocId());
 
-		//å†åº¦ãƒã‚§ãƒƒã‚¯
+		//Ä“xƒ`ƒFƒbƒN
 		if(idSet.contains(doc.getDocId())){
 			return -1;
 		}
@@ -774,7 +703,7 @@ public class DocModel extends DefaultTreeModel{
 						removeNodeFromParent((MutableTreeNode)node);
 					}
 				}
-				return true;	//ç¶šè¡Œ
+				return true;	//‘±s
 			}
 		}
 		Remover proc = new Remover(id, oyaId);
@@ -788,13 +717,13 @@ public class DocModel extends DefaultTreeModel{
 		Doc parent = ((DocNode)removeNode.getParent()).getDoc();
 		deleteDoc(parent.getDocId(), doc);
 
-		//ãƒ¢ãƒ‡ãƒ«ã®æ›´æ–°ï¼ˆTreeã«èª­ã¿è¾¼ã¾ã‚Œã¦ã„ã‚‹ãƒãƒ¼ãƒ‰å…¨ã¦ã‚’å‰Šé™¤ï¼‰
+		//ƒ‚ƒfƒ‹‚ÌXViTree‚É“Ç‚İ‚Ü‚ê‚Ä‚¢‚éƒm[ƒh‘S‚Ä‚ğíœj
 		removeDocNodeFromParent(
 				removeNode.getDoc().getDocId(),
 				parent.getDocId()
 				);
 		removeNode.resetParentCount(docStrDao_);
-		if(removeNode.getParentCount() > 0){	//ã¾ã èª°ã‹ã®å­ä¾›ã«ãªã£ã¦ã„ã‚‹
+		if(removeNode.getParentCount() > 0){	//‚Ü‚¾’N‚©‚Ìq‹Ÿ‚É‚È‚Á‚Ä‚¢‚é
 			refreshParentCount(
 					removeNode.getDoc().getDocId(),
 					removeNode.getParentCount()
@@ -808,34 +737,33 @@ public class DocModel extends DefaultTreeModel{
 			trn_.begin();
 			deleteDoc(removeNode);		
 			trn_.commit();
-			
 			log.trace("end");
 		}catch(Throwable e){
 			try {
 				trn_.rollback();
 			} catch (Exception e1) {
-				//ã“ã“ã®ä¾‹å¤–ã¯ç„¡è¦–
+				//‚±‚±‚Ì—áŠO‚Í–³‹
 			}
 			throw new RuntimeException(e);
 		}
 	}
 	void deleteDoc(long parentId, Doc removeDoc){
 		long removeId = removeDoc.getDocId();
-		//è¦ä»¶æ§‹é€ ã®å‰Šé™¤
+		//—vŒ\‘¢‚Ìíœ
 		docStrDao_.delete(new DocStr(parentId, removeId));
 		
-		//ä»–ã®è¦ªãŒå­˜åœ¨ã—ãªã‘ã‚Œã°è¦ä»¶ã‚’å‰Šé™¤
+		//‘¼‚Ìe‚ª‘¶İ‚µ‚È‚¯‚ê‚Î—vŒ‚ğíœ
 		int parentCount = docStrDao_.getParentCount(removeId);
 		if(parentCount <= 0){
-			//ã¾ãšå­ä¾›ã‚’å‰Šé™¤
+			//‚Ü‚¸q‹Ÿ‚ğíœ
 			List<DocStr> children = docStrDao_.findByOyaDocId(removeId);
 			for(int i=0; i<children.size(); i++){
-				//ã“ã“ã§å†èª­ã¿è¾¼ã¿ã™ã‚‹ã®ã¯ã€ã„ã‹ã‹ãŒãªã‚‚ã®ã‹ã¨æ€ã‚ã‚Œã‚‹ãŒã€
-				//å‰Šé™¤ã®å ´åˆã ã‘ãªã®ã§ã‚ˆã—ã¨ã™ã‚‹ã€‚
+				//‚±‚±‚ÅÄ“Ç‚İ‚İ‚·‚é‚Ì‚ÍA‚¢‚©‚©‚ª‚È‚à‚Ì‚©‚Æv‚í‚ê‚é‚ªA
+				//íœ‚Ìê‡‚¾‚¯‚È‚Ì‚Å‚æ‚µ‚Æ‚·‚éB
 				Doc koDoc = docDao_.findByDocId(children.get(i).getKoDocId());
 				deleteDoc(removeId, koDoc);
 			}
-			//è‡ªèº«ã‚’å‰Šé™¤
+			//©g‚ğíœ
 			docDao_.delete(removeDoc);
 		}
 	}
@@ -847,10 +775,10 @@ public class DocModel extends DefaultTreeModel{
 					node.getDoc().getDocId()
 				);
 		if(newDoc != null){
-			node.setUserObject(newDoc);	//æ–°ã—ã„docã«å…¥ã‚Œæ›¿ãˆã‚‹
+			node.setUserObject(newDoc);	//V‚µ‚¢doc‚É“ü‚ê‘Ö‚¦‚é
 			docChanged(newDoc);
 		}else{
-			//æ¶ˆã•ã‚Œã¦ã‚‚ã†ãŸã€‚ã©ãªã„ã—ã‚ˆã€‚JTreeä¸Šã‹ã‚‰æ¶ˆã›ã°ãˆãˆã‚“ã‚„
+			//Á‚³‚ê‚Ä‚à‚¤‚½B‚Ç‚È‚¢‚µ‚æBJTreeã‚©‚çÁ‚¹‚Î‚¦‚¦‚ñ‚â
 			node.removeFromParent();
 		}
 		log.trace("end");
@@ -860,9 +788,9 @@ public class DocModel extends DefaultTreeModel{
 	public void updateDoc(Doc doc) {
 		log.trace("start");
 		doc.check();
-		if(log.isDebugEnabled()) log.debug("\tæ›´æ–°å‰ã€€doc="+doc);
+		if(log.isDebugEnabled()) log.debug("\tXV‘O@doc="+doc);
 		docDao_.update(doc);
-		if(log.isDebugEnabled()) log.debug("\tæ›´æ–°å¾Œã€€doc="+doc);
+		if(log.isDebugEnabled()) log.debug("\tXVŒã@doc="+doc);
 //		youkenChanged(youken); 
 		log.trace("end");
 	}
@@ -891,8 +819,8 @@ public class DocModel extends DefaultTreeModel{
 			Doc koDoc = children.nextElement().getDoc();
 		    DocStr yk = docStrDao_.find(oyaDoc.getDocId(), koDoc.getDocId());
 		    if( yk == null ){
-		    	throw new AppException("ã“ã®ãƒ¬ãƒ™ãƒ«ã®ãƒ„ãƒªãƒ¼æ§‹é€ ãŒå¤‰æ›´ã•ã‚Œã¦ã„ã¾ã™ã€‚\n" +
-		    			"è¦ªãƒãƒ¼ãƒ‰ã‚’é¸æŠã—ã¦refreshã—ã¦ãã ã•ã„ã€‚");
+		    	throw new AppException("‚±‚ÌƒŒƒxƒ‹‚ÌƒcƒŠ[\‘¢‚ª•ÏX‚³‚ê‚Ä‚¢‚Ü‚·B\n" +
+		    			"eƒm[ƒh‚ğ‘I‘ğ‚µ‚Ärefresh‚µ‚Ä‚­‚¾‚³‚¢B");
 		    }
 		    yk.setSEQ(seq);
 		    docStrDao_.update(yk);

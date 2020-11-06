@@ -22,7 +22,7 @@ public class Doc2DaoImpl extends AbstractDao implements Doc2Dao {
 		
 		return getEntityManager().find(sql, keywords);
 	}
-// ä½¿ã‚ãªã„ã®ã§ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆ
+// g‚í‚È‚¢‚Ì‚ÅƒRƒƒ“ƒgƒAƒEƒg
 //	public List<Doc> findByTitleOrText(String[] keywords) {
 //        final String SQL_TITLE="LOWER(docTitle) like LOWER(?)";
 //        final String SQL_TEXT ="LOWER(docCont) like LOWER(?)";

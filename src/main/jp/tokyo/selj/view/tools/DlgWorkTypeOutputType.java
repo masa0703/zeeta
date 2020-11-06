@@ -43,7 +43,7 @@ public class DlgWorkTypeOutputType extends JDialog {
 
 	ActionMap actionMap_ = new ActionMap();
 
-	//Actionã®è¦ªã‚¯ãƒ©ã‚¹
+	//Action‚ÌeƒNƒ‰ƒX
 	private abstract class ActBase2 extends ActBase {
 		ActBase2(ActionMap map){
 			super(map);
@@ -60,7 +60,7 @@ public class DlgWorkTypeOutputType extends JDialog {
 		public ActWorkTypeShowNewDlg(ActionMap map){
 			super(map);
 			putValue(Action.NAME, "new");
-			putValue(Action.SHORT_DESCRIPTION, "ä½œæ¥­ç¨®é¡ã‚’è¿½åŠ ã—ã¾ã™(Ins)");
+			putValue(Action.SHORT_DESCRIPTION, "ì‹Æí—Ş‚ğ’Ç‰Á‚µ‚Ü‚·(Ins)");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			getDlg().newWorkType();
@@ -79,12 +79,12 @@ public class DlgWorkTypeOutputType extends JDialog {
 		public ActWorkTypeShowUpdateDlg(ActionMap map){
 			super(map);
 			putValue(Action.NAME, "update");
-			putValue(Action.SHORT_DESCRIPTION, "ä½œæ¥­ç¨®é¡ã‚’æ›´æ–°ã—ã¾ã™");
+			putValue(Action.SHORT_DESCRIPTION, "ì‹Æí—Ş‚ğXV‚µ‚Ü‚·");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			JTable table = getCntWorkType().getJTable();
 			if(table.getSelectedRow() < 0){
-				throw new AppException("work typeã‚’é¸æŠã—ã¦ãã ã•ã„"); 
+				throw new AppException("work type‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢"); 
 			}
 			int idIndex = workTypeModel_.getColumnIndex("id");
 			int id = ((Number)table.getValueAt(
@@ -97,13 +97,13 @@ public class DlgWorkTypeOutputType extends JDialog {
 		public ActWorkTypeRemove(ActionMap map){
 			super(map);
 			putValue(Action.NAME, "remove");
-			putValue(Action.SHORT_DESCRIPTION, "ä½œæ¥­ç¨®é¡ã‚’å‰Šé™¤ã—ã¾ã™(Del)");
+			putValue(Action.SHORT_DESCRIPTION, "ì‹Æí—Ş‚ğíœ‚µ‚Ü‚·(Del)");
 		}
 		public void actionPerformed2(ActionEvent e) {
-			//ä½œæ¥­ç¨®é¡ã®å‰Šé™¤ã‚’è¡Œã†
+			//ì‹Æí—Ş‚Ìíœ‚ğs‚¤
 			JTable table = getCntWorkType().getJTable();
 			if(table.getSelectedRow() < 0){
-				throw new AppException("work typeã‚’é¸æŠã—ã¦ãã ã•ã„"); 
+				throw new AppException("work type‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢"); 
 			}
 			int idIndex = workTypeModel_.getColumnIndex("id");
 			int id = ((Number)table.getValueAt(
@@ -111,8 +111,8 @@ public class DlgWorkTypeOutputType extends JDialog {
 
 			if( JOptionPane.showConfirmDialog(
 					DlgWorkTypeOutputType.this
-					,"é¸æŠä¸­ã®ä½œæ¥­ç¨®é¡ã‚’å‰Šé™¤ã—ã¾ã™ã€‚\n" +
-					"ã‚ˆã‚ã—ã„ã§ã™ã‹ï¼Ÿ",""
+					,"‘I‘ğ’†‚Ìì‹Æí—Ş‚ğíœ‚µ‚Ü‚·B\n" +
+					"‚æ‚ë‚µ‚¢‚Å‚·‚©H",""
 					,JOptionPane.YES_NO_OPTION
 					,JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
 						
@@ -130,19 +130,19 @@ public class DlgWorkTypeOutputType extends JDialog {
 		public ActOutputTypeShowNewDlg(ActionMap map){
 			super(map);
 			putValue(Action.NAME, "new");
-			putValue(Action.SHORT_DESCRIPTION, "æˆæœç‰©ç¨®é¡ã‚’è¿½åŠ ã—ã¾ã™(Ins)");
+			putValue(Action.SHORT_DESCRIPTION, "¬‰Ê•¨í—Ş‚ğ’Ç‰Á‚µ‚Ü‚·(Ins)");
 		}
 		public void actionPerformed2(ActionEvent e) {
-			//é¸æŠä¸­ã®ä½œæ¥­ã‚¿ã‚¤ãƒ—ã‚’å–å¾—
+			//‘I‘ğ’†‚Ìì‹Æƒ^ƒCƒv‚ğæ“¾
 			JTable workTypeTable = getCntWorkType().getJTable();
 			if(workTypeTable.getSelectedRow() < 0){
-				throw new AppException("work typeã‚’é¸æŠã—ã¦ãã ã•ã„"); 
+				throw new AppException("work type‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢"); 
 			}
 			int idIndex = workTypeModel_.getColumnIndex("id");
 			int workTypeId = ((Number)workTypeTable.getValueAt(
 								workTypeTable.getSelectedRow(), idIndex)).intValue();
 
-			//æˆæœç‰©ç¨®é¡ã®æ–°è¦ç™»éŒ²ç”»é¢è¡¨ç¤º
+			//¬‰Ê•¨í—Ş‚ÌV‹K“o˜^‰æ–Ê•\¦
 			getDlg().newOutputType(workTypeId);
 			getDlg().setVisible(true);
 		}
@@ -159,12 +159,12 @@ public class DlgWorkTypeOutputType extends JDialog {
 		public ActOutputTypeUpdate(ActionMap map){
 			super(map);
 			putValue(Action.NAME, "update");
-			putValue(Action.SHORT_DESCRIPTION, "æˆæœç‰©ç¨®é¡ã‚’æ›´æ–°ã—ã¾ã™");
+			putValue(Action.SHORT_DESCRIPTION, "¬‰Ê•¨í—Ş‚ğXV‚µ‚Ü‚·");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			JTable table = getCntOutputType().getJTable();
 			if(table.getSelectedRow() < 0){
-				throw new AppException("output typeã‚’é¸æŠã—ã¦ãã ã•ã„"); 
+				throw new AppException("output type‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢"); 
 			}
 			int idIndex = outputTypeModel_.getColumnIndex("id");
 			int id = ((Number)table.getValueAt(
@@ -177,13 +177,13 @@ public class DlgWorkTypeOutputType extends JDialog {
 		public ActOutputTypeDelete(ActionMap map){
 			super(map);
 			putValue(Action.NAME, "remove");
-			putValue(Action.SHORT_DESCRIPTION, "æˆæœç‰©ç¨®é¡ã‚’å‰Šé™¤ã—ã¾ã™(Del)");
+			putValue(Action.SHORT_DESCRIPTION, "¬‰Ê•¨í—Ş‚ğíœ‚µ‚Ü‚·(Del)");
 		}
 		public void actionPerformed2(ActionEvent e) {
-			//æˆæœç‰©ç¨®é¡ã®å‰Šé™¤ã‚’è¡Œã†
+			//¬‰Ê•¨í—Ş‚Ìíœ‚ğs‚¤
 			JTable table = getCntOutputType().getJTable();
 			if(table.getSelectedRow() < 0){
-				throw new AppException("work typeã‚’é¸æŠã—ã¦ãã ã•ã„"); 
+				throw new AppException("work type‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢"); 
 			}
 			int idIndex = outputTypeModel_.getColumnIndex("id");
 			int id = ((Number)table.getValueAt(
@@ -191,8 +191,8 @@ public class DlgWorkTypeOutputType extends JDialog {
 
 			if( JOptionPane.showConfirmDialog(
 					DlgWorkTypeOutputType.this
-					,"é¸æŠä¸­ã®æˆæœç‰©ç¨®é¡ã‚’å‰Šé™¤ã—ã¾ã™ã€‚\n" +
-					"ã‚ˆã‚ã—ã„ã§ã™ã‹ï¼Ÿ",""
+					,"‘I‘ğ’†‚Ì¬‰Ê•¨í—Ş‚ğíœ‚µ‚Ü‚·B\n" +
+					"‚æ‚ë‚µ‚¢‚Å‚·‚©H",""
 					,JOptionPane.YES_NO_OPTION
 					,JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
 						
@@ -204,7 +204,7 @@ public class DlgWorkTypeOutputType extends JDialog {
 	}
 
 
-	//ä½œæ¥­ç¨®é¡ãƒ†ãƒ¼ãƒ–ãƒ«ãƒ¢ãƒ‡ãƒ«
+	//ì‹Æí—Şƒe[ƒuƒ‹ƒ‚ƒfƒ‹
 	class WorkTypeModel extends DBTableModel{
 		@Override
 		public String getTableName() {
@@ -238,7 +238,7 @@ public class DlgWorkTypeOutputType extends JDialog {
 //			}
 //		}
 	}
-	//æˆæœç‰©ç¨®é¡ãƒ†ãƒ¼ãƒ–ãƒ«ãƒ¢ãƒ‡ãƒ«
+	//¬‰Ê•¨í—Şƒe[ƒuƒ‹ƒ‚ƒfƒ‹
 	class OutputTypeModel extends DBTableModel{
 		int selectedWorkTypeId_ = -1;
 		int curWorkTypeId_ = -1;
@@ -269,7 +269,7 @@ public class DlgWorkTypeOutputType extends JDialog {
 //			if( !super.isCellEditable(row,column)){
 //				return false;
 //			}
-//			if(column == getColumnIndex("outputId") //workTypeIdã¯ç·¨é›†å¯ã«ã—ã¦ãŠã
+//			if(column == getColumnIndex("outputId") //workTypeId‚Í•ÒW‰Â‚É‚µ‚Ä‚¨‚­
 //			|| column == getColumnIndex("newDate")
 //			){
 //				return false;
@@ -305,7 +305,7 @@ public class DlgWorkTypeOutputType extends JDialog {
 		}
 	}
 	void setOutputTableColumnWidth(){
-		//outputTypesã®åˆ—å¹…ã‚’æ±ºå®š
+		//outputTypes‚Ì—ñ•‚ğŒˆ’è
 		JTable outputTypeTable = getCntOutputType().getJTable();
 		int verIndex = outputTypeModel_.getVersionNoColumnIndex();
 		if(verIndex >= 0){
@@ -327,7 +327,7 @@ public class DlgWorkTypeOutputType extends JDialog {
 		getCntOutputType().getJTable().setModel(outputTypeModel_);
 		workPropTypeDao_ = (OutputPropTypeDao)daoCont_.getComponent(OutputPropTypeDao.class);
 		
-		//workTypeã®Actionã‚»ãƒƒãƒˆ
+		//workType‚ÌActionƒZƒbƒg
 		getCntWorkType().getActionMap().put(PnlTableMaint.ACTION_KEY_NEW, 
 				new ActWorkTypeShowNewDlg(actionMap_));
 		getCntWorkType().getActionMap().put(PnlTableMaint.ACTION_KEY_UPDATE, 
@@ -336,7 +336,7 @@ public class DlgWorkTypeOutputType extends JDialog {
 				new ActWorkTypeRemove(actionMap_));
 		getCntWorkType().setup();
 		
-		//outputTypeã®Actionã‚»ãƒƒãƒˆ
+		//outputType‚ÌActionƒZƒbƒg
 		getCntOutputType().getActionMap().put(PnlTableMaint.ACTION_KEY_NEW, 
 				new ActOutputTypeShowNewDlg(actionMap_));
 		getCntOutputType().getActionMap().put(PnlTableMaint.ACTION_KEY_UPDATE, 
@@ -345,7 +345,7 @@ public class DlgWorkTypeOutputType extends JDialog {
 				new ActOutputTypeDelete(actionMap_));
 		getCntOutputType().setup();
 			
-		//ä½œæ¥­ç¨®é¡ã®è¡Œé¸æŠã‚¤ãƒ™ãƒ³ãƒˆã‚’æ¤œçŸ¥
+		//ì‹Æí—Ş‚Ìs‘I‘ğƒCƒxƒ“ƒg‚ğŒŸ’m
 		getCntWorkType().setTableSelectionListener(new Synchronizer());
 	}
 	
@@ -414,7 +414,7 @@ public class DlgWorkTypeOutputType extends JDialog {
 
 	public void refreshOutputTypeTable() {
 		outputTypeModel_.executeQuery();
-		//æœ€å¾Œã«æŒ‡å®šã•ã‚ŒãŸworkTypeIdã¯ã€outputTypeModel_å†…ã«ä¿å­˜ã•ã‚Œã¦ã„ã‚‹
+		//ÅŒã‚Éw’è‚³‚ê‚½workTypeId‚ÍAoutputTypeModel_“à‚É•Û‘¶‚³‚ê‚Ä‚¢‚é
 		setOutputTableColumnWidth();
 	}
 	public void loadWorkTypeTable() {
@@ -423,7 +423,7 @@ public class DlgWorkTypeOutputType extends JDialog {
 		
 		workTypeModel_.executeQuery();
 		
-		//workTypeã®åˆ—å¹…ã‚’æ±ºå®š
+		//workType‚Ì—ñ•‚ğŒˆ’è
 		int verIndex = workTypeModel_.getVersionNoColumnIndex();
 		if(verIndex >= 0){
 			TableColumn col = table.getColumnModel().getColumn(verIndex);
@@ -435,7 +435,7 @@ public class DlgWorkTypeOutputType extends JDialog {
 		table.getColumnModel().getColumn(
 				workTypeModel_.getColumnIndex("seq")).setMaxWidth(60);	//seq
 		
-		//é¸æŠçŠ¶æ…‹ã‚’å¾©å…ƒ
+		//‘I‘ğó‘Ô‚ğ•œŒ³
 		if((selectedIndex >= 0) && ( workTypeModel_.getRowCount() > selectedIndex)){
 			table.getSelectionModel().addSelectionInterval(selectedIndex, selectedIndex);
 		}

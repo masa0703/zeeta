@@ -15,7 +15,7 @@ public class MessageView {
 			title = "";
 		}else{
 			iconType = JOptionPane.ERROR_MESSAGE;
-			title = "繝偵ャ繝医お繝ｳ繝峨Λ繝ｼ繝ｳ";
+			title = "ヒットエンドラーン";
 		}
 		JOptionPane.showMessageDialog(
 				c, new ExceptionPanel(e), title,iconType);

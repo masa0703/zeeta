@@ -37,13 +37,13 @@ public class WorkProp implements Serializable {
     
     public void check() throws AppException{
     	if(docId < 0){
-    		throw new ModelCheckException("docIdãŒä¸æ­£ã§ã™ docId="+docId);
+    		throw new ModelCheckException("docId‚ª•s³‚Å‚· docId="+docId);
     	}
     	if(workTypeId < 0){
-    		throw new ModelCheckException("workTypeIdãŒä¸æ­£ã§ã™ workTypeId="+workTypeId);
+    		throw new ModelCheckException("workTypeId‚ª•s³‚Å‚· workTypeId="+workTypeId);
     	}
     	if(outputPropTypeId < 0){
-    		throw new ModelCheckException("outputPropTypeIdãŒä¸æ­£ã§ã™ outputPropTypeId="+outputPropTypeId);
+    		throw new ModelCheckException("outputPropTypeId‚ª•s³‚Å‚· outputPropTypeId="+outputPropTypeId);
     	}
     }
     

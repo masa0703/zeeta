@@ -17,6 +17,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.swing.AbstractAction;
@@ -34,6 +35,7 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.border.BevelBorder;
+import javax.swing.tree.TreeNode;
 
 import jp.tokyo.selj.common.AppException;
 import jp.tokyo.selj.common.PreferenceWindowHelper;
@@ -73,7 +75,7 @@ public class DlgNewSearch extends JDialog implements ItemListener{
 	private JPanel jPanel = null;
 
 	/*
-	 * å±æ€§æ¯ã®æ¤œç´¢
+	 * ‘®«–ˆ‚ÌŒŸõ
 	 */
 	static abstract class Searcher {
 		String name_;
@@ -86,7 +88,7 @@ public class DlgNewSearch extends JDialog implements ItemListener{
 		public abstract List<Doc> searchDB(String str);
 		abstract boolean compareDoc(Doc doc, String str);
 		boolean compareDocWholeWord(Doc doc, String searchStr){
-			throw new RuntimeException("compareDocWholeWord()ãŒå‘¼ã°ã‚Œã¦ã‚‹ã§ã‡");
+			throw new RuntimeException("compareDocWholeWord()‚ªŒÄ‚Î‚ê‚Ä‚é‚Å‚¥");
 		}
 		void optionCtrl(Component wholeWord, Component descentSearch){
 		}
@@ -132,7 +134,7 @@ public class DlgNewSearch extends JDialog implements ItemListener{
 
 		String setPercent(String searchStr){
 			if(owner_.inpCheckWholeWord.isEnabled() && owner_.inpCheckWholeWord.isSelected()){
-				//ä½•ã‚‚ä»˜ã‘ãªã„
+				//‰½‚à•t‚¯‚È‚¢
 			}else {
 				searchStr = "%" + jp.tokyo.selj.model.Util.cnvLikeWord(searchStr) + "%";
 			}
@@ -145,10 +147,10 @@ public class DlgNewSearch extends JDialog implements ItemListener{
 			return keywords;
 		}
 		String[] splitSearchStr(String searchStr){
-			//æ¤œç´¢æ–‡å­—åˆ—ã‚’é…åˆ—ã«åˆ†å‰²
+			//ŒŸõ•¶š—ñ‚ğ”z—ñ‚É•ªŠ„
 			String[] keywords = null;
 			searchStr = searchStr.trim();
-			searchStr = searchStr.replace("ã€€", " ");
+			searchStr = searchStr.replace("@", " ");
 			if(searchStr.length() > 0){
 				keywords = searchStr.split(" ");
 			}
@@ -157,7 +159,7 @@ public class DlgNewSearch extends JDialog implements ItemListener{
 		
 	}
 	
-	//IDæ¤œç´¢
+	//IDŒŸõ
 	private Searcher TARGET_ID= new Searcher(this, "ID"){
 		public List<Doc> searchDB(String searchStr){
 			try {
@@ -169,10 +171,10 @@ public class DlgNewSearch extends JDialog implements ItemListener{
 				}else{
 					owner_.inpSearchStr.setBackground(Color.YELLOW);
 				}
-				docDao_.findByDocId(0);	//ãªã‚“ã®ãŸã‚ï¼Ÿ
+				docDao_.findByDocId(0);	//‚È‚ñ‚Ì‚½‚ßH
 				return docs;
 			}catch(Exception e){
-				throw new AppException("IDã¯æ•°å€¤ã§æŒ‡å®šãã ã•ã„");
+				throw new AppException("ID‚Í”’l‚Åw’è‚­‚¾‚³‚¢");
 			}
 		}
 		void optionCtrl(Component wholeWord, Component descentSearch){
@@ -182,20 +184,20 @@ public class DlgNewSearch extends JDialog implements ItemListener{
 			try{
 				return doc.getDocId() == Long.parseLong(searchStr.trim());
 			}catch(Exception e){
-				throw new AppException("IDã¯æ•°å€¤ã§æŒ‡å®šãã ã•ã„");
+				throw new AppException("ID‚Í”’l‚Åw’è‚­‚¾‚³‚¢");
 			}
 		}
 		boolean compareDocWholeWord(Doc doc, String searchStr){
 			return compareDoc(doc, searchStr);
 		}
 		public String getUsage(){
-			return "IDã‚’æ•°å€¤ã§æŒ‡å®šã—ã¦ãã ã•ã„";
+			return "ID‚ğ”’l‚Åw’è‚µ‚Ä‚­‚¾‚³‚¢";
 		}
 		public String[] getLastKeywords(){
 			return null;
 		}
 	};
-	//ã‚¿ã‚¤ãƒˆãƒ«æ¤œç´¢
+	//ƒ^ƒCƒgƒ‹ŒŸõ
 	private Searcher TARGET_TITLE= new DefaultSearcher(this, "Title"){
 		Doc setDoc(Doc doc, String searchStr){
 			doc.setDocTitle(searchStr);
@@ -210,16 +212,16 @@ public class DlgNewSearch extends JDialog implements ItemListener{
 			return doc.getDocTitle().equalsIgnoreCase(searchStr);
 		}
 		public String getUsage(){
-			return "ã‚¿ã‚¤ãƒˆãƒ«ã‚’ã€ŒæŒ‡å®šã—ãŸæ–‡å­—ãŒå«ã¾ã‚Œã‚‹ã€ã§æ¤œç´¢";
+			return "ƒ^ƒCƒgƒ‹‚ğuw’è‚µ‚½•¶š‚ªŠÜ‚Ü‚ê‚év‚ÅŒŸõ";
 		}
 	};
 	
-	//Textæ¤œç´¢2
+	//TextŒŸõ2
 	private Searcher TARGET_TEXT= new DefaultSearcher(this, "Text"){
 		
 		public List<Doc> searchDB(String searchStr){
 			List<Doc> docs = new ArrayList<Doc>();
-			//æ¤œç´¢æ–‡å­—åˆ—ã‚’é…åˆ—ã«åˆ†å‰²
+			//ŒŸõ•¶š—ñ‚ğ”z—ñ‚É•ªŠ„
 			String[] keywords = splitSearchStr(searchStr);
 			lastKeywords_ = keywords.clone();
 			keywords = setPercent(keywords);
@@ -243,14 +245,14 @@ public class DlgNewSearch extends JDialog implements ItemListener{
 			return ret;
 		}
 		public String getUsage(){
-			return "ãƒ†ã‚­ã‚¹ãƒˆã‚’ã€ŒæŒ‡å®šã—ãŸæ–‡å­—ãŒå«ã¾ã‚Œã‚‹ã€ã§æ¤œç´¢ã€‚ã‚¹ãƒšãƒ¼ã‚¹åŒºåˆ‡ã‚Šã§ANDæ¤œç´¢ã€‚";
+			return "ƒeƒLƒXƒg‚ğuw’è‚µ‚½•¶š‚ªŠÜ‚Ü‚ê‚év‚ÅŒŸõBƒXƒy[ƒX‹æØ‚è‚ÅANDŒŸõB";
 		}
 		void optionCtrl(Component wholeWord, Component descentSearch){
 			wholeWord.setEnabled(false);
 		}
 	};
 
-	//ä½œæˆè€…æ¤œç´¢
+	//ì¬ÒŒŸõ
 	private Searcher TARGET_CREATOR= new DefaultSearcher(this, "Creator"){
 		Doc setDoc(Doc doc, String searchStr){
 			if(searchStr.trim().length() <= 0){
@@ -269,13 +271,13 @@ public class DlgNewSearch extends JDialog implements ItemListener{
 			return doc.getUserName().equalsIgnoreCase(searchStr);
 		}
 		public String getUsage(){
-			return "ä½œæˆè€…ã‚’ã€ŒæŒ‡å®šã—ãŸæ–‡å­—ãŒå«ã¾ã‚Œã‚‹ã€ã§æ¤œç´¢";
+			return "ì¬Ò‚ğuw’è‚µ‚½•¶š‚ªŠÜ‚Ü‚ê‚év‚ÅŒŸõ";
 		}
 		public String[] getLastKeywords(){
 			return null;
 		}
 	};
-	//æ—¥ä»˜æ¤œç´¢ã‚¿ã‚¤ãƒ—
+	//“ú•tŒŸõƒ^ƒCƒv
 	enum CompType { 
 		BEFORE_EQ("<="){
 			public List<Doc> searchDB(DocDao docDao, DocDao.DateCondition dc){
@@ -318,7 +320,7 @@ public class DlgNewSearch extends JDialog implements ItemListener{
 			return null;
 		}
 	};
-	//æ—¥ä»˜æ¤œç´¢
+	//“ú•tŒŸõ
 	private Searcher TARGET_DATE= new Searcher(this, "Date"){
 		String PATTERN = "yyyy/MM/dd HH:mm:ss";
 		DateFormat df = new SimpleDateFormat (PATTERN);
@@ -334,7 +336,7 @@ public class DlgNewSearch extends JDialog implements ItemListener{
 		}
 		DocDao.DateCondition makeDateCondition(String searchStr){
 			String dt1=searchStr, dt2=searchStr;
-			//ãƒã‚¤ãƒ•ãƒ³åŒºåˆ‡ã‚Šã§æœŸé–“æŒ‡å®š
+			//ƒnƒCƒtƒ“‹æØ‚è‚ÅŠúŠÔw’è
 			int ind = searchStr.indexOf("-");
 			if(ind > -1){
 				dt1 = searchStr.substring(0, ind).trim();
@@ -368,7 +370,7 @@ public class DlgNewSearch extends JDialog implements ItemListener{
 		}
 		String newSarchStrAndSetCompType(String str){
 			compType_ = CompType.EQUAL;
-// **** æ¼”ç®—å­æ©Ÿèƒ½ã¯æ­¢ã‚ãŸ
+// **** ‰‰Zq‹@”\‚Í~‚ß‚½
 //			str = str.trim();
 //			for(CompType ct : CompType.values()){
 //				int ind = str.indexOf(ct.toString());
@@ -392,14 +394,14 @@ public class DlgNewSearch extends JDialog implements ItemListener{
 			}
 		}
 		public String getUsage(){
-			return "yyyy/MM/ddå½¢å¼ã§æ—¥ä»˜æ¤œç´¢ã€‚[from] - [to]ã§æœŸé–“æŒ‡å®šã€‚ä¾‹ï¼‰2008/8/1ã€2008/8/1-ã€-2008/8/1ã€2008/8/1-2008/8/31";
+			return "yyyy/MM/ddŒ`®‚Å“ú•tŒŸõB[from] - [to]‚ÅŠúŠÔw’èB—áj2008/8/1A2008/8/1-A-2008/8/1A2008/8/1-2008/8/31";
 		}
 		public String[] getLastKeywords(){
 			return null;
 		}
 	};
 	
-	//ã‚¿ã‚¤ãƒˆãƒ«orTextæ¤œç´¢
+	//ƒ^ƒCƒgƒ‹orTextŒŸõ
 	private Searcher TARGET_TITLE_OR_TEXT= new DefaultSearcher(this, "Title or Text"){
 		Doc setDoc(Doc doc, String searchStr){
 			doc.setDocCont(searchStr);
@@ -413,19 +415,19 @@ public class DlgNewSearch extends JDialog implements ItemListener{
 						false:doc.getDocCont().toLowerCase().indexOf(searchStr.toLowerCase())  >= 0);
 		}
 		public String getUsage(){
-			return "ã‚¿ã‚¤ãƒˆãƒ«ã¨ãƒ†ã‚­ã‚¹ãƒˆéƒ¨ã‚’ã€ŒæŒ‡å®šã—ãŸæ–‡å­—ãŒå«ã¾ã‚Œã‚‹ã€ã§æ¤œç´¢ã—ã¾ã™";
+			return "ƒ^ƒCƒgƒ‹‚ÆƒeƒLƒXƒg•”‚ğuw’è‚µ‚½•¶š‚ªŠÜ‚Ü‚ê‚év‚ÅŒŸõ‚µ‚Ü‚·";
 		}
 		void optionCtrl(Component wholeWord, Component descentSearch){
 			wholeWord.setEnabled(false);
 		}
 	};
 
-	//Textæ¤œç´¢2
+	//TextŒŸõ2
 //	private Searcher TARGET_TITLE_OR_TEXT2= new DefaultSearcher(this, "Title or Text"){
 //		
 //		public List<Doc> searchDB(String searchStr){
 //			List<Doc> docs = new ArrayList<Doc>();
-//			//æ¤œç´¢æ–‡å­—åˆ—ã‚’é…åˆ—ã«åˆ†å‰²
+//			//ŒŸõ•¶š—ñ‚ğ”z—ñ‚É•ªŠ„
 //			String[] keywords = splitSearchStr(searchStr);
 //
 //			docs = owner_.doc2Dao_.findByTitleOrText(keywords);
@@ -471,7 +473,7 @@ public class DlgNewSearch extends JDialog implements ItemListener{
 //			return ret;
 //		}
 //		public String getUsage(){
-//			return "ã‚¿ã‚¤ãƒˆãƒ«ã¨ãƒ†ã‚­ã‚¹ãƒˆéƒ¨ã‚’ã€ŒæŒ‡å®šã—ãŸæ–‡å­—ãŒå«ã¾ã‚Œã‚‹ã€ã§æ¤œç´¢ã€‚ã‚¹ãƒšãƒ¼ã‚¹åŒºåˆ‡ã‚Šã§ANDæ¤œç´¢ã€‚";
+//			return "ƒ^ƒCƒgƒ‹‚ÆƒeƒLƒXƒg•”‚ğuw’è‚µ‚½•¶š‚ªŠÜ‚Ü‚ê‚év‚ÅŒŸõBƒXƒy[ƒX‹æØ‚è‚ÅANDŒŸõB";
 //		}
 //		void optionCtrl(Component wholeWord, Component descentSearch){
 //			wholeWord.setEnabled(false);
@@ -493,11 +495,11 @@ public class DlgNewSearch extends JDialog implements ItemListener{
 	};
 	class ActNodeSearch extends AbstractAction {
 		Searcher lastSearcher_;
-		//æ¤œç´¢çµæœã®è¡¨ç¤ºã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã§å‘¼ã³å‡ºã•ã‚Œã‚‹
+		//ŒŸõŒ‹‰Ê‚Ì•\¦ƒAƒNƒVƒ‡ƒ“‚ÅŒÄ‚Ño‚³‚ê‚é
 		jp.tokyo.selj.view.PnlNodeList.SelectionLintener selectionLintener_ =
 			new SelectionLintener(){
 				public void process(Doc doc) {
-					inpSearchStr.setBackground(Color.WHITE);	//Textæ¤œç´¢ã§åˆ¥ãªè‰²ã«ãªã£ã¦ã„ã‚‹ã‹ã‚‚ã—ã‚Œãªã„ã®ã§ãƒªã‚»ãƒƒãƒˆ
+					inpSearchStr.setBackground(Color.WHITE);	//TextŒŸõ‚Å•Ê‚ÈF‚É‚È‚Á‚Ä‚¢‚é‚©‚à‚µ‚ê‚È‚¢‚Ì‚ÅƒŠƒZƒbƒg
 					FrmZeetaMain main = (FrmZeetaMain)getOwner();
 					DocNode n = main.showDocNode(doc.getDocId(), false);
 //					main.showDetailAndSelectWord(n, inpSearchStr.getText());
@@ -507,12 +509,12 @@ public class DlgNewSearch extends JDialog implements ItemListener{
 				public void setRootNode(DocNode rootNode){}
 				
 			};
-		//æ¤œç´¢çµæœã®è¡¨ç¤ºã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã§å‘¼ã³å‡ºã•ã‚Œã‚‹
+		//ŒŸõŒ‹‰Ê‚Ì•\¦ƒAƒNƒVƒ‡ƒ“‚ÅŒÄ‚Ño‚³‚ê‚é
 		jp.tokyo.selj.view.PnlNodeList.SelectionLintener selectionLintener2_ =
 			new SelectionLintener(){
 				DocNode rootNode_;
 				public void process(Doc doc) {
-					inpSearchStr.setBackground(Color.WHITE);	//Textæ¤œç´¢ã§åˆ¥ãªè‰²ã«ãªã£ã¦ã„ã‚‹ã‹ã‚‚ã—ã‚Œãªã„ã®ã§ãƒªã‚»ãƒƒãƒˆ
+					inpSearchStr.setBackground(Color.WHITE);	//TextŒŸõ‚Å•Ê‚ÈF‚É‚È‚Á‚Ä‚¢‚é‚©‚à‚µ‚ê‚È‚¢‚Ì‚ÅƒŠƒZƒbƒg
 					FrmZeetaMain main = (FrmZeetaMain)getOwner();
 					DocNode n = main.showDocNode(rootNode_, doc.getDocId(), 
 								((DocWithParentPath)doc).parents_, false);
@@ -526,13 +528,13 @@ public class DlgNewSearch extends JDialog implements ItemListener{
 			};
 		public ActNodeSearch() {
 			putValue(Action.NAME, "node");
-			putValue(Action.SHORT_DESCRIPTION, "ãƒãƒ¼ãƒ‰ã‚’æ¤œç´¢(enter)");
+			putValue(Action.SHORT_DESCRIPTION, "ƒm[ƒh‚ğŒŸõ(enter)");
 			putValue(Action.SMALL_ICON, 
 					new ImageIcon(getClass().getResource("/image/nodeSrch.gif")));
 
 		}
 		public void actionPerformed(ActionEvent e) {
-			inpSearchStr.setBackground(Color.WHITE);	//Textæ¤œç´¢ã§åˆ¥ãªè‰²ã«ãªã£ã¦ã„ã‚‹ã‹ã‚‚ã—ã‚Œãªã„ã®ã§ãƒªã‚»ãƒƒãƒˆ
+			inpSearchStr.setBackground(Color.WHITE);	//TextŒŸõ‚Å•Ê‚ÈF‚É‚È‚Á‚Ä‚¢‚é‚©‚à‚µ‚ê‚È‚¢‚Ì‚ÅƒŠƒZƒbƒg
 			
 			String str = inpSearchStr.getText();
 			Searcher searcher = (Searcher)inpTarget.getSelectedItem();
@@ -540,7 +542,7 @@ public class DlgNewSearch extends JDialog implements ItemListener{
 			
 			setCursor(Util.WAIT_CURSOR);
 			try{
-				//æ¤œç´¢
+				//ŒŸõ
 				List<Doc> docs = null;
 				if(inpSelDescentSearch.isSelected()){
 					docs = searchUnderSelectedNode(searcher, str);
@@ -565,6 +567,71 @@ public class DlgNewSearch extends JDialog implements ItemListener{
 			dspMsg.setText("hit node count : " + pnlNodeList.getDocs().size());
 		}
 		List<Doc> searchUnderSelectedNode(Searcher searcher, String searchStr){
+			//•’Ê‚ÉŠK‘w‚ğ’H‚Á‚ÄŒŸõ‚·‚é‚Æ‚Æ‚Ä‚Â‚à‚È‚­’x‚¢
+			//‚»‚Ì‚½‚ßAˆê’U•’Ê‚ÉŒŸõ‚µ‚Ä‚©‚çA‚»‚Ìe‚ÉƒJƒŒƒ“ƒgƒm[ƒh‚ª‚Ó‚­‚Ü‚ê‚Ä‚¢‚é‚©
+			//ŒŸ¸‚·‚é•û®‚Æ‚·‚é
+			
+			class TempSearcher{
+				Doc targetDoc_;
+				List<Doc> path_ = null;
+				TempSearcher(DocNode targetDocNode){
+					targetDoc_ = targetDocNode.getDoc();
+				}
+				boolean isExist(DocNode node){
+					if( isExist2(node) ){
+						path_.add(node.getDoc());
+						return true;
+					}
+					return false;
+				}
+				//node‚Ìe‚ÉtargetDoc_‚ªŠÜ‚Ü‚ê‚Ä‚¢‚é‚©‚ğŒŸ¸‚·‚é
+				boolean isExist2(DocNode node){
+					if( node.getDoc().getDocId() == targetDoc_.getDocId()){
+						path_ = new ArrayList<Doc>();
+						return true;
+					}else{
+						Enumeration<DocNode> children = (Enumeration<DocNode>)node.children();
+						while( children.hasMoreElements()){
+							DocNode child = children.nextElement();
+							if(child.isRoot()){
+								//do nothing
+							}else if(isExist2(child)){
+								path_.add(child.getDoc());
+								return true;
+							}
+						}
+					}
+					return false;
+				}
+			}
+			//ƒJƒŒƒ“ƒgƒm[ƒh
+			FrmZeetaMain main = (FrmZeetaMain)getOwner();
+			DocNode curNode = main.viewState_.getCurrentNode(); 
+			TempSearcher ts = new TempSearcher(curNode);
+			
+			
+			//‚Ü‚¸‚ÍAƒtƒc[‚ÉŒŸõ
+			List<Doc> searchResult = searcher.searchDB(searchStr);
+			
+			//ŒŸõŒ‹‰ÊŒÂX‚Ìe‚ÉcurNode‚ªAŠÜ‚Ü‚ê‚Ä‚¢‚½‚çresult‚É“o˜^
+			List<Doc> result = new ArrayList<Doc>();
+int cnt=0;			
+			for(Doc doc:searchResult){
+log.debug(""+(++cnt)+"/"+searchResult.size());
+				DocNode revTop = new DocNode(doc);	//doc‚ÌƒRƒs[‚ğì¬
+				revTop = main.docModel_.addParentDocFromDbAll(revTop);	//revTop‚ÍAdoc‚Ìe’B‚Ì‰ò‚È‚Ì‚¾
+log.debug("\t"+"revTop Š®¬");
+				if( ts.isExist(revTop)){
+					result.add(
+						new DocWithParentPath(revTop.getDoc(), ts.path_)
+					);
+				}
+log.debug("\t"+"isExist Š®—¹");
+			}
+
+			return result;
+			
+/*			
 			class DescentSearcher implements DocProcessor{
 				List<Doc> docs_ = new ArrayList<Doc>();
 				String searchStr_;
@@ -574,6 +641,7 @@ public class DlgNewSearch extends JDialog implements ItemListener{
 					searcher_ = searcher;
 				}
 				public boolean process(Doc doc, List<Doc> parents){
+
 					boolean hit=false;
 					if(inpCheckWholeWord.isEnabled() && inpCheckWholeWord.isSelected()){
 						if(searcher_.compareDocWholeWord(doc, searchStr_)){
@@ -589,14 +657,14 @@ public class DlgNewSearch extends JDialog implements ItemListener{
 					if( searcher_ == TARGET_ID && hit){
 						return false;
 					}else{
-						return true;	//ç¶šè¡Œ
+						return true;	//‘±s
 					}
 				}
 				void addDoc(Doc doc, List<Doc> parents){
 					for(Doc elm: docs_){
 						if(elm.getDocId() == doc.getDocId()){
 							if( ((DocWithParentPath)elm).parents_.size() > parents.size() ){
-								//ãƒ‘ã‚¹ã®æµ…ã„æ–¹ã‚’é¸ã¶
+								//ƒpƒX‚Ìó‚¢•û‚ğ‘I‚Ô
 								elm.copyDoc(doc);
 								List<Doc> newPath = new ArrayList<Doc>(parents);
 								newPath.add(doc);
@@ -618,6 +686,7 @@ public class DlgNewSearch extends JDialog implements ItemListener{
 			main.docModel_.processAllDoc2(main.viewState_.getCurrentNode().getDoc(), 
 						proc, new ArrayList<Doc>());
 			return proc.docs_;
+*/
 			
 //			selectionLintener2_.setRootNode(main.viewState_.getCurrentNode());
 //			pnlNodeList.setup(proc.docs_, selectionLintener2_);
@@ -631,13 +700,13 @@ public class DlgNewSearch extends JDialog implements ItemListener{
 	class ActTextSearch extends AbstractAction {
 		public ActTextSearch() {
 			putValue(Action.NAME, "in text");
-			putValue(Action.SHORT_DESCRIPTION, "é¸æŠä¸­ãƒãƒ¼ãƒ‰ã®ãƒ†ã‚­ã‚¹ãƒˆã‚’æ¤œç´¢");
+			putValue(Action.SHORT_DESCRIPTION, "‘I‘ğ’†ƒm[ƒh‚ÌƒeƒLƒXƒg‚ğŒŸõ");
 			putValue(Action.SMALL_ICON, 
 					new ImageIcon(getClass().getResource("/image/textSrch.gif")));
 
 		}
 		public void actionPerformed(ActionEvent e) {
-			//æ¤œç´¢æ–‡å­—åˆ—ã‚’æŒ‡å®šã—ã¦ã„ã‚‹ã‹ãƒã‚§ãƒƒã‚¯
+			//ŒŸõ•¶š—ñ‚ğw’è‚µ‚Ä‚¢‚é‚©ƒ`ƒFƒbƒN
 			String str = inpSearchStr.getText();
 			if(str == null || str.trim().length() <= 0){
 				pnlNodeList.clear();
@@ -646,7 +715,7 @@ public class DlgNewSearch extends JDialog implements ItemListener{
 			if( ((FrmZeetaMain)getOwner()).findText(str) ){
 				inpSearchStr.setBackground(Color.WHITE);
 			}else{
-				//è¦‹ã¤ã‹ã‚‰ãªã„å ´åˆ
+				//Œ©‚Â‚©‚ç‚È‚¢ê‡
 				inpSearchStr.setBackground(Color.YELLOW);
 			}
 		}
@@ -691,7 +760,7 @@ public class DlgNewSearch extends JDialog implements ItemListener{
 		this.setSize(569, 200);
 		this.setContentPane(getJContentPane());
 		this.setTitle("search");
-		this.setMinimumSize(new Dimension(500,200));	//jdk1.5ä»¥å‰ã¯åŠ¹ã‹ãªã„ã‚ˆã†ã 
+		this.setMinimumSize(new Dimension(500,200));	//jdk1.5ˆÈ‘O‚ÍŒø‚©‚È‚¢‚æ‚¤‚¾
 	}
 
 	/**
@@ -720,7 +789,7 @@ public class DlgNewSearch extends JDialog implements ItemListener{
 	private JPanel getPnlHeader() {
 		if (pnlHeader == null) {
 			dspMsg = new JLabel();
-			dspMsg.setText("ID,Dateä»¥å¤–ã¯ã€ã€ŒæŒ‡å®šã—ãŸæ–‡å­—ãŒå«ã¾ã‚Œã‚‹ã€ã§æ¤œç´¢ã€‚Dateã¯ã€yyyy/MM/ddå½¢å¼ã€[from] - [to]ã§æœŸé–“æŒ‡å®š");
+			dspMsg.setText("ID,DateˆÈŠO‚ÍAuw’è‚µ‚½•¶š‚ªŠÜ‚Ü‚ê‚év‚ÅŒŸõBDate‚ÍAyyyy/MM/ddŒ`®A[from] - [to]‚ÅŠúŠÔw’è");
 			dspMsg.setFont(new Font("Dialog", Font.PLAIN, 12));
 			dspMsg.setForeground(Color.BLUE);
 			BorderLayout borderLayout = new BorderLayout();
@@ -829,7 +898,7 @@ public class DlgNewSearch extends JDialog implements ItemListener{
 			inpSelDescentSearch = new JCheckBox();
 			inpSelDescentSearch.setText("descent search");
 			inpSelDescentSearch.setFont(new Font("Dialog", Font.BOLD, 12));
-			inpSelDescentSearch.setToolTipText("ã‚«ãƒ¬ãƒ³ãƒˆãƒãƒ¼ãƒ‰é…ä¸‹ã‚’æ¤œç´¢ã—ã¾ã™ã€‚å¤šå°‘æ™‚é–“ãŒã‹ã‹ã‚Šã¾ã™ã€‚");
+			inpSelDescentSearch.setToolTipText("ƒJƒŒƒ“ƒgƒm[ƒh”z‰º‚ğŒŸõ‚µ‚Ü‚·B‘½­ŠÔ‚ª‚©‚©‚è‚Ü‚·B");
 		}
 		return inpSelDescentSearch;
 	}

@@ -6,23 +6,23 @@
     <component name="TableConvertor" class="jp.tokyo.selj.util.TableConvertor">
         <arg>{
         
-"ALTER TABLE è¦ä»¶ RENAME TO doc",
-"ALTER TABLE doc ALTER COLUMN è¦ä»¶ID RENAME TO docId",
-"ALTER TABLE doc ALTER COLUMN è¦ä»¶ç¨®é¡žID RENAME TO docTypeId",
-"ALTER TABLE doc ALTER COLUMN è¦ä»¶ã‚¿ã‚¤ãƒˆãƒ« RENAME TO docTitle",
-"ALTER TABLE doc ALTER COLUMN è¦ä»¶å†…å®¹ RENAME TO docCont",
-"ALTER TABLE doc ALTER COLUMN ä½œæˆæ—¥ RENAME TO newDate",
-"ALTER TABLE doc ALTER COLUMN ä½œæˆè€…å RENAME TO userName",
-"ALTER TABLE doc ALTER COLUMN å­ãƒŽãƒ¼ãƒ‰é †åº RENAME TO sortTypeId",
+"ALTER TABLE —vŒ RENAME TO doc",
+"ALTER TABLE doc ALTER COLUMN —vŒID RENAME TO docId",
+"ALTER TABLE doc ALTER COLUMN —vŒŽí—ÞID RENAME TO docTypeId",
+"ALTER TABLE doc ALTER COLUMN —vŒƒ^ƒCƒgƒ‹ RENAME TO docTitle",
+"ALTER TABLE doc ALTER COLUMN —vŒ“à—e RENAME TO docCont",
+"ALTER TABLE doc ALTER COLUMN ì¬“ú RENAME TO newDate",
+"ALTER TABLE doc ALTER COLUMN ì¬ŽÒ–¼ RENAME TO userName",
+"ALTER TABLE doc ALTER COLUMN Žqƒm[ƒh‡˜ RENAME TO sortTypeId",
 "ALTER TABLE doc DROP PRIMARY KEY",
 "ALTER TABLE doc ADD CONSTRAINT PRIMARY_KEY_1 PRIMARY KEY (docId)",
 
 
-"ALTER TABLE è¦ä»¶æ§‹é€  RENAME TO docStr",
-"ALTER TABLE docStr ALTER COLUMN è¦ªè¦ä»¶ID RENAME TO oyaDocId",
-"ALTER TABLE docStr ALTER COLUMN å­è¦ä»¶ID RENAME TO koDocId",
-"ALTER TABLE docStr ALTER COLUMN ä½œæˆæ—¥ RENAME TO newDate",
-"ALTER TABLE docStr ALTER COLUMN ä½œæˆè€…å RENAME TO userName",
+"ALTER TABLE —vŒ\‘¢ RENAME TO docStr",
+"ALTER TABLE docStr ALTER COLUMN e—vŒID RENAME TO oyaDocId",
+"ALTER TABLE docStr ALTER COLUMN Žq—vŒID RENAME TO koDocId",
+"ALTER TABLE docStr ALTER COLUMN ì¬“ú RENAME TO newDate",
+"ALTER TABLE docStr ALTER COLUMN ì¬ŽÒ–¼ RENAME TO userName",
 "ALTER TABLE docStr DROP PRIMARY KEY",
 "ALTER TABLE docStr ADD CONSTRAINT PRIMARY_KEY_1 PRIMARY KEY (oyaDocId,koDocId)",
 "drop index ko_id",
@@ -31,23 +31,23 @@
 "create index oya_id on docStr(oyaDocId)",
 
 
-"ALTER TABLE ã‚½ãƒ¼ãƒˆç¨®åˆ¥ RENAME TO sortType",
-"ALTER TABLE sortType ALTER COLUMN ã‚½ãƒ¼ãƒˆç¨®åˆ¥ID RENAME TO sortTypeId",
-"ALTER TABLE sortType ALTER COLUMN ã‚½ãƒ¼ãƒˆç¨®åˆ¥åç§° RENAME TO sortTypeName",
-"ALTER TABLE sortType ALTER COLUMN Orderå¥ RENAME TO orderSent",
+"ALTER TABLE ƒ\[ƒgŽí•Ê RENAME TO sortType",
+"ALTER TABLE sortType ALTER COLUMN ƒ\[ƒgŽí•ÊID RENAME TO sortTypeId",
+"ALTER TABLE sortType ALTER COLUMN ƒ\[ƒgŽí•Ê–¼Ì RENAME TO sortTypeName",
+"ALTER TABLE sortType ALTER COLUMN Order‹å RENAME TO orderSent",
 "ALTER TABLE sortType DROP PRIMARY KEY",
 "ALTER TABLE sortType ADD CONSTRAINT PRIMARY_KEY_1 PRIMARY KEY (sortTypeId)",
 
-"ALTER TABLE ä½œæ¥­è€… RENAME TO user",
-"ALTER TABLE user ALTER COLUMN ä½œæ¥­è€…å RENAME TO userName",
-"ALTER TABLE user ALTER COLUMN æ‰€å±ž RENAME TO org",
+"ALTER TABLE ì‹ÆŽÒ RENAME TO user",
+"ALTER TABLE user ALTER COLUMN ì‹ÆŽÒ–¼ RENAME TO userName",
+"ALTER TABLE user ALTER COLUMN Š‘® RENAME TO org",
 
 "DELETE FROM sortType",
-"INSERT INTO PUBLIC.sortType ( sortTypeId, sortTypeName, orderSent ) VALUES (0,'æŒ‡å®šé †','docStr.SEQ')",
-"INSERT INTO PUBLIC.sortType ( sortTypeId, sortTypeName, orderSent ) VALUES (10,'ä½œæˆæ—¥æ˜‡é †','doc.newDate')",
-"INSERT INTO PUBLIC.sortType ( sortTypeId, sortTypeName, orderSent ) VALUES (11,'ä½œæˆæ—¥é™é †','doc.newDate DESC')",
-"INSERT INTO PUBLIC.sortType ( sortTypeId, sortTypeName, orderSent ) VALUES (20,'ã‚¿ã‚¤ãƒˆãƒ«æ˜‡é †','doc.docTitle')",
-"INSERT INTO PUBLIC.sortType ( sortTypeId, sortTypeName, orderSent ) VALUES (21,'ã‚¿ã‚¤ãƒˆãƒ«é™é †','doc.docTitle DESC')"
+"INSERT INTO PUBLIC.sortType ( sortTypeId, sortTypeName, orderSent ) VALUES (0,'Žw’è‡','docStr.SEQ')",
+"INSERT INTO PUBLIC.sortType ( sortTypeId, sortTypeName, orderSent ) VALUES (10,'ì¬“ú¸‡','doc.newDate')",
+"INSERT INTO PUBLIC.sortType ( sortTypeId, sortTypeName, orderSent ) VALUES (11,'ì¬“ú~‡','doc.newDate DESC')",
+"INSERT INTO PUBLIC.sortType ( sortTypeId, sortTypeName, orderSent ) VALUES (20,'ƒ^ƒCƒgƒ‹¸‡','doc.docTitle')",
+"INSERT INTO PUBLIC.sortType ( sortTypeId, sortTypeName, orderSent ) VALUES (21,'ƒ^ƒCƒgƒ‹~‡','doc.docTitle DESC')"
 ,
 "update doc set versionNo=0 where versionNo is null"
 

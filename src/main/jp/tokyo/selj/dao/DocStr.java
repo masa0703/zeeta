@@ -30,8 +30,8 @@ public class DocStr implements Serializable {
     private int SEQ;
     private Timestamp newDate=new Timestamp(System.currentTimeMillis());
     private String userName;
-//    private Youken 隕ｪ隕∽ｻｶ;
-//    private Youken 蟄占ｦ∽ｻｶ;
+//    private Youken 親要件;
+//    private Youken 子要件;
 
     public DocStr() {
 		userName = SysPreference.getDefaultUserName();
@@ -96,22 +96,22 @@ public class DocStr implements Serializable {
 		this.oyaDocId = oyaDocId;
 	}
 
-//	public Youken get蟄占ｦ∽ｻｶ() {
-//		return 蟄占ｦ∽ｻｶ;
+//	public Youken get子要件() {
+//		return 子要件;
 //	}
 //
-//    @Relation(relationNo = 0, relationKey="蟄占ｦ∽ｻｶID:隕∽ｻｶID")
-//	public void set蟄占ｦ∽ｻｶ(Youken 蟄占ｦ∽ｻｶ) {
-//		this.蟄占ｦ∽ｻｶ = 蟄占ｦ∽ｻｶ;
+//    @Relation(relationNo = 0, relationKey="子要件ID:要件ID")
+//	public void set子要件(Youken 子要件) {
+//		this.子要件 = 子要件;
 //	}
 //
-//	public Youken get隕ｪ隕∽ｻｶ() {
-//		return 隕ｪ隕∽ｻｶ;
+//	public Youken get親要件() {
+//		return 親要件;
 //	}
 //
-//    @Relation(relationNo = 1, relationKey="隕ｪ隕∽ｻｶID:隕∽ｻｶID")
-//	public void set隕ｪ隕∽ｻｶ(Youken 隕ｪ隕∽ｻｶ) {
-//		this.隕ｪ隕∽ｻｶ = 隕ｪ隕∽ｻｶ;
+//    @Relation(relationNo = 1, relationKey="親要件ID:要件ID")
+//	public void set親要件(Youken 親要件) {
+//		this.親要件 = 親要件;
 //	}
 
 }

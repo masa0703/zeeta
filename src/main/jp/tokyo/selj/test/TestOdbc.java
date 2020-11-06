@@ -20,11 +20,11 @@ public class TestOdbc {
 		Connection con = getConnection();
 		con.setAutoCommit(true);
 		try{
-			ResultSet rs = executeQuery(con, "select * from 隕∽ｻｶ");
+			ResultSet rs = executeQuery(con, "select * from 要件");
 			while(rs.next()){
-				System.out.println(rs.getObject("隕∽ｻｶID") + 
-						", " + rs.getObject("隕∽ｻｶ繧ｿ繧､繝医Ν") +
-						", " + rs.getObject("隕∽ｻｶ蜀�螳ｹ"));
+				System.out.println(rs.getObject("要件ID") + 
+						", " + rs.getObject("要件タイトル") +
+						", " + rs.getObject("要件内容"));
 			}
 		}finally{
 			con.close();

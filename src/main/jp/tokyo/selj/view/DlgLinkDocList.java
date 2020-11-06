@@ -60,7 +60,7 @@ public class DlgLinkDocList extends JDialog implements ListSelectionListener{
 	@Override
 	public void setVisible(boolean b) {
 		if(b){
-			throw new RuntimeException("setVisible(boolean b, Output output)ã‚’ã¤ã‹ã‚ãªã‚ã‹ã‚“");
+			throw new RuntimeException("setVisible(boolean b, Output output)‚ğ‚Â‚©‚í‚È‚ ‚©‚ñ");
 		}else{
 			super.setVisible(b);
 		}
@@ -109,13 +109,13 @@ public class DlgLinkDocList extends JDialog implements ListSelectionListener{
 	}
 
 	public void valueChanged(ListSelectionEvent e) {
-		//é¸æŠã•ã‚ŒãŸitem
+		//‘I‘ğ‚³‚ê‚½item
 		JList list = (JList)e.getSource();
 		if( !isShowing() || list.getSelectedValue() == null){
 			return;
 		}
 		if(list.getSelectedValue() == lastSelected_){
-			//ãªãœã‹åŒã˜ã‚¤ãƒ™ãƒ³ãƒˆãŒï¼’ã¤é€£ç¶šã™ã‚‹ãŸã‚
+			//‚È‚º‚©“¯‚¶ƒCƒxƒ“ƒg‚ª‚Q‚Â˜A‘±‚·‚é‚½‚ß
 			return;
 		}
 		log.debug("selected="+list.getSelectedValue());
@@ -123,7 +123,7 @@ public class DlgLinkDocList extends JDialog implements ListSelectionListener{
 		refreshDocList();
 	}
 	void refreshDocList(){
-		//lastSelected_ã«é–¢é€£ã™ã‚‹Docä¸€è¦§ã‚’å–å¾—
+		//lastSelected_‚ÉŠÖ˜A‚·‚éDocˆê——‚ğæ“¾
 		List<Doc> docs = docDao_.findByOutputId(lastSelected_.getOutputId());
 		getDspYoukens().setup(docs, docSelectionListener_);
 	}

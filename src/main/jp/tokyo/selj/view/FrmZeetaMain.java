@@ -89,12 +89,19 @@ import jp.tokyo.selj.model.MasterComboModel;
 import jp.tokyo.selj.model.OutputOfWorkListModel;
 import jp.tokyo.selj.model.DocModel.NodeProcessor;
 import jp.tokyo.selj.util.ClipboardStringWriter;
+import jp.tokyo.selj.view.component.ZTree;
 import jp.tokyo.selj.view.tools.DlgTools;
+import jp.tokyo.selj.view.trans.TreeNodeTransferHandler;
+import jp.tokyo.selj.view.trans.TreeNodeTransferHandler2;
 
 import org.apache.log4j.Logger;
 
 public class FrmZeetaMain extends BaseFrame {
-	//actionMap_ã®ã‚­ãƒ¼
+	//2nd tree view ‚Æ‚Ì¯•Ê‚ğ‚·‚é
+	static final String TREE_TYPE_MAIN = "main tree";
+	
+	
+	//actionMap_‚ÌƒL[
 	static final String ACTKEY_NODE_COPY = "nodeCopy";
 	static final String ACTKEY_NODE_CUT = "nodeCut";
 	static final String ACTKEY_NODE_PASTE = "nodePaste";
@@ -103,11 +110,9 @@ public class FrmZeetaMain extends BaseFrame {
 	DocModel docModel_ = null;
 	static final String DEVIDER_LOC_KEY = Util.getClassName(FrmZeetaMain.class) + "/devider_loc1";
 
-	boolean isDisableDragWithoutShitfKey_ = true;	//Treeã®ãƒ‰ãƒ©ãƒƒã‚°Moveã¯shiftKeyã‚’æŠ¼ã•ãªã‘ã‚Œã°ãªã‚‰ãªã„å ´åˆã¯true
-    
     // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 	String dbUrl_ = ZeetaDBManager.getDBUrl();
-	static final String VER_ = "Zeeta ver1.1.00";
+	static final String VER_ = "Zeeta ver1.3.02";
     public String getTitle(){ 
     	return getInpDocTitle().getText()
     			+ " (" +dbUrl_+")"
@@ -126,7 +131,7 @@ public class FrmZeetaMain extends BaseFrame {
 		   public void run() {
 			   inpDocCont.requestFocus();
 		   }
- };
+    };
 
     protected final String LAST_SELECTED_NODE_ID = getName()+"_selected_id";
 	protected final String LINE_WRAP = getName()+"_lineWrap";
@@ -137,12 +142,13 @@ public class FrmZeetaMain extends BaseFrame {
 
 	private JSplitPane jSplitPane = null;
 
-	private JTree jTree = null;
+	private ZTree jTree = null;
 
 	private JScrollPane cntScrTree = null;
 
 	DocTreeCellRenderer cellRenderer_ = null;  //  @jve:decl-index=0:
 	DlgReverseTree revTree_;
+	Dlg2ndTree secndTree_;
 
 	private JTabbedPane jTabbedPane = null;
 	private JPanel cntDetail = null;
@@ -174,7 +180,7 @@ public class FrmZeetaMain extends BaseFrame {
 
 	private JTextField dspYoukenId = null;
 
-	//MainViewã®çŠ¶æ…‹ã‚’ç®¡ç†ã™ã‚‹
+	//MainView‚Ìó‘Ô‚ğŠÇ—‚·‚é
 	enum ViewStateType {NEUTRAL, CREATING, UPDATING, DELETING}; 
 	class ViewState {
 		DetailUpdateListener detailState_ = new DetailUpdateListener();
@@ -196,10 +202,10 @@ public class FrmZeetaMain extends BaseFrame {
 		}
 		
 		public void setUpdating(boolean val){
-			if(settingDetail_){	//Detailã®ã‚»ãƒƒãƒˆä¸­ã¯ç„¡è¦–
+			if(settingDetail_){	//Detail‚ÌƒZƒbƒg’†‚Í–³‹
 				return;
 			}
-			if(state_== ViewStateType.CREATING){	//creatingä¸­ã‚‚ç„¡è¦–
+			if(state_== ViewStateType.CREATING){	//creating’†‚à–³‹
 				return;
 			}
 			actionMap_.get(ActCancelNewYouken.class).setEnabled(val);
@@ -271,14 +277,14 @@ public class FrmZeetaMain extends BaseFrame {
 			currentNode_ = node;
 			Doc doc = node.getDoc();
 			setDetail(doc);
-			//ãƒ«ãƒ¼ãƒˆã®å ´åˆã¯ã€ã€Œå…„å¼Ÿãƒãƒ¼ãƒ‰ä½œæˆã€ãƒœã‚¿ãƒ³ã‚’disableã«ã—ãŸã‚Š
+			//ƒ‹[ƒg‚Ìê‡‚ÍAuŒZ’íƒm[ƒhì¬vƒ{ƒ^ƒ“‚ğdisable‚É‚µ‚½‚è
 			if(doc.getDocTypeId() == Doc.ROOT_TYPE){
 				actionMap_.get(ActPrepareCreateDocAsSibling.class).setEnabled(false);
 				actionMap_.get(ActRemoveDoc.class).setEnabled(false);
 				actionMap_.get(ActDuplicateDoc.class).setEnabled(false);
 				actionMap_.get(ActMoveUp.class).setEnabled(false);
 				actionMap_.get(ActMoveDown.class).setEnabled(false);
-				//tree(setEnabled(xxx)ã«ã—ã¦ã‚‚ã‚­ãƒ¼æ“ä½œãŒã§ãã¦ã—ã¾ã†ã®ã§è«¦ã‚ãŸ)
+				//tree(setEnabled(xxx)‚É‚µ‚Ä‚àƒL[‘€ì‚ª‚Å‚«‚Ä‚µ‚Ü‚¤‚Ì‚Å’ú‚ß‚½)
 //				actionMap_.get(ACTKEY_NODE_COPY).setEnabled(false);
 //				actionMap_.get(ACTKEY_NODE_CUT).setEnabled(false);
 //				actionMap_.get(ACTKEY_NODE_PASTE).setEnabled(!val);
@@ -289,7 +295,7 @@ public class FrmZeetaMain extends BaseFrame {
 				actionMap_.get(ActDuplicateDoc.class).setEnabled(true);
 				actionMap_.get(ActMoveUp.class).setEnabled(true);
 				actionMap_.get(ActMoveDown.class).setEnabled(true);
-				//tree(setEnabled(xxx)ã«ã—ã¦ã‚‚ã‚­ãƒ¼æ“ä½œãŒã§ãã¦ã—ã¾ã†ã®ã§è«¦ã‚ãŸ)
+				//tree(setEnabled(xxx)‚É‚µ‚Ä‚àƒL[‘€ì‚ª‚Å‚«‚Ä‚µ‚Ü‚¤‚Ì‚Å’ú‚ß‚½)
 //				actionMap_.get(ACTKEY_NODE_COPY).setEnabled(true);
 //				actionMap_.get(ACTKEY_NODE_CUT).setEnabled(true);
 //				actionMap_.get(ACTKEY_NODE_PASTE).setEnabled(!val);
@@ -299,7 +305,7 @@ public class FrmZeetaMain extends BaseFrame {
 			if( doc == null){
 				throw new IllegalArgumentException("doc is null."); 
 			}
-			settingDetail_ = true;	//DocumentListenerãŒç„¡è¦–ã™ã‚‹ã‚ˆã†ã«
+			settingDetail_ = true;	//DocumentListener‚ª–³‹‚·‚é‚æ‚¤‚É
 			
 			dspYoukenId.setText(""+doc.getDocId());
 			inpDocTitle.setText(doc.getDocTitle());
@@ -326,7 +332,7 @@ public class FrmZeetaMain extends BaseFrame {
 				doc.setSortTypeId(doc.getSortType().getSortTypeID());
 			}
 			inpSortType.getModel().setSelectedItem(doc.getSortType());
-			detailState_.reset();	//dartyFlagã®ã‚¯ãƒªã‚¢
+			detailState_.reset();	//dartyFlag‚ÌƒNƒŠƒA
 			detail_docTypeId_ = doc.getDocTypeId();
 			detail_versionNo_ = doc.getVersionNo();
 			
@@ -348,12 +354,12 @@ public class FrmZeetaMain extends BaseFrame {
 			ret.setDocId(Long.parseLong(dspYoukenId.getText()));
 			ret.setDocTitle(inpDocTitle.getText());
 			ret.setDocCont(inpDocCont.getText());
-			//JFormattedTextFieldã¯ã€å®Ÿéš›ã«ãƒ­ã‚¹ãƒˆãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã—ãªã„ã¨å€¤ãŒå–ã‚Šè¾¼ã¾ã‚Œãªã„
-			//ã‚‚ã—ãã¯ã€ä»¥ä¸‹ã®ã‚ˆã†ã«commitEditã‚’å‘¼ã³å‡ºã™å¿…è¦ãŒã‚ã‚‹ã€‚
+			//JFormattedTextField‚ÍAÀÛ‚ÉƒƒXƒgƒtƒH[ƒJƒX‚µ‚È‚¢‚Æ’l‚ªæ‚è‚Ü‚ê‚È‚¢
+			//‚à‚µ‚­‚ÍAˆÈ‰º‚Ì‚æ‚¤‚ÉcommitEdit‚ğŒÄ‚Ño‚·•K—v‚ª‚ ‚éB
 			try {
 				inpDate.commitEdit();
 			} catch (ParseException e1) {
-				//ç„¡è¦–
+				//–³‹
 			}
 			ret.setNewDate((Timestamp)inpDate.getValue());
 			ret.setUserName(
@@ -362,14 +368,17 @@ public class FrmZeetaMain extends BaseFrame {
 						""+inpUser.getModel().getSelectedItem()
 			);
 			ret.setDocTypeId(detail_docTypeId_);
-			if(detail_docTypeId_ != Doc.ROOT_TYPE){
-				//Titleã®ãƒ—ãƒ¬ãƒ•ã‚£ã‚¯ã‚¹ã§link nodeã‚’æ±ºå®šã™ã‚‹
-				String pref = SysZeetaManager.getSysZeeta().getLinkNodePref();
-				if( pref != null && pref.trim().length() > 0){
-					if(ret.getDocTitle().startsWith(pref)){
-						inpChkLinkNode.setSelected(true);
-					}
+
+			//Title‚ÌƒvƒŒƒtƒBƒNƒX‚Ålink node‚ğŒˆ’è‚·‚é
+			String pref = SysZeetaManager.getSysZeeta().getLinkNodePref();
+			if( pref != null && pref.trim().length() > 0){
+				if(ret.getDocTitle().startsWith(pref)){
+					inpChkLinkNode.setSelected(true);
+				}else{
+					inpChkLinkNode.setSelected(false);
 				}
+			}
+			if(detail_docTypeId_ != Doc.ROOT_TYPE){
 				if(inpChkLinkNode.isSelected()){
 					ret.setDocTypeId(Doc.LINK_TYPE);
 				}else{
@@ -383,7 +392,7 @@ public class FrmZeetaMain extends BaseFrame {
 			if( selectObj instanceof SortType ){
 				sortType = (SortType)selectObj;
 			}else{
-				//æœªè¨­å®šã®å ´åˆã¯ã€nullã§ã¯ãªãStringã§æ¥ã‚‹ã‚‰ã—ã„
+				//–¢İ’è‚Ìê‡‚ÍAnull‚Å‚Í‚È‚­String‚Å—ˆ‚é‚ç‚µ‚¢
 				sortType = MasterComboModel.DEFAULT_SORT_TYPE;
 			}
 			
@@ -410,7 +419,7 @@ public class FrmZeetaMain extends BaseFrame {
 		void showMsg_selectTree(){
 			JOptionPane.showMessageDialog(
 					FrmZeetaMain.this
-					,"ãƒ„ãƒªãƒ¼ä¸Šã®è¦ä»¶ã‚’é¸æŠã—ã¦ãã ã•ã„ã€‚",""
+					,"ƒcƒŠ[ã‚Ì—vŒ‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢B",""
 					,JOptionPane.INFORMATION_MESSAGE);
 		}
 		public void clipCurrentNode() {
@@ -418,8 +427,8 @@ public class FrmZeetaMain extends BaseFrame {
 		}
 		public DocNode getClipNode() {
 			if(clipNode_ == null || 
-				clipNode_.getRoot() != docModel_.getRoot()){	//å‰Šé™¤ã•ã‚ŒãŸãƒãƒ¼ãƒ‰ã¯rootã«ç´ã¥ã‹ãªã„
-				throw new AppException("ã‚¯ãƒªãƒƒãƒ—ãƒãƒ¼ãƒ‰ãŒç„¡åŠ¹ã§ã™");
+				clipNode_.getRoot() != docModel_.getRoot()){	//íœ‚³‚ê‚½ƒm[ƒh‚Íroot‚É•R‚Ã‚©‚È‚¢
+				throw new AppException("ƒNƒŠƒbƒvƒm[ƒh‚ª–³Œø‚Å‚·");
 			}
 			return clipNode_;
 		}
@@ -441,12 +450,12 @@ public class FrmZeetaMain extends BaseFrame {
 	
 	void warnningIfNotNeutral(){
 		if( ! viewState_.isNeutral()){
-			throw new AppException("ç·¨é›†ä¸­ã§ã™ã€‚commitã‹cancelãƒœã‚¿ãƒ³ã‚’æŠ¼ã—ã¦ãã ã•ã„ã€‚");
+			throw new AppException("•ÒW’†‚Å‚·Bcommit‚©cancelƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚Ä‚­‚¾‚³‚¢B");
 		}
 	}
 	
 	
-	//Actionã®è¦ªã‚¯ãƒ©ã‚¹
+	//Action‚ÌeƒNƒ‰ƒX
 	private abstract class ActBase2 extends ActBase {
 		ActBase2(ActionMap map){
 			super(map);
@@ -455,12 +464,12 @@ public class FrmZeetaMain extends BaseFrame {
 			return FrmZeetaMain.this;
 		}
 	}
-	//titleã«ãƒ•ã‚©ãƒ¼ã‚«ã‚¹
+	//title‚ÉƒtƒH[ƒJƒX
 	class ActFocusOnTitle extends ActBase2 {
 		public ActFocusOnTitle(ActionMap map){
 			super(map);
 			putValue(Action.NAME, "FocusOnTitle");
-			putValue(Action.SHORT_DESCRIPTION, "Titleã«ãƒ•ã‚©ãƒ¼ã‚«ã‚¹");
+			putValue(Action.SHORT_DESCRIPTION, "Title‚ÉƒtƒH[ƒJƒX");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			getInpDocTitle().requestFocus();
@@ -474,12 +483,12 @@ public class FrmZeetaMain extends BaseFrame {
 			return FrmZeetaMain.this;
 		}
 	}
-	//ãƒãƒ¼ãƒ‰ã‚¯ãƒªãƒƒãƒ—
+	//ƒm[ƒhƒNƒŠƒbƒv
 	class ActClipNode extends ActBase2 {
 		public ActClipNode(ActionMap map){
 			super(map);
 			putValue(Action.NAME, "clip");
-			putValue(Action.SHORT_DESCRIPTION, "ãƒãƒ¼ãƒ‰ã‚’ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ã¸å–ã‚Šè¾¼ã‚€");
+			putValue(Action.SHORT_DESCRIPTION, "ƒm[ƒh‚ğƒNƒŠƒbƒvƒ{[ƒh‚Öæ‚è‚Ş");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			warnningIfNotNeutral();
@@ -493,7 +502,7 @@ public class FrmZeetaMain extends BaseFrame {
 			viewState_.clipCurrentNode();
 		}
 	}
-	//ãƒšãƒ¼ã‚¹ãƒˆã®è¦ª
+	//ƒy[ƒXƒg‚Ìe
 	abstract class ActPasteNode extends ActTransactionBase2 {
 		static final int MOVE=0;
 		static final int COPY=1;
@@ -510,13 +519,13 @@ public class FrmZeetaMain extends BaseFrame {
 				return;
 			}
 			
-			//è¦ä»¶æ§‹é€ ã‚’ä½œæˆ
+			//—vŒ\‘¢‚ğì¬
 			DocNode newNode = docModel_.insertDoc(
 					viewState_.getCurrentNode(),
 					viewState_.getClipNode().getDoc());
 			//refresh
-			Action act = actionMap_.get(ActRefreshSpecific.class);
-			act.putValue(ActRefreshSpecific.REFRESH_NODE, newNode);
+			Action act = actionMap_.get(ActRefreshNode.class);
+			act.putValue(ActRefreshNode.REFRESH_NODE, newNode);
 			act.actionPerformed(e);
 			
 			if(type == MOVE){
@@ -525,43 +534,43 @@ public class FrmZeetaMain extends BaseFrame {
 			jTree.expandPath(new TreePath(viewState_.getCurrentNode().getPath()));
 		}
 	}
-	//ç§»å‹•ãƒšãƒ¼ã‚¹ãƒˆ
+	//ˆÚ“®ƒy[ƒXƒg
 	class ActPasteNodeMove extends ActPasteNode {
 		public ActPasteNodeMove(ActionMap map){
 			super(map);
 			putValue(Action.NAME, "move paste");
-			putValue(Action.SHORT_DESCRIPTION, "ãƒãƒ¼ãƒ‰ã‚’è²¼ã‚Šä»˜ã‘ã‚‹ï¼ˆç§»å‹•ï¼‰");
+			putValue(Action.SHORT_DESCRIPTION, "ƒm[ƒh‚ğ“\‚è•t‚¯‚éiˆÚ“®j");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			pasteNode(e,MOVE);
 		}
 	}
-	//ã‚³ãƒ”ãƒ¼ãƒšãƒ¼ã‚¹ãƒˆ
+	//ƒRƒs[ƒy[ƒXƒg
 	class ActPasteNodeCopy extends ActPasteNode {
 		public ActPasteNodeCopy(ActionMap map){
 			super(map);
 			putValue(Action.NAME, "copy paste");
-			putValue(Action.SHORT_DESCRIPTION, "ãƒãƒ¼ãƒ‰ã‚’è²¼ã‚Šä»˜ã‘ã‚‹ï¼ˆã‚³ãƒ”ãƒ¼ï¼‰");
+			putValue(Action.SHORT_DESCRIPTION, "ƒm[ƒh‚ğ“\‚è•t‚¯‚éiƒRƒs[j");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			pasteNode(e,COPY);
 		}
 	}
-	//å‰Šé™¤
+	//íœ
 	class ActRemoveDoc extends ActTransactionBase2 {
 		boolean isExecute_ = false;
 		public ActRemoveDoc(ActionMap map) {
 			super(map);
 			putValue(Action.NAME, "remove");
-			putValue(Action.SHORT_DESCRIPTION, "ãƒãƒ¼ãƒ‰ã‚’å‰Šé™¤(ctrl+D, Del)");
+			putValue(Action.SHORT_DESCRIPTION, "ƒm[ƒh‚ğíœ(ctrl+D, Del)");
 			putValue(Action.SMALL_ICON, 
 					new ImageIcon(getClass().getResource("/image/remove.gif")));
 		}
 		public void actionPerformed2(ActionEvent e) {
 			if( ! viewState_.isNeutral()){
 				if( viewState_.isUpdating() ){
-					//æ›´æ–°ä¸­ã®ãƒ‡ãƒ¼ã‚¿ã‚’å‰Šé™¤ã—ã¦ã‚‚ã‹ã¾ã‚ãªã„
-					viewState_.getDetailState().reset();	//ã“ã‚Œã‚’ã‚„ã‚‰ãªã„ã¨æ¬¡ã®ã‚¹ãƒ†ãƒƒãƒ—ã§ã€Œæ›´æ–°ã•ã‚Œã¦ã„ã¾ã™ãŒãƒ»ãƒ»ãƒ»ã€ãŒå‡ºã¦ã—ã¾ã†
+					//XV’†‚Ìƒf[ƒ^‚ğíœ‚µ‚Ä‚à‚©‚Ü‚í‚È‚¢
+					viewState_.getDetailState().reset();	//‚±‚ê‚ğ‚â‚ç‚È‚¢‚ÆŸ‚ÌƒXƒeƒbƒv‚ÅuXV‚³‚ê‚Ä‚¢‚Ü‚·‚ªEEEv‚ªo‚Ä‚µ‚Ü‚¤
 				}else{
 					return;
 				}
@@ -572,20 +581,20 @@ public class FrmZeetaMain extends BaseFrame {
 			viewState_.setDeleting(true);
 
 			setCursor(Util.WAIT_CURSOR);
-			//ç¢ºèª
+			//Šm”F
 			try{
 				isExecute_ = false;
 				if( JOptionPane.showConfirmDialog(
 						FrmZeetaMain.this
-						,"é¸æŠä¸­ã®è¦ä»¶ã¨å…¨ã¦ã®å­è¦ä»¶ã‚’å‰Šé™¤ã—ã¾ã™ã€‚\n" +
-						"ãŸã ã—ã€ä»–ã®è¦ªã‹ã‚‰ã®é–¢é€£ãŒã‚ã‚‹å ´åˆã¯ã€è¦ä»¶ã®å‰Šé™¤ã¯è¡Œã‚ãš" +
-						"é–¢é€£ã®ã¿å‰Šé™¤ã—ã¾ã™ã€‚\n" +
-						"ã‚ˆã‚ã—ã„ã§ã™ã‹ï¼Ÿ",""
+						,"‘I‘ğ’†‚Ìƒm[ƒh‚Æ‘S‚Ä‚Ìqƒm[ƒh‚ğíœ‚µ‚Ü‚·B\n" +
+						"‚½‚¾‚µA‘¼‚Ìe‚©‚ç‚ÌŠÖ˜A‚ª‚ ‚éê‡‚ÍAƒm[ƒh‚Ìíœ‚Ís‚í‚¸" +
+						"ŠÖ˜A‚Ì‚İíœ‚µ‚Ü‚·B\n" +
+						"‚æ‚ë‚µ‚¢‚Å‚·‚©H",""
 						,JOptionPane.YES_NO_OPTION
 						,JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
 					
 					DocNode removeNode = viewState_.getCurrentNode();
-					//æ¬¡ãƒãƒ¼ãƒ‰ã‚’æ¢ã—ã¦ãŠã
+					//Ÿƒm[ƒh‚ğ’T‚µ‚Ä‚¨‚­
 					DocNode next = (DocNode)removeNode.getNextSibling();
 					if(next == null){
 						next = (DocNode)removeNode.getPreviousSibling();
@@ -601,7 +610,7 @@ public class FrmZeetaMain extends BaseFrame {
 					jTree.setSelectionPath(new TreePath(next.getPath()));
 				}
 			}finally{
-				//çŠ¶æ…‹ã‚’æˆ»ã™
+				//ó‘Ô‚ğ–ß‚·
 				viewState_.setDeleting(false);
 				setCursor(Cursor.getDefaultCursor());
 			}
@@ -610,17 +619,17 @@ public class FrmZeetaMain extends BaseFrame {
 		protected void postProc() {
 			super.postProc();
 			if(isExecute_){
-				//ãƒˆãƒ©ãƒ³ã‚¶ã‚¯ã‚·ãƒ§ãƒ³ã‚’å®Œäº†ã•ã›ã¦ã‹ã‚‰ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¡¨ç¤ºã™ã‚‹
+				//ƒgƒ‰ƒ“ƒUƒNƒVƒ‡ƒ“‚ğŠ®—¹‚³‚¹‚Ä‚©‚çƒƒbƒZ[ƒW‚ğ•\¦‚·‚é
 				JOptionPane.showMessageDialog(
 						FrmZeetaMain.this
-						,"å‰Šé™¤å®Œäº†ã€‚",""
+						,"íœŠ®—¹B",""
 						,JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
 		
 	}
 
-	//ãƒãƒ¼ãƒ‰è¿½åŠ ã®è¦ª
+	//ƒm[ƒh’Ç‰Á‚Ìe
 	abstract class ActPrepareCreateDoc extends ActBase2 {
 		static final int AS_CHILD=0;
 		static final int AS_SIBLING=1;
@@ -639,9 +648,9 @@ public class FrmZeetaMain extends BaseFrame {
 			if( type == AS_CHILD){
 				viewState_.setCreatingParent(viewState_.getCurrentNode());
 			}else{
-				//rootã®å…„å¼Ÿã¯è¿½åŠ ã§ããªã„
+				//root‚ÌŒZ’í‚Í’Ç‰Á‚Å‚«‚È‚¢
 				if(viewState_.currentNode_.isRoot()){
-					throw new AppException("rootãƒãƒ¼ãƒ‰ã«å…„å¼Ÿãƒãƒ¼ãƒ‰ã¯ä½œæˆã§ãã¾ã›ã‚“");
+					throw new AppException("rootƒm[ƒh‚ÉŒZ’íƒm[ƒh‚Íì¬‚Å‚«‚Ü‚¹‚ñ");
 				}
 				viewState_.setCreatingParent(viewState_.getCurrentNode().getParent());
 			}
@@ -651,12 +660,12 @@ public class FrmZeetaMain extends BaseFrame {
 			inpDocTitle.requestFocus();
 		}
 	}
-	//å­ãƒãƒ¼ãƒ‰è¿½åŠ 
+	//qƒm[ƒh’Ç‰Á
 	class ActPrepareCreateDocAsChild extends ActPrepareCreateDoc {
 		public ActPrepareCreateDocAsChild(ActionMap map) {
 			super(map);
 			putValue(Action.NAME, "New as child");
-			putValue(Action.SHORT_DESCRIPTION, "å­ãƒãƒ¼ãƒ‰è¿½åŠ (Insã€ctrl+N)");
+			putValue(Action.SHORT_DESCRIPTION, "qƒm[ƒh’Ç‰Á(InsActrl+N)");
 			putValue(Action.SMALL_ICON, 
 					new ImageIcon(getClass().getResource("/image/newAsChild.gif")));
 		}
@@ -664,12 +673,12 @@ public class FrmZeetaMain extends BaseFrame {
 			prepareCreateYouken(AS_CHILD);
 		}
 	}
-	//å…„å¼Ÿãƒãƒ¼ãƒ‰è¿½åŠ 
+	//ŒZ’íƒm[ƒh’Ç‰Á
 	class ActPrepareCreateDocAsSibling extends ActPrepareCreateDoc {
 		public ActPrepareCreateDocAsSibling(ActionMap map) {
 			super(map);
 			putValue(Action.NAME, "New as sibling");
-			putValue(Action.SHORT_DESCRIPTION, "å…„å¼Ÿãƒãƒ¼ãƒ‰è¿½åŠ (Shift+Ins, ctrl+M)");
+			putValue(Action.SHORT_DESCRIPTION, "ŒZ’íƒm[ƒh’Ç‰Á(Shift+Ins, ctrl+M)");
 			putValue(Action.SMALL_ICON, 
 					new ImageIcon(getClass().getResource("/image/newAsSibling.gif")));
 		}
@@ -677,12 +686,12 @@ public class FrmZeetaMain extends BaseFrame {
 			prepareCreateYouken(AS_SIBLING);
 		}
 	}
-	//ã‚³ãƒŸãƒƒãƒˆ
+	//ƒRƒ~ƒbƒg
 	class ActCommitDoc extends ActTransactionBase2 {
 		public ActCommitDoc(ActionMap map) {
 			super(map);
 			putValue(Action.NAME, "commit");
-			putValue(Action.SHORT_DESCRIPTION, "åæ˜ (ctrl+S, ctrl+Enter)");
+			putValue(Action.SHORT_DESCRIPTION, "”½‰f(ctrl+S, ctrl+Enter)");
 			putValue(Action.ACCELERATOR_KEY, 
 					KeyStroke.getKeyStroke(KeyEvent.VK_K, KeyEvent.ALT_MASK));
 		}
@@ -694,7 +703,7 @@ public class FrmZeetaMain extends BaseFrame {
 				actionMap_.get(ActUpdateDoc.class).actionPerformed(e);
 				jTree.requestFocus();
 			}else{
-				//ç„¡è¦–ã‚„ã€‚ï¼ˆã‚·ãƒ§ãƒ¼ãƒˆã‚«ãƒƒãƒˆã‚­ãƒ¼ã®å ´åˆã“ã“ã«æ¥ã‚‹ï¼‰
+				//–³‹‚âBiƒVƒ‡[ƒgƒJƒbƒgƒL[‚Ìê‡‚±‚±‚É—ˆ‚éj
 			}
 		}
 		public void createDoc(ActionEvent e) {
@@ -704,12 +713,12 @@ public class FrmZeetaMain extends BaseFrame {
 			DocNode oyaNode = 
 				(DocNode)viewState_.getCreatingParent();
 			Doc newYouken = viewState_.getDetail();
-			//è¦ä»¶ã¨æ§‹é€ ã‚’è¿½åŠ 
+			//—vŒ‚Æ\‘¢‚ğ’Ç‰Á
 			log.debug("oyaNode="+oyaNode);
 			DocNode newNode
 				= docModel_.insertDoc(oyaNode, newYouken);
 
-			//è¿½åŠ ã—ãŸãƒãƒ¼ãƒ‰ã‚’è¦‹ãˆã‚‹ã‚ˆã†ã«ã™ã‚‹
+			//’Ç‰Á‚µ‚½ƒm[ƒh‚ğŒ©‚¦‚é‚æ‚¤‚É‚·‚é
 			jTree.expandPath(new TreePath(oyaNode.getPath()));
 			jTree.setSelectionPath(new TreePath(newNode.getPath()));
 			jTree.scrollPathToVisible(new TreePath(newNode.getPath()));
@@ -717,12 +726,12 @@ public class FrmZeetaMain extends BaseFrame {
 			viewState_.setCreating(false);
 		}
 	}
-	//2é‡åŒ–
+	//2d‰»
 	class ActDuplicateDoc extends ActTransactionBase2 {
 		public ActDuplicateDoc(ActionMap map) {
 			super(map);
 			putValue(Action.NAME, "duplicate");
-			putValue(Action.SHORT_DESCRIPTION, "ãƒãƒ¼ãƒ‰ã‚’ï¼’é‡åŒ–(ctrl+W)");
+			putValue(Action.SHORT_DESCRIPTION, "ƒm[ƒh‚ğ‚Qd‰»(ctrl+W)");
 			putValue(Action.SMALL_ICON, 
 					new ImageIcon(getClass().getResource("/image/dup.gif")));
 //			putValue(Action.ACCELERATOR_KEY, 
@@ -739,22 +748,22 @@ public class FrmZeetaMain extends BaseFrame {
 		}
 		public void duplicateDoc(ActionEvent e) {
 
-			//ã‚«ãƒ¬ãƒ³ãƒˆãƒãƒ¼ãƒ‰ã‚’è¤‡è£½
+			//ƒJƒŒƒ“ƒgƒm[ƒh‚ğ•¡»
 			DocNode curNode = (DocNode)viewState_.getCurrentNode();
 			Doc newDoc = new Doc();
-			Timestamp saveDate = newDoc.getNewDate();	//æ—¥ä»˜ã‚’é€€é¿
-			String saveUser = newDoc.getUserName();			//ä½œæˆè€…ã‚’é€€é¿
-			newDoc.copyDoc(curNode.getDoc());	//å…¨å±æ€§ã‚’ã‚³ãƒ”ãƒ¼
-			newDoc.setNewDate(saveDate);	//æ—¥ä»˜ã‚’å…¥ã‚Œæ›¿ãˆ
-			newDoc.setUserName(saveUser);	//ä½œæˆè€…ã‚’å…¥ã‚Œæ›¿ãˆ
-			newDoc.setDocId(-1);			//ã“ã®ã‚ˆã†ã«ã—ãªã„ã¨æ–°è¦ãƒãƒ¼ãƒ‰ã«ãªã‚‰ãªã„
+			Timestamp saveDate = newDoc.getNewDate();	//“ú•t‚ğ‘Ş”ğ
+			String saveUser = newDoc.getUserName();			//ì¬Ò‚ğ‘Ş”ğ
+			newDoc.copyDoc(curNode.getDoc());	//‘S‘®«‚ğƒRƒs[
+			newDoc.setNewDate(saveDate);	//“ú•t‚ğ“ü‚ê‘Ö‚¦
+			newDoc.setUserName(saveUser);	//ì¬Ò‚ğ“ü‚ê‘Ö‚¦
+			newDoc.setDocId(-1);			//‚±‚Ì‚æ‚¤‚É‚µ‚È‚¢‚ÆV‹Kƒm[ƒh‚É‚È‚ç‚È‚¢
 			
-			//è¦ä»¶ã¨æ§‹é€ ã‚’è¿½åŠ 
+			//—vŒ‚Æ\‘¢‚ğ’Ç‰Á
 			DocNode oyaNode = (DocNode)curNode.getParent();
 			log.debug("oyaNode="+oyaNode);
 			DocNode newNode	= docModel_.insertDoc(oyaNode, newDoc);
 
-			//è¿½åŠ ã—ãŸãƒãƒ¼ãƒ‰ã‚’è¦‹ãˆã‚‹ã‚ˆã†ã«ã™ã‚‹
+			//’Ç‰Á‚µ‚½ƒm[ƒh‚ğŒ©‚¦‚é‚æ‚¤‚É‚·‚é
 			jTree.expandPath(new TreePath(oyaNode.getPath()));
 			jTree.setSelectionPath(new TreePath(newNode.getPath()));
 			jTree.scrollPathToVisible(new TreePath(newNode.getPath()));
@@ -764,7 +773,7 @@ public class FrmZeetaMain extends BaseFrame {
 		public ActUpdateDoc(ActionMap map) {
 			super(map);
 			putValue(Action.NAME, "update");
-			putValue(Action.SHORT_DESCRIPTION, "æ›´æ–°");
+			putValue(Action.SHORT_DESCRIPTION, "XV");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			if( ! viewState_.isUpdating()){
@@ -775,8 +784,8 @@ public class FrmZeetaMain extends BaseFrame {
 			
 			cmdOkNew.requestFocus();
 			
-			//ä»¥ä¸‹ã®ï¼‘è¡Œã®ã‚ˆã†ã«ã„ããªã‚Šã‚«ãƒ¬ãƒ³ãƒˆDocã‚’æ›´æ–°ã™ã‚‹ã¨ã€å…¥åŠ›ã‚¨ãƒ©ãƒ¼ã§
-			//DBã®æ›´æ–°ãŒã‚­ãƒ£ãƒ³ã‚»ãƒ«ã•ã‚Œã¦ã‚‚treeãƒãƒ¼ãƒ‰ãŒã€æ›´æ–°ã•ã‚Œã¦ã—ã¾ã†ã€‚
+			//ˆÈ‰º‚Ì‚Ps‚Ì‚æ‚¤‚É‚¢‚«‚È‚èƒJƒŒƒ“ƒgDoc‚ğXV‚·‚é‚ÆA“ü—ÍƒGƒ‰[‚Å
+			//DB‚ÌXV‚ªƒLƒƒƒ“ƒZƒ‹‚³‚ê‚Ä‚àtreeƒm[ƒh‚ªAXV‚³‚ê‚Ä‚µ‚Ü‚¤B
 //			newDoc = viewState_.getDetail(viewState_.getCurrentNode().getDoc());
 			Doc newDoc;
 			try {
@@ -788,22 +797,22 @@ public class FrmZeetaMain extends BaseFrame {
 			docModel_.updateDoc(newDoc);
 
 			viewState_.getDetailState().reset();
-			//æ›´æ–°ã—ãŸãƒãƒ¼ãƒ‰ã«æ–°ã—ã„docã‚’ã‚»ãƒƒãƒˆ
+			//XV‚µ‚½ƒm[ƒh‚ÉV‚µ‚¢doc‚ğƒZƒbƒg
 			viewState_.getCurrentNode().setUserObject(newDoc);
 			
-			//ç¾åœ¨è¡¨ç¤ºã•ã‚Œã¦ã„ã‚‹åŒã˜ãƒãƒ¼ãƒ‰ã‚’æ›´æ–°ã™ã‚‹
+			//Œ»İ•\¦‚³‚ê‚Ä‚¢‚é“¯‚¶ƒm[ƒh‚ğXV‚·‚é
 			docModel_.docChanged(newDoc);
 			
-			//è¡¨ç¤ºçŠ¶æ…‹è¨˜éŒ²
+			//•\¦ó‘Ô‹L˜^
 			int caretP = inpDocCont.getCaretPosition();
 			Rectangle rect = inpDocCont.getVisibleRect();
 
-			viewState_.setDetail(newDoc);	//versionNoãŒæ›´æ–°ã•ã‚Œã¦ã„ã‚‹ã®ã§ãƒªãƒ­ãƒ¼ãƒ‰
+			viewState_.setDetail(newDoc);	//versionNo‚ªXV‚³‚ê‚Ä‚¢‚é‚Ì‚ÅƒŠƒ[ƒh
 			
 			if(e != null && e.getActionCommand().equals(ActUpdateIfDarty.class.getName())){
-				//ãƒãƒ¼ãƒ‰ã‚’å¤‰æ›´ã—ã‚ˆã†ã¨ã—ã¦ã„ã‚‹å ´åˆã¯ã€è¡¨ç¤ºçŠ¶æ…‹ã‚’å¾©å…ƒã™ã‚‹å¿…è¦ã¯ãªã„
+				//ƒm[ƒh‚ğ•ÏX‚µ‚æ‚¤‚Æ‚µ‚Ä‚¢‚éê‡‚ÍA•\¦ó‘Ô‚ğ•œŒ³‚·‚é•K—v‚Í‚È‚¢
 			}else{
-				//è¡¨ç¤ºçŠ¶æ…‹å¾©å…ƒ
+				//•\¦ó‘Ô•œŒ³
 				class SetView implements Runnable {
 					Rectangle _rect;
 					int _caretP;
@@ -818,33 +827,33 @@ public class FrmZeetaMain extends BaseFrame {
 				}
 				SwingUtilities.invokeLater(new SetView(rect, caretP));
 			}			
-			if(isSortTypeDarty){	//å­ãƒãƒ¼ãƒ‰ä¸¦ã³ãŒæ›´æ–°ã•ã‚Œã¦ã„ã‚‹å ´åˆ
+			if(isSortTypeDarty){	//qƒm[ƒh•À‚Ñ‚ªXV‚³‚ê‚Ä‚¢‚éê‡
 				actionMap_.get(ActRefreshCurrent.class).actionPerformed(e);
 			}else{
-//				docModel_.reload(viewState_.getCurrentNode());ã€€
-				//â†‘ã“ã‚Œã‚’ã‚„ã‚‹ã¨ã€å­ãƒãƒ¼ãƒ‰ãŒé–‰ã˜ã¦ã—ã¾ã†ã®ã§å‰Šé™¤ã—ã¦ã¿ãŸ ver0.4.34
+//				docModel_.reload(viewState_.getCurrentNode());@
+				//ª‚±‚ê‚ğ‚â‚é‚ÆAqƒm[ƒh‚ª•Â‚¶‚Ä‚µ‚Ü‚¤‚Ì‚Åíœ‚µ‚Ä‚İ‚½ ver0.4.34
 			}
-			//ãƒ«ãƒ¼ãƒˆã®å ´åˆã¯ã€ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¿ã‚¤ãƒˆãƒ«ã«åæ˜ 
+			//ƒ‹[ƒg‚Ìê‡‚ÍAƒEƒBƒ“ƒhƒEƒ^ƒCƒgƒ‹‚É”½‰f
 			if(newDoc.getDocTypeId() == Doc.ROOT_TYPE){
 				setTitle(getTitle());
 			}
 			
 		}
 	}
-	//ã‚­ãƒ£ãƒ³ã‚»ãƒ«
+	//ƒLƒƒƒ“ƒZƒ‹
 	class ActCancelNewYouken extends ActBase2 {
 		public ActCancelNewYouken(ActionMap map) {
 			super(map);
 			putValue(Action.NAME, "cancel");
-			putValue(Action.SHORT_DESCRIPTION, "ã‚­ãƒ£ãƒ³ã‚»ãƒ«(Esc)");
+			putValue(Action.SHORT_DESCRIPTION, "ƒLƒƒƒ“ƒZƒ‹(Esc)");
 			map.put(this.getClass(), this);
 		}
 		public void actionPerformed2(ActionEvent e) {
 			if(viewState_.isCreating() || viewState_.isUpdating()){
 				if( JOptionPane.showConfirmDialog(
 						FrmZeetaMain.this
-						,"ç·¨é›†ä¸­ã®å†…å®¹ã‚’ç ´æ£„ã—ã¾ã™ã€‚\n" +
-						"ã‚ˆã‚ã—ã„ã§ã™ã‹ï¼Ÿ",""
+						,"•ÒW’†‚Ì“à—e‚ğ”jŠü‚µ‚Ü‚·B\n" +
+						"‚æ‚ë‚µ‚¢‚Å‚·‚©H",""
 						,JOptionPane.YES_NO_OPTION
 						,JOptionPane.QUESTION_MESSAGE) != JOptionPane.YES_OPTION){
 					return;
@@ -853,56 +862,56 @@ public class FrmZeetaMain extends BaseFrame {
 				return;
 			}
 			TreePath path = new TreePath(viewState_.getCurrentNode().getPath());
-			viewState_.getDetailState().reset();	//ã“ã‚Œã‚’ã‚„ã‚‰ãªã„ã¨æ¬¡ã®ã‚¹ãƒ†ãƒƒãƒ—ã§ã€Œæ›´æ–°ã•ã‚Œã¦ã„ã¾ã™ãŒãƒ»ãƒ»ãƒ»ã€ãŒå‡ºã¦ã—ã¾ã†
-			jTree.setSelectionPath(null);	//ä¸€æ—¦é¸æŠã‚’å¤–ã•ãªã„ã¨ä»¥ä¸‹ã§é¸æŠã‚¤ãƒ™ãƒ³ãƒˆãŒç™ºç”Ÿã—ãªã„
+			viewState_.getDetailState().reset();	//‚±‚ê‚ğ‚â‚ç‚È‚¢‚ÆŸ‚ÌƒXƒeƒbƒv‚ÅuXV‚³‚ê‚Ä‚¢‚Ü‚·‚ªEEEv‚ªo‚Ä‚µ‚Ü‚¤
+			jTree.setSelectionPath(null);	//ˆê’U‘I‘ğ‚ğŠO‚³‚È‚¢‚ÆˆÈ‰º‚Å‘I‘ğƒCƒxƒ“ƒg‚ª”­¶‚µ‚È‚¢
 			jTree.setSelectionPath(path);
-			viewState_.setCreating(false);	//æ›´æ–°å‡¦ç†ãŒå‹•ä½œã—ãªã„ã‚ˆã†ã«ã€ã“ã®ä½ç½®ã§ã‚»ãƒƒãƒˆã™ã‚‹å¿…è¦ãŒã‚ã‚‹
+			viewState_.setCreating(false);	//XVˆ—‚ª“®ì‚µ‚È‚¢‚æ‚¤‚ÉA‚±‚ÌˆÊ’u‚ÅƒZƒbƒg‚·‚é•K—v‚ª‚ ‚é
 			viewState_.setUpdating(false);
 		}
 	}
-	//æ›´æ–°ã•ã‚Œã¦ã„ãŸã‚‰DBæ›´æ–°
+	//XV‚³‚ê‚Ä‚¢‚½‚çDBXV
 	class ActUpdateIfDarty extends ActBase2 {
 		public ActUpdateIfDarty(ActionMap map) {
 			super(map);
 			putValue(Action.NAME, "updateIfDarty");
-			putValue(Action.SHORT_DESCRIPTION, "æ›´æ–°ã•ã‚Œã¦ã„ãŸã‚‰æ›´æ–°");
+			putValue(Action.SHORT_DESCRIPTION, "XV‚³‚ê‚Ä‚¢‚½‚çXV");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			if( viewState_.isCreating()){
 				return;
 			}
-			//æ›´æ–°ã•ã‚Œã¦ã„ã‚‹ã‹ãƒã‚§ãƒƒã‚¯
+			//XV‚³‚ê‚Ä‚¢‚é‚©ƒ`ƒFƒbƒN
 			if( viewState_.getDetailState().isDarty() ){
-				log.debug("æ±šã‚Œã¦ã„ã‚‹ã‚. ");
-				// æ›´æ–°ã›ãªã‚ã‹ã‚“
+				log.debug("‰˜‚ê‚Ä‚¢‚é‚í. ");
+				// XV‚¹‚È‚ ‚©‚ñ
 				if( JOptionPane.showConfirmDialog(
 						FrmZeetaMain.this
-						,"å†…å®¹ãŒå¤‰æ›´ã•ã‚Œã¦ã„ã¾ã™ã€‚\n" +
-						"æ›´æ–°ã‚’åæ˜ ã—ã¾ã™ã‹ï¼Ÿ",""
+						,"“à—e‚ª•ÏX‚³‚ê‚Ä‚¢‚Ü‚·B\n" +
+						"XV‚ğ”½‰f‚µ‚Ü‚·‚©H",""
 						,JOptionPane.YES_NO_OPTION
 						,JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
 					;
 					actionMap_.get(ActUpdateDoc.class).actionPerformed(e);
 				}else{
-					//Detailã‚’å…ƒã«æˆ»ã™ãƒ»ãƒ»ãƒ»å¿…è¦ã¯ãªã„ã€‚
-					//ã“ã“ã¯ã€TreeNodeã‚’å¤‰æ›´ã™ã‚‹éš›ã«å‘¼ã³å‡ºã•ã‚Œã‚‹ã®ã§ã€å†åº¦ã‚­ãƒ£ãƒ³ã‚»ãƒ«
-					//ã•ã‚ŒãŸNodeã‚’é¸æŠã—ãŸå ´åˆã¯ã€èª­ã¿è¾¼ã¿ç›´ã•ã‚Œã¦ã„ã‚‹ã€‚
+					//Detail‚ğŒ³‚É–ß‚·EEE•K—v‚Í‚È‚¢B
+					//‚±‚±‚ÍATreeNode‚ğ•ÏX‚·‚éÛ‚ÉŒÄ‚Ño‚³‚ê‚é‚Ì‚ÅAÄ“xƒLƒƒƒ“ƒZƒ‹
+					//‚³‚ê‚½Node‚ğ‘I‘ğ‚µ‚½ê‡‚ÍA“Ç‚İ‚İ’¼‚³‚ê‚Ä‚¢‚éB
 				}
 				viewState_.setUpdating(false);
 			}
 		}
 	}
-	//ã‚«ãƒ¬ãƒ³ãƒˆãƒãƒ¼ãƒ‰ã®ãƒªãƒ•ãƒ¬ãƒƒã‚·ãƒ¥
+	//ƒJƒŒƒ“ƒgƒm[ƒh‚ÌƒŠƒtƒŒƒbƒVƒ…
 	class ActRefreshCurrent extends ActBase2 {
 		public ActRefreshCurrent(ActionMap map) {
 			super(map);
 			putValue(Action.NAME, "refresh");
-			putValue(Action.SHORT_DESCRIPTION, "ã‚«ãƒ¬ãƒ³ãƒˆãƒãƒ¼ãƒ‰ã®ãƒªãƒ•ãƒ¬ãƒƒã‚·ãƒ¥(F5)");
+			putValue(Action.SHORT_DESCRIPTION, "ƒJƒŒƒ“ƒgƒm[ƒh‚ÌƒŠƒtƒŒƒbƒVƒ…(F5)");
 			putValue(Action.SMALL_ICON, 
 					new ImageIcon(getClass().getResource("/image/refresh.gif")));
 		}
 		public void actionPerformed2(ActionEvent e) {
-//			if( ! viewState_.isNeutral()){	ç·¨é›†ä¸­ã®å ´åˆã‚‚ã‚ã‚Šå¾—ã‚‹
+//			if( ! viewState_.isNeutral()){	•ÒW’†‚Ìê‡‚à‚ ‚è“¾‚é
 //				return;
 //			}
 			if( ! viewState_.checkExistSelectingNode()){
@@ -912,23 +921,23 @@ public class FrmZeetaMain extends BaseFrame {
 				Action cancelAction = actionMap_.get(ActCancelNewYouken.class);
 				cancelAction.actionPerformed(null);
 				if(viewState_.isCreating() || viewState_.isUpdating()){
-					//çŠ¶æ…‹ãŒå¤‰åŒ–ã—ã¦ã„ãªã„å ´åˆã¯ã€ã€Œç ´æ£„ã—ã¾ã™ã‹ï¼ŸNoã€ã‚’é¸æŠã—ãŸå ´åˆ
+					//ó‘Ô‚ª•Ï‰»‚µ‚Ä‚¢‚È‚¢ê‡‚ÍAu”jŠü‚µ‚Ü‚·‚©HNov‚ğ‘I‘ğ‚µ‚½ê‡
 					return;
 				}
 			}
 			
-			Action act = actionMap_.get(ActRefreshSpecific.class);
-			act.putValue(ActRefreshSpecific.REFRESH_NODE,  viewState_.getCurrentNode());
+			Action act = actionMap_.get(ActRefreshNode.class);
+			act.putValue(ActRefreshNode.REFRESH_NODE,  viewState_.getCurrentNode());
 			act.actionPerformed(e);
 		}
 	}
-	//æŒ‡å®šãƒãƒ¼ãƒ‰ã®ãƒªãƒ•ãƒ¬ãƒƒã‚·ãƒ¥
-	class ActRefreshSpecific extends ActBase2 {
-		static final String REFRESH_NODE = "REFRESH_NODE";
-		public ActRefreshSpecific(ActionMap map) {
+	//w’èƒm[ƒh‚ÌƒŠƒtƒŒƒbƒVƒ…
+	public class ActRefreshNode extends ActBase {		//TreeNodeTransferHandler‚©‚çQÆ‚³‚ê‚é‚½‚ßpublic‚É‚µ‚Ä‚¢‚é
+		public static final String REFRESH_NODE = "REFRESH_NODE";
+		public ActRefreshNode(ActionMap map) {
 			super(map);
 			putValue(Action.NAME, "refreshSpecific");
-			putValue(Action.SHORT_DESCRIPTION, "æŒ‡å®šãƒãƒ¼ãƒ‰ã®ãƒªãƒ•ãƒ¬ãƒƒã‚·ãƒ¥");
+			putValue(Action.SHORT_DESCRIPTION, "w’èƒm[ƒh‚ÌƒŠƒtƒŒƒbƒVƒ…");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			if( ! viewState_.checkExistSelectingNode()){
@@ -943,23 +952,23 @@ public class FrmZeetaMain extends BaseFrame {
 //			if( ! viewState_.isNeutral()){
 //				return;
 //			}
-			//**** è‡ªèº«ã‚’ãƒªãƒ­ãƒ¼ãƒ‰ 
+			//**** ©g‚ğƒŠƒ[ƒh 
 			viewState_.setDetail( docModel_.reloadDoc(node) );
 			
-			//**** å­«nodeã¾ã§ãƒªãƒ­ãƒ¼ãƒ‰ 
+			//**** ‘·node‚Ü‚ÅƒŠƒ[ƒh 
 			node.removeAllChildren();
-			log.debug("node.removeAllChildren();ã‚„ã£ãŸã‚ˆ");
+			log.debug("node.removeAllChildren();‚â‚Á‚½‚æ");
 			docModel_.reload(node);
 			
-			//å­è¦ä»¶ã‚’è¿½åŠ 
+			//q—vŒ‚ğ’Ç‰Á
 			docModel_.addChildDocFromDb(node);
-			//å­«è¦ä»¶ã‚’è¿½åŠ 
+			//‘·—vŒ‚ğ’Ç‰Á
 			docModel_.addMagoDocFromDb(node);
 			
 			jTree.expandPath(new TreePath(node.getPath()));
 		}
 	}
-	//æˆæœç‰©ä¸€è¦§ç”»é¢è¡¨ç¤º(åŸºåº•)
+	//¬‰Ê•¨ˆê——‰æ–Ê•\¦(Šî’ê)
 	abstract class ActShowOutputListBase extends ActBase2 {
 		DlgOutputList outputList_ = null;
 		public ActShowOutputListBase(ActionMap map) {
@@ -970,7 +979,7 @@ public class FrmZeetaMain extends BaseFrame {
 		public ActShowOutputList(ActionMap map) {
 			super(map);
 			putValue(Action.NAME, "output list");
-			putValue(Action.SHORT_DESCRIPTION, "æˆæœç‰©ä¸€è¦§ç”»é¢è¡¨ç¤º");
+			putValue(Action.SHORT_DESCRIPTION, "¬‰Ê•¨ˆê——‰æ–Ê•\¦");
 			putValue(Action.SMALL_ICON, 
 					new ImageIcon(getClass().getResource("/image/outputs.gif")));
 		}
@@ -990,12 +999,12 @@ public class FrmZeetaMain extends BaseFrame {
 			return outputList_;
 		}
 	}
-	//æˆæœç‰©ä¸€è¦§ç”»é¢è¡¨ç¤º(ä½œæ¥­ç™»éŒ²ç”¨)
+	//¬‰Ê•¨ˆê——‰æ–Ê•\¦(ì‹Æ“o˜^—p)
 	class ActShowOutputListForWork extends ActShowOutputListBase {
 		public ActShowOutputListForWork(ActionMap map) {
 			super(map);
 			putValue(Action.NAME, "select output");
-			putValue(Action.SHORT_DESCRIPTION, "æˆæœç‰©ä¸€è¦§ç”»é¢è¡¨ç¤º");
+			putValue(Action.SHORT_DESCRIPTION, "¬‰Ê•¨ˆê——‰æ–Ê•\¦");
 //			putValue(Action.SMALL_ICON, 
 //					new ImageIcon(getClass().getResource("/image/common.gif")));
 			getDlgOutputList().addActionListener(new OutputSelectEventListener());
@@ -1005,13 +1014,13 @@ public class FrmZeetaMain extends BaseFrame {
 			if(selectedItem == null || !(selectedItem instanceof WorkType)){
 				return;
 			}
-			//æ—¢ã«ç™»éŒ²æ¸ˆã¿ã®ä½œæ¥­ã®å ´åˆã¯ã€ã‚¨ãƒ©ãƒ¼ã¨ã™ã‚‹
+			//Šù‚É“o˜^Ï‚İ‚Ìì‹Æ‚Ìê‡‚ÍAƒGƒ‰[‚Æ‚·‚é
 			OutputOfWorkListModel workModel = 
 				(OutputOfWorkListModel)getDspWorkList().getModel();
 			if(workModel.isWorkExist(
 					viewState_.currentNode_.getDoc().getDocId(), 
 					((WorkType)selectedItem).getWorkTypeId()) ){
-				throw new AppException("ã™ã§ã«ç™»éŒ²æ¸ˆã¿ã®ä½œæ¥­ã§ã™");
+				throw new AppException("‚·‚Å‚É“o˜^Ï‚İ‚Ìì‹Æ‚Å‚·");
 			}
 			getDlgOutputList().makeList((WorkType)selectedItem);
 			getDlgOutputList().setVisible(true);
@@ -1027,12 +1036,12 @@ public class FrmZeetaMain extends BaseFrame {
 			return outputList_;
 		}
 	}
-	//è¦ªä¸€è¦§ç”»é¢è¡¨ç¤º
+	//eˆê——‰æ–Ê•\¦
 	class ActShowParents extends ActBase2 {
 		public ActShowParents(ActionMap map) {
 			super(map);
 			putValue(Action.NAME, "showParents");
-			putValue(Action.SHORT_DESCRIPTION, "è¦ªä¸€è¦§ç”»é¢è¡¨ç¤º");
+			putValue(Action.SHORT_DESCRIPTION, "eˆê——‰æ–Ê•\¦");
 			putValue(Action.SMALL_ICON, 
 					new ImageIcon(getClass().getResource("/image/common.gif")));
 		}
@@ -1055,10 +1064,10 @@ public class FrmZeetaMain extends BaseFrame {
 			DocNode oyaNode = 
 				(DocNode)viewState_.getCurrentNode().getParent();
 			
-			//è¦ªãŒã€ŒSEQé †ã€ã«ãªã£ã¦ã„ã‚‹ã“ã¨
+			//e‚ªuSEQ‡v‚É‚È‚Á‚Ä‚¢‚é‚±‚Æ
 			if(oyaNode.getDoc().getSortType().getSortTypeID()
 					!= SortType.SEQ){
-				throw new AppException("è¦ªãƒãƒ¼ãƒ‰ã‚’ã€ŒæŒ‡å®šé †ã€ã«å¤‰æ›´ã—ã¦ãã ã•ã„");
+				throw new AppException("eƒm[ƒh‚ğuw’è‡v‚É•ÏX‚µ‚Ä‚­‚¾‚³‚¢");
 			}
 			return true;
 		}
@@ -1068,15 +1077,15 @@ public class FrmZeetaMain extends BaseFrame {
 				DocNode oyaNode = 
 					(DocNode)viewState_.getCurrentNode().getParent();
 	
-				//Treeä¸Šã§ç§»å‹•
+				//Treeã‚ÅˆÚ“®
 				DocNode curNode = viewState_.getCurrentNode();
-	//			curNode.removeFromParent(); ã“ã‚Œã‚’ã‚„ã‚‰ãªãã¦ã‚‚ã„ã„ã‚‰ã—ã„
+	//			curNode.removeFromParent(); ‚±‚ê‚ğ‚â‚ç‚È‚­‚Ä‚à‚¢‚¢‚ç‚µ‚¢
 				oyaNode.insert(curNode, oyaNode.getIndex(curNode) + moveSize);
 				
-				//SEQã®ãƒªãƒŠãƒ³ãƒãƒªãƒ³ã‚°
+				//SEQ‚ÌƒŠƒiƒ“ƒoƒŠƒ“ƒO
 				docModel_.renumberSequence(oyaNode);
 				
-				//Viewã®æ›´æ–°
+				//View‚ÌXV
 				docModel_.reload(oyaNode);
 				TreePath path = new TreePath(curNode.getPath());
 				jTree.setSelectionPath(path);
@@ -1087,12 +1096,12 @@ public class FrmZeetaMain extends BaseFrame {
 		}
 		
 	}	
-	//ä¸Šã«ç§»å‹•
+	//ã‚ÉˆÚ“®
 	class ActMoveUp extends ActMove {
 		public ActMoveUp(ActionMap map) {
 			super(map);
 			putValue(Action.NAME, "moveUp");
-			putValue(Action.SHORT_DESCRIPTION, "ä¸€ã¤ä¸Šã«ç§»å‹•(ctrl+â†‘)");
+			putValue(Action.SHORT_DESCRIPTION, "ˆê‚Âã‚ÉˆÚ“®(ctrl+ª)");
 			putValue(Action.SMALL_ICON, 
 					new ImageIcon(getClass().getResource("/image/moveUp.gif")));
 		}
@@ -1102,25 +1111,25 @@ public class FrmZeetaMain extends BaseFrame {
 				return;
 			}
 			
-			//æ‰‹å‰ãƒãƒ¼ãƒ‰ã®å­˜åœ¨ãƒã‚§ãƒƒã‚¯
+			//è‘Oƒm[ƒh‚Ì‘¶İƒ`ƒFƒbƒN
 			DocNode prevNode = 
 				(DocNode)viewState_.getCurrentNode().getPreviousSibling();
 			if(prevNode == null){
-				log.debug("ä¸ŠãŒãªã„");
+				log.debug("ã‚ª‚È‚¢");
 				return;
 			}
-			//Treeä¸Šã§ãƒãƒ¼ãƒ‰ã®ç§»å‹•ã¨DBæ›´æ–°
+			//Treeã‚Åƒm[ƒh‚ÌˆÚ“®‚ÆDBXV
 			moveAndUpdate(-1);
 			
 			log.trace("end");
 		}
 	}
-	//ä¸‹ã«ç§»å‹•
+	//‰º‚ÉˆÚ“®
 	class ActMoveDown extends ActMove {
 		public ActMoveDown(ActionMap map) {
 			super(map);
 			putValue(Action.NAME, "moveDown");
-			putValue(Action.SHORT_DESCRIPTION, "ä¸€ã¤ä¸‹ã«ç§»å‹•(ctrl+â†“)");
+			putValue(Action.SHORT_DESCRIPTION, "ˆê‚Â‰º‚ÉˆÚ“®(ctrl+«)");
 			putValue(Action.SMALL_ICON, 
 					new ImageIcon(getClass().getResource("/image/moveDown.gif")));
 		}
@@ -1129,26 +1138,26 @@ public class FrmZeetaMain extends BaseFrame {
 			if( !check() ){
 				return;
 			}
-			//æ‰‹å‰ãƒãƒ¼ãƒ‰ã®å­˜åœ¨ãƒã‚§ãƒƒã‚¯
+			//è‘Oƒm[ƒh‚Ì‘¶İƒ`ƒFƒbƒN
 			DocNode nextNode = 
 				(DocNode)viewState_.getCurrentNode().getNextSibling();
 			if(nextNode == null){
-				log.debug("ä¸‹ãŒãªã„");
+				log.debug("‰º‚ª‚È‚¢");
 				return;
 			}
-			//Treeä¸Šã§ãƒãƒ¼ãƒ‰ã®ç§»å‹•ã¨DBæ›´æ–°
+			//Treeã‚Åƒm[ƒh‚ÌˆÚ“®‚ÆDBXV
 			moveAndUpdate(1);
 			
 			log.trace("end");
 		}
 	}
-	//æ¤œç´¢ç”»é¢è¡¨ç¤º
+	//ŒŸõ‰æ–Ê•\¦
 	class ActShowSearchWindow extends ActBase2 {
 		DlgNewSearch searchForm_;
 		public ActShowSearchWindow(ActionMap map) {
 			super(map);
 			putValue(Action.NAME, "OpenSearchWindow");
-			putValue(Action.SHORT_DESCRIPTION, "æ¤œç´¢ç”»é¢ã‚’é–‹ã(ctrl+F)");
+			putValue(Action.SHORT_DESCRIPTION, "ŒŸõ‰æ–Ê‚ğŠJ‚­(ctrl+F)");
 			putValue(Action.SMALL_ICON, 
 					new ImageIcon(getClass().getResource("/image/search.gif")));
 		}
@@ -1156,38 +1165,38 @@ public class FrmZeetaMain extends BaseFrame {
 			
 			if(searchForm_ == null){
 				searchForm_ = new DlgNewSearch(FrmZeetaMain.this);
-				searchForm_.setLocationRelativeTo(FrmZeetaMain.this);	//ä¸€ç™ºç›®ã¯ã€ç”»é¢ã®ä¸­å¤®ã«è¡¨ç¤º
+				searchForm_.setLocationRelativeTo(FrmZeetaMain.this);	//ˆê”­–Ú‚ÍA‰æ–Ê‚Ì’†‰›‚É•\¦
 				searchForm_.setup();
 			}
 			searchForm_.setVisible(true);
 			searchForm_.setRequestFocusToInput();
 		}
 	}
-	//Toolsç”»é¢è¡¨ç¤º
+	//Tools‰æ–Ê•\¦
 	class ActShowToolsWindow extends ActBase2 {
 		DlgTools tools = null;
 		public ActShowToolsWindow(ActionMap map) {
 			super(map);
 			putValue(Action.NAME, "tools");
-			putValue(Action.SHORT_DESCRIPTION, "ãƒ„ãƒ¼ãƒ«ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’é–‹ã");
+			putValue(Action.SHORT_DESCRIPTION, "ƒc[ƒ‹ƒEƒBƒ“ƒhƒE‚ğŠJ‚­");
 			putValue(Action.SMALL_ICON, 
 					new ImageIcon(getClass().getResource("/image/tools.gif")));
 		}
 		public void actionPerformed2(ActionEvent e) {
 			if(tools == null){
 				tools = new DlgTools(FrmZeetaMain.this);
-				tools.setLocationRelativeTo(FrmZeetaMain.this);	//ä¸€ç™ºç›®ã¯ã€ç”»é¢ã®ä¸­å¤®ã«è¡¨ç¤º
+				tools.setLocationRelativeTo(FrmZeetaMain.this);	//ˆê”­–Ú‚ÍA‰æ–Ê‚Ì’†‰›‚É•\¦
 				tools.setup();
 			}
 			tools.setVisible(true);
 		}
 	}
-	//å…¨ã¦å±•é–‹
+	//‘S‚Ä“WŠJ
 	class ActExpandAll extends ActBase2 {
 		public ActExpandAll(ActionMap map) {
 			super(map);
 			putValue(Action.NAME, "ExpandAll");
-			putValue(Action.SHORT_DESCRIPTION, "é¸æŠãƒãƒ¼ãƒ‰ã‚’å…¨ã¦å±•é–‹");
+			putValue(Action.SHORT_DESCRIPTION, "‘I‘ğƒm[ƒh‚ğ‘S‚Ä“WŠJ");
 			putValue(Action.SMALL_ICON, 
 					new ImageIcon(getClass().getResource("/image/expandAll.gif")));
 		}
@@ -1200,7 +1209,7 @@ public class FrmZeetaMain extends BaseFrame {
 						public boolean process(DocNode node) {
 							jTree.expandPath(
 									new TreePath( node.getPath() ) );
-							return true;	//ç¶šè¡Œ
+							return true;	//‘±s
 						}
 					}
 				);
@@ -1221,12 +1230,12 @@ public class FrmZeetaMain extends BaseFrame {
 			debugView.setVisible(true);
 	    }
 	}
-	//é€†ãƒ„ãƒªãƒ¼ç”»é¢è¡¨ç¤º
+	//‹tƒcƒŠ[‰æ–Ê•\¦
 	class ActShowReverseTreeView extends ActBase2 {
 		public ActShowReverseTreeView(ActionMap map) {
 			super(map);
 			putValue(Action.NAME, "show reverse tree");
-			putValue(Action.SHORT_DESCRIPTION, "é€†ãƒ„ãƒªãƒ¼ã‚’è¡¨ç¤º");
+			putValue(Action.SHORT_DESCRIPTION, "‹tƒcƒŠ[‚ğ•\¦");
 			putValue(Action.SMALL_ICON, 
 					new ImageIcon(getClass().getResource("/image/reverseTree.gif")));
 		}
@@ -1240,13 +1249,32 @@ public class FrmZeetaMain extends BaseFrame {
 
 	    }
 	}
-	//Exportç”»é¢è¡¨ç¤º
+	//2ndƒcƒŠ[‰æ–Ê•\¦
+	class ActShow2ndTreeView extends ActBase2 {
+		public ActShow2ndTreeView(ActionMap map) {
+			super(map);
+			putValue(Action.NAME, "show 2nd view");
+			putValue(Action.SHORT_DESCRIPTION, "2nd view. —£‚ê‚½ƒm[ƒh‚ÌƒRƒsƒy‚É•Ö—˜‚Å‚·");
+			putValue(Action.SMALL_ICON, 
+					new ImageIcon(getClass().getResource("/image/2ndView.gif")));
+		}
+		public void actionPerformed2(ActionEvent e) {
+			setCursor(Util.WAIT_CURSOR);
+			try{
+				getDlg2ndTree().setVisible(true, viewState_.getCurrentNode());
+			}finally{
+				setCursor(Cursor.getDefaultCursor());
+			}
+
+	    }
+	}
+	//Export‰æ–Ê•\¦
 	class ActShowExportView extends ActBase2 {
 		DlgExport exportMenu_;
 		public ActShowExportView(ActionMap map) {
 			super(map);
 			putValue(Action.NAME, "export");
-			putValue(Action.SHORT_DESCRIPTION, "é¸æŠä¸­ã®ãƒãƒ¼ãƒ‰é…ä¸‹ã‚’export");
+			putValue(Action.SHORT_DESCRIPTION, "‘I‘ğ’†‚Ìƒm[ƒh”z‰º‚ğexport");
 			putValue(Action.SMALL_ICON, 
 					new ImageIcon(getClass().getResource("/image/export.gif")));
 		}
@@ -1260,13 +1288,13 @@ public class FrmZeetaMain extends BaseFrame {
 
 	    }
 	}
-	//Summaryç”»é¢è¡¨ç¤º
+	//Summary‰æ–Ê•\¦
 	class ActShowSummaryView extends ActBase2 {
 		DlgSummary dlg_;
 		public ActShowSummaryView(ActionMap map) {
 			super(map);
 			putValue(Action.NAME, "summary");
-			putValue(Action.SHORT_DESCRIPTION, "é¸æŠä¸­ã®ãƒãƒ¼ãƒ‰é…ä¸‹ã®ä½œæ¥­å±æ€§ã‚’é›†è¨ˆ");
+			putValue(Action.SHORT_DESCRIPTION, "‘I‘ğ’†‚Ìƒm[ƒh”z‰º‚Ìì‹Æ‘®«‚ğWŒv");
 			putValue(Action.SMALL_ICON, 
 					new ImageIcon(getClass().getResource("/image/sum.png")));
 		}
@@ -1284,17 +1312,17 @@ public class FrmZeetaMain extends BaseFrame {
 		public ActShowWorkUpdater(ActionMap map){
 			super(map);
 			putValue(Action.NAME, "update");
-			putValue(Action.SHORT_DESCRIPTION, "ä½œæ¥­æˆæœç‰©ã®ç·¨é›†");
+			putValue(Action.SHORT_DESCRIPTION, "ì‹Æ¬‰Ê•¨‚Ì•ÒW");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			if(getDspWorkList().getSelectedValue() == null){
-				throw new AppException("ã„ãšã‚Œã‹ã®ä½œæ¥­ã‚’é¸æŠã—ã¦ãã ã•ã„");
+				throw new AppException("‚¢‚¸‚ê‚©‚Ìì‹Æ‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢");
 			}
 			Work work = (Work)getDspWorkList().getSelectedValue();
 			if(workDetail_ == null){
 				workDetail_ = new DlgWorkDetail(FrmZeetaMain.this);
 				workDetail_.setup((OutputOfWorkListModel)getDspWorkList().getModel());
-				workDetail_.setLocationRelativeTo(getDspWorkList().getRootPane());	//ä¸€ç™ºç›®ã¯ã€ç”»é¢ã®ä¸­å¤®ã«è¡¨ç¤º
+				workDetail_.setLocationRelativeTo(getDspWorkList().getRootPane());	//ˆê”­–Ú‚ÍA‰æ–Ê‚Ì’†‰›‚É•\¦
 			}
 			workDetail_.setWork( work );
 			workDetail_.setVisible(true);
@@ -1304,17 +1332,17 @@ public class FrmZeetaMain extends BaseFrame {
 		public ActRemoveWork(ActionMap map){
 			super(map);
 			putValue(Action.NAME, "remove");
-			putValue(Action.SHORT_DESCRIPTION, "ä½œæ¥­ã‚’å‰Šé™¤ã™ã‚‹");
+			putValue(Action.SHORT_DESCRIPTION, "ì‹Æ‚ğíœ‚·‚é");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			if(getDspWorkList().getSelectedValue() == null){
-				throw new AppException("ã„ãšã‚Œã‹ã®ä½œæ¥­ã‚’é¸æŠã—ã¦ãã ã•ã„");
+				throw new AppException("‚¢‚¸‚ê‚©‚Ìì‹Æ‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢");
 			}
 			Work work = (Work)getDspWorkList().getSelectedValue();
 			if( JOptionPane.showConfirmDialog(
 					FrmZeetaMain.this
-					,work.getWorkType().getWorkTypeName() + " ä½œæ¥­ã‚’å‰Šé™¤ã—ã¾ã™ã€‚\n" +
-					"ã‚ˆã‚ã—ã„ã§ã™ã‹ï¼Ÿ",""
+					,work.getWorkType().getWorkTypeName() + " ì‹Æ‚ğíœ‚µ‚Ü‚·B\n" +
+					"‚æ‚ë‚µ‚¢‚Å‚·‚©H",""
 					,JOptionPane.YES_NO_OPTION
 					,JOptionPane.QUESTION_MESSAGE) != JOptionPane.YES_OPTION){
 				return;
@@ -1322,12 +1350,12 @@ public class FrmZeetaMain extends BaseFrame {
 
 			OutputOfWorkListModel model = (OutputOfWorkListModel)getDspWorkList().getModel();
 			model.removeWork(work);
-			//ã‚«ãƒ¬ãƒ³ãƒˆãƒãƒ¼ãƒ‰ã®ã‚¢ã‚¤ã‚³ãƒ³ã‚’å¤‰æ›´
+			//ƒJƒŒƒ“ƒgƒm[ƒh‚ÌƒAƒCƒRƒ“‚ğ•ÏX
 			Doc curDoc = viewState_.currentNode_.getDoc();
 			if(curDoc.getWorkCount() > 0){
 				curDoc.setWorkCount(curDoc.getWorkCount() - 1);
 				docModel_.refreshWorkCount(curDoc.getDocId(), curDoc.getWorkCount());
-				jTree.repaint();	//ã“ã‚Œã‚’ã‚„ã‚‰ãªã„ã¨å¤‰åŒ–ã—ãªã„
+				jTree.repaint();	//‚±‚ê‚ğ‚â‚ç‚È‚¢‚Æ•Ï‰»‚µ‚È‚¢
 			}
 		}
 	}
@@ -1335,7 +1363,7 @@ public class FrmZeetaMain extends BaseFrame {
 		public ActChooseTreeFont(ActionMap map){
 			super(map);
 			putValue(Action.NAME, "choose font");
-			putValue(Action.SHORT_DESCRIPTION, "Treeãƒ•ã‚©ãƒ³ãƒˆã‚’å¤‰æ›´ã—ã¾ã™");
+			putValue(Action.SHORT_DESCRIPTION, "TreeƒtƒHƒ“ƒg‚ğ•ÏX‚µ‚Ü‚·");
 			putValue(Action.SMALL_ICON, 
 					new ImageIcon(getClass().getResource("/image/font.png")));
 		}
@@ -1348,10 +1376,10 @@ public class FrmZeetaMain extends BaseFrame {
 			}
 		}
 		protected void updateFont(Font font){
-			cellRenderer_.setFont(font);	//PropertyChangeListenerã§ã¯1ãƒ†ãƒ³ãƒé…ã‚Œã‚‹
+			cellRenderer_.setFont(font);	//PropertyChangeListener‚Å‚Í1ƒeƒ“ƒ|’x‚ê‚é
 			jTree.setFont(font);
 			
-			//ä¿å­˜
+			//•Û‘¶
 			prefs_.putBoolean("tree.font.bold", font.isBold());
 			prefs_.putBoolean("tree.font.italic", font.isItalic());
 			prefs_.put("tree.font.name", font.getName());
@@ -1367,7 +1395,7 @@ public class FrmZeetaMain extends BaseFrame {
 		public ActChooseContentFont(ActionMap map){
 			super(map);
 			putValue(Action.NAME, "choose font");
-			putValue(Action.SHORT_DESCRIPTION, "ã‚¿ã‚¤ãƒˆãƒ«ã¨ã‚¨ãƒ‡ã‚£ã‚¿ã®ãƒ•ã‚©ãƒ³ãƒˆã‚’å¤‰æ›´ã—ã¾ã™");
+			putValue(Action.SHORT_DESCRIPTION, "ƒ^ƒCƒgƒ‹‚ÆƒGƒfƒBƒ^‚ÌƒtƒHƒ“ƒg‚ğ•ÏX‚µ‚Ü‚·");
 			putValue(Action.SMALL_ICON, 
 					new ImageIcon(getClass().getResource("/image/font.png")));
 		}
@@ -1383,7 +1411,7 @@ public class FrmZeetaMain extends BaseFrame {
 			inpDocTitle.setFont(font);
 			inpDocCont.setFont(font);
 			
-			//ä¿å­˜
+			//•Û‘¶
 			prefs_.putBoolean("content.font.bold", font.isBold());
 			prefs_.putBoolean("content.font.italic", font.isItalic());
 			prefs_.put("content.font.name", font.getName());
@@ -1400,7 +1428,7 @@ public class FrmZeetaMain extends BaseFrame {
 		public ActBookMark(ActionMap map){
 			super(map);
 			putValue(Action.NAME, "book mark");
-			putValue(Action.SHORT_DESCRIPTION, "ã‚«ãƒ¬ãƒ³ãƒˆãƒãƒ¼ãƒ‰ã‚’bookmark");
+			putValue(Action.SHORT_DESCRIPTION, "ƒJƒŒƒ“ƒgƒm[ƒh‚ğbookmark");
 			putValue(Action.SMALL_ICON, 
 					new ImageIcon(getClass().getResource("/image/addbkmrk_co.gif")));
 
@@ -1411,7 +1439,7 @@ public class FrmZeetaMain extends BaseFrame {
 			}
 			DocNode node = viewState_.getCurrentNode();
 			
-			//è¦ªDocNodeãƒªã‚¹ãƒˆä½œæˆ
+			//eDocNodeƒŠƒXƒgì¬
 			bookMarkMan_.addBookMark(node);
 
 		}
@@ -1428,21 +1456,21 @@ public class FrmZeetaMain extends BaseFrame {
 					showDocNode(bkm_.getPath(), true);
 				}catch(NotFoundDocOnDB ex){
 					bookMarkMan_.removeAndStore(bkm_);
-					throw new AppException("[" + bkm_.title_+"] ã¸ã®ãƒ‘ã‚¹ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“");
+					throw new AppException("[" + bkm_.title_+"] ‚Ö‚ÌƒpƒX‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ");
 				}
 			}
 		}
 		public ActBookMarkNavi(ActionMap map){
 			super(map);
 			putValue(Action.NAME, "show book mark");
-			putValue(Action.SHORT_DESCRIPTION, "bookmarkãƒªã‚¹ãƒˆã‚’è¡¨ç¤º");
+			putValue(Action.SHORT_DESCRIPTION, "bookmarkƒŠƒXƒg‚ğ•\¦");
 			putValue(Action.SMALL_ICON, 
 					new ImageIcon(getClass().getResource("/image/bkmrk_nav.gif")));
 
 		}
 		public void actionPerformed2(ActionEvent e) {
 			if(bookMarkMan_.bookMarks.size() <= 0){
-				throw new AppException("ã¾ã ï¼‘ã¤ã‚‚bookmarkãŒç™»éŒ²ã•ã‚Œã¦ã„ã¾ã›ã‚“");
+				throw new AppException("‚Ü‚¾‚P‚Â‚àbookmark‚ª“o˜^‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
 			}
 			
 			JPopupMenu menu = getMnuBookmark();
@@ -1496,7 +1524,7 @@ public class FrmZeetaMain extends BaseFrame {
 			}
 		}
 		public void contentsChanged(ListDataEvent e) {
-			//UserãŒæ‰‹å…¥åŠ›ã•ã‚Œã¦ã€ä¸”ã¤ã€ä»–ã®ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã«ã‚«ãƒ¼ã‚½ãƒ«ãŒç§»å‹•ã—ãŸç¬é–“ã«ç™ºç”Ÿã™ã‚‹
+			//User‚ªè“ü—Í‚³‚ê‚ÄAŠ‚ÂA‘¼‚ÌƒtƒB[ƒ‹ƒh‚ÉƒJ[ƒ\ƒ‹‚ªˆÚ“®‚µ‚½uŠÔ‚É”­¶‚·‚é
 			isDarty_ = true;
 			viewState_.setUpdating(true);
 		}
@@ -1550,25 +1578,17 @@ public class FrmZeetaMain extends BaseFrame {
 	 * 	
 	 * @return javax.swing.JTree	
 	 */
-	private JTree getJTree() {
+	private ZTree getJTree() {
 		if (jTree == null) {
-			jTree = new JTree(){
-				protected void processMouseMotionEvent(MouseEvent e){
-					if(e.getID() == MouseEvent.MOUSE_DRAGGED 
-							&& (!e.isShiftDown() && isDisableDragWithoutShitfKey_)
-							&& !e.isControlDown()
-					){
-						return;
-					}
-					super.processMouseMotionEvent(e);
-				}
-			};
+			jTree = new ZTree();
+			jTree.setTreeType(TREE_TYPE_MAIN);
+			jTree.setCanPasteNodeFromAnotherProcess(true);
 			jTree.setShowsRootHandles(true);
-			jTree.setToggleClickCount(0);
+//			jTree.setToggleClickCount(0);
 			jTree.getSelectionModel().
 				setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 			
-			//ãƒªã‚¹ãƒŠç™»éŒ²
+			//ƒŠƒXƒi“o˜^
 			jTree.addTreeExpansionListener(new javax.swing.event.TreeExpansionListener() {
 				public void treeExpanded(javax.swing.event.TreeExpansionEvent e) {
 					Object node = e.getPath().getLastPathComponent();
@@ -1580,7 +1600,7 @@ public class FrmZeetaMain extends BaseFrame {
 			jTree.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
 				boolean isSelfSelecting_ = false;
 				public void valueChanged(javax.swing.event.TreeSelectionEvent e) {
-					if(isSelfSelecting_){	//ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰å†…ã§é¸æŠã—ãŸå ´åˆ
+					if(isSelfSelecting_){	//‚±‚Ìƒƒ\ƒbƒh“à‚Å‘I‘ğ‚µ‚½ê‡
 						return;
 					}
 					try{
@@ -1595,31 +1615,34 @@ public class FrmZeetaMain extends BaseFrame {
 						throw e1;
 					}
 					
-					//é¸æŠã•ã‚ŒãŸãƒãƒ¼ãƒ‰ã‚’detailã«è¡¨ç¤º
+					//‘I‘ğ‚³‚ê‚½ƒm[ƒh‚ğdetail‚É•\¦
+					if( !(e.getPath().getLastPathComponent() instanceof DocNode)){
+						return;
+					}
 					DocNode node = (DocNode)e.getPath().getLastPathComponent();
 					
 					nodeHistory_.add(node);
 					
-//					setDetail((Youken)node.getYouken());  ã“ã‚Œã˜ã‚ƒã‚ã‹ã‚“ã®ã‚„ã€‚
-					//ã‚ˆãã§æ›´æ–°ã•ã‚Œã¨ã‚‹ã‹ã‚‚ã—ã‚Œã‚“ã®ã‚“ã§èª­ã¿è¾¼ã¿ãªãŠã—ã‚„
+//					setDetail((Youken)node.getYouken());  ‚±‚ê‚¶‚á‚ ‚©‚ñ‚Ì‚âB
+					//‚æ‚»‚ÅXV‚³‚ê‚Æ‚é‚©‚à‚µ‚ê‚ñ‚Ì‚ñ‚Å“Ç‚İ‚İ‚È‚¨‚µ‚â
 //					youkenModel_.reloadYouken(node);
-					//â˜…ä¸Šã‚’è¡Œã†ã¨ãƒ„ãƒªãƒ¼ã®å±•é–‹çŠ¶æ…‹ãŒä¿å­˜ã•ã‚Œãªã„
-					//ãŒã€å…±æœ‰è¦ä»¶ãŒãƒªãƒ­ãƒ¼ãƒ‰ã•ã‚Œãªã„ã¨ã„ã†å•é¡Œã‚‚ã‚ã‚‹ã®ã§æ­¢ã‚ãŸã€‚
-					//çµå±€ã€ãƒªãƒ­ãƒ¼ãƒ‰ã¯ã€ä½•ã‹ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ãŒã‚ã£ãŸã¨ãã«Modelå´ã§è¡Œã£ã¦ã„ã‚‹ã€‚
+					//šã‚ğs‚¤‚ÆƒcƒŠ[‚Ì“WŠJó‘Ô‚ª•Û‘¶‚³‚ê‚È‚¢
+					//‚ªA‹¤—L—vŒ‚ªƒŠƒ[ƒh‚³‚ê‚È‚¢‚Æ‚¢‚¤–â‘è‚à‚ ‚é‚Ì‚Å~‚ß‚½B
+					//Œ‹‹ÇAƒŠƒ[ƒh‚ÍA‰½‚©ƒAƒNƒVƒ‡ƒ“‚ª‚ ‚Á‚½‚Æ‚«‚ÉModel‘¤‚Ås‚Á‚Ä‚¢‚éB
 
 					viewState_.setCurrentNode(node);
 
-					//â˜…ãƒãƒ¼ãƒ‰ãƒã‚§ãƒ³ã‚¸ã¯ã€DlgNodeListã‚‚ãƒªã‚¹ãƒŠã¨ã—ã¦ç™»éŒ²ã—ã¦ã„ã‚‹
-					//ã“ã¨ã‚’å¿˜ã‚Œã‚‹ãª
+					//šƒm[ƒhƒ`ƒFƒ“ƒW‚ÍADlgNodeList‚àƒŠƒXƒi‚Æ‚µ‚Ä“o˜^‚µ‚Ä‚¢‚é
+					//‚±‚Æ‚ğ–Y‚ê‚é‚È
 					
-					jTree.repaint();	//å…±æœ‰ãƒãƒ¼ãƒ‰ã®è¡¨ç¤ºã‚’å¤‰ãˆãŸã‚Šã™ã‚‹ãŸã‚
+					jTree.repaint();	//‹¤—Lƒm[ƒh‚Ì•\¦‚ğ•Ï‚¦‚½‚è‚·‚é‚½‚ß
 				}
 			});
 			jTree.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(MouseEvent e) {
-					if(e.getButton() == MouseEvent.BUTTON3){	//å³ãƒœã‚¿ãƒ³
+					if(e.getButton() == MouseEvent.BUTTON3){	//‰Eƒ{ƒ^ƒ“
 						if(viewState_.getCurrentNode() == null){
-							throw new AppException("ã©ã‚Œã‹ã®ãƒãƒ¼ãƒ‰ã‚’é¸æŠã—ã¦ãã ã•ã„");
+							throw new AppException("‚Ç‚ê‚©‚Ìƒm[ƒh‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢");
 						}
 						getMnuTreePopup().show(jTree, e.getX(), e.getY());
 					}
@@ -1639,15 +1662,15 @@ public class FrmZeetaMain extends BaseFrame {
 	class NodeHistory {
 		int MAX_SIZE = 100;
 		int curIndex_ = -1;
-		List<DocNode> history_ = new LinkedList<DocNode>();		//åˆã‚ã¦ä½¿ã†LinkedList
+		List<DocNode> history_ = new LinkedList<DocNode>();		//‰‚ß‚Äg‚¤LinkedList
 		
 		public void add(DocNode docNode){
 			if(getCurrentNode() != null && !getCurrentNode().equals(docNode)){
 				if( curIndex_ < (history_.size() -1)){
-					//histry backã—ã¦ã„ã‚‹æœ€ä¸­
+					//histry back‚µ‚Ä‚¢‚éÅ’†
 					
-					//0.9.06ã¾ã§ã¯ã€ä»¥ä¸‹ã®ã‚ˆã†ã«ã—ã¦ã„ãŸãŒæ­¢ã‚ãŸ
-					//ã€€curIndex_ä»¥é™ã‚’å‰Šé™¤ã™ã‚‹
+					//0.9.06‚Ü‚Å‚ÍAˆÈ‰º‚Ì‚æ‚¤‚É‚µ‚Ä‚¢‚½‚ª~‚ß‚½
+					//@curIndex_ˆÈ~‚ğíœ‚·‚é
 //					while(true){
 //						history_.remove(history_.size()-1);
 //						if( curIndex_ >= (history_.size() -1)){
@@ -1667,7 +1690,7 @@ public class FrmZeetaMain extends BaseFrame {
 			}
 		}
 		public DocNode getCurrentNode(){
-			//TODO å‰Šé™¤ã•ã‚Œã¦ã„ã‚‹ã“ã¨ã‚’è€ƒæ…®ã™ã‚‹ã“ã¨
+			//TODO íœ‚³‚ê‚Ä‚¢‚é‚±‚Æ‚ğl—¶‚·‚é‚±‚Æ
 			if(curIndex_ >= 0 ){
 				return history_.get(curIndex_);
 			}else{
@@ -1679,7 +1702,7 @@ public class FrmZeetaMain extends BaseFrame {
 			if( curIndex_ > 0){
 				curIndex_--;
 				ret = history_.get(curIndex_);
-				//TODO å‰Šé™¤ã•ã‚Œã¦ã„ã‚‹ã“ã¨ã‚’è€ƒæ…®ã™ã‚‹ã“ã¨
+				//TODO íœ‚³‚ê‚Ä‚¢‚é‚±‚Æ‚ğl—¶‚·‚é‚±‚Æ
 			}
 			return ret;
 		}
@@ -1692,7 +1715,7 @@ public class FrmZeetaMain extends BaseFrame {
 	}
 	NodeHistory nodeHistory_ = new NodeHistory();
 	
-	//NodeInfoã‚¿ãƒ–ç”¨
+	//NodeInfoƒ^ƒu—p
 	class NodeInfo implements TreeSelectionListener, ChangeListener{
 		List<DocNode> parents_ = new ArrayList<DocNode>();
 		
@@ -1725,18 +1748,18 @@ public class FrmZeetaMain extends BaseFrame {
 		
 		
 		public void valueChanged(TreeSelectionEvent e) {
-			//é¸æŠã•ã‚ŒãŸitem
+			//‘I‘ğ‚³‚ê‚½item
 			if( !(getJTabbedPane().getSelectedComponent().getName().equals(
 					getCntNodeInfo().getName())
 				)
 			){
 				return;
 			}
-			//é¸æŠã•ã‚ŒãŸãƒãƒ¼ãƒ‰ã‚’detailã«è¡¨ç¤º
+			//‘I‘ğ‚³‚ê‚½ƒm[ƒh‚ğdetail‚É•\¦
 			DocNode dn = (DocNode)e.getPath().getLastPathComponent();
 			refreshNodeInfo(dn);
 			
-			//ã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼ã®è¨­å®š
+			//ƒXƒ‰ƒCƒ_[‚Ìİ’è
 			viewState_.setCurrentNode(dn);
 			setDepthFlag_ = true;
 			if( jTree.isExpanded(new TreePath(dn.getPath())) ){
@@ -1746,7 +1769,7 @@ public class FrmZeetaMain extends BaseFrame {
 			}
 			setDepthFlag_ = false;
 			
-			//Link Info ã¯ã‚¯ãƒªã‚¢
+			//Link Info ‚ÍƒNƒŠƒA
 			dspLinkedUser.setText("");
 			dspLinkedDate.setText("");
 
@@ -1755,17 +1778,17 @@ public class FrmZeetaMain extends BaseFrame {
 			if( curNode == null){
 				return;
 			}
-			//è¦ªDocNodeãƒªã‚¹ãƒˆä½œæˆ
+			//eDocNodeƒŠƒXƒgì¬
 			parents_.clear();
 			DocNode node = (DocNode)curNode.getParent();
 			while(node != null){
 				parents_.add(0, node);
 				node = (DocNode)node.getParent();
 			}
-			//è‡ªèº«ã‚‚è¿½åŠ 
+			//©g‚à’Ç‰Á
 			parents_.add(curNode);
 
-			//è¦ªDocãƒªã‚¹ãƒˆä½œæˆ
+			//eDocƒŠƒXƒgì¬
 			List<Doc> docs = new ArrayList<Doc>();
 			for(DocNode dn: parents_){
 				docs.add(dn.getDoc());
@@ -1784,12 +1807,12 @@ public class FrmZeetaMain extends BaseFrame {
 			){
 				return;
 			}
-			//é¸æŠã•ã‚ŒãŸãƒãƒ¼ãƒ‰ã‚’detailã«è¡¨ç¤º
+			//‘I‘ğ‚³‚ê‚½ƒm[ƒh‚ğdetail‚É•\¦
 			refreshNodeInfo(viewState_.getCurrentNode());
 		}
 
 	}
-//	NodeInfo nodeInfo_ = new NodeInfo();  //  ã“ã“ã§ç”Ÿæˆã™ã‚‹ã¨ä½•ã‚‚è¡¨ç¤ºã•ã‚Œãªã„ã®ã 
+//	NodeInfo nodeInfo_ = new NodeInfo();  //  ‚±‚±‚Å¶¬‚·‚é‚Æ‰½‚à•\¦‚³‚ê‚È‚¢‚Ì‚¾
 	NodeInfo nodeInfo_ = null;
 	
 	/**
@@ -2076,12 +2099,12 @@ public class FrmZeetaMain extends BaseFrame {
 	}
 
 	/**
-	 * VEç”¨ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	 * VE—pƒRƒ“ƒXƒgƒ‰ƒNƒ^
 	 * This is the default constructor
 	 */
 	public FrmZeetaMain() {
 		super();
-		//ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ãƒãƒƒãƒ—ã®ç”Ÿæˆ(initializeã®å‰ã«è¡Œã†å¿…è¦ãŒã‚ã‚‹)
+		//ƒAƒNƒVƒ‡ƒ“ƒ}ƒbƒv‚Ì¶¬(initialize‚Ì‘O‚És‚¤•K—v‚ª‚ ‚é)
 		new ActClipNode(actionMap_);
 		new ActCancelNewYouken(actionMap_).setEnabled(false);
 		new ActCommitDoc(actionMap_).setEnabled(false);
@@ -2089,7 +2112,7 @@ public class FrmZeetaMain extends BaseFrame {
 		new ActPasteNodeCopy(actionMap_);
 		new ActPrepareCreateDocAsChild(actionMap_);
 		new ActPrepareCreateDocAsSibling(actionMap_);
-		new ActRefreshSpecific(actionMap_);
+		new ActRefreshNode(actionMap_);
 		new ActRefreshCurrent(actionMap_);
 		new ActUpdateIfDarty(actionMap_);
 		new ActUpdateDoc(actionMap_);
@@ -2102,6 +2125,7 @@ public class FrmZeetaMain extends BaseFrame {
 		new ActExpandAll(actionMap_);
 		new ActShowDebugWindow(actionMap_);
 		new ActShowReverseTreeView(actionMap_);
+		new ActShow2ndTreeView(actionMap_);
 		new ActShowExportView(actionMap_);
 		new ActShowSummaryView(actionMap_);
 		new ActShowWorkUpdater(actionMap_);
@@ -2120,36 +2144,36 @@ public class FrmZeetaMain extends BaseFrame {
 	}
 	
 	/**
-	 * å®Ÿè¡Œæ™‚ã¯å¿…ãšã“ã‚Œã‚’å‘¼ã³å‡ºã™ã“ã¨ï¼ˆVEã§ã®ç·¨é›†æ™‚ã¨DBæ“ä½œã‚’åˆ†é›¢ã™ã‚‹ï¼‰
+	 * Às‚Í•K‚¸‚±‚ê‚ğŒÄ‚Ño‚·‚±‚ÆiVE‚Å‚Ì•ÒW‚ÆDB‘€ì‚ğ•ª—£‚·‚éj
 	 */
 	public void setup(){
 		
-		//ç”»é¢çŠ¶æ…‹ã®å¾©å…ƒ
+		//‰æ–Êó‘Ô‚Ì•œŒ³
 		restoreForm();
 		
 		String smartDnD_str = System.getProperty("smartDnD");
 		if( smartDnD_str != null && "1".equals(smartDnD_str)){
-			isDisableDragWithoutShitfKey_ = false;
+			getJTree().setNeedShiftForMoveNode(false);
 		}
 
-        //Treeãƒ¢ãƒ‡ãƒ«
+        //Treeƒ‚ƒfƒ‹
         docModel_ = new DocModel();
         docModel_.initialize();
         getJTree().setModel(docModel_);
 		
-		//==== jTreeã®è¨­å®š
+		//==== jTree‚Ìİ’è
 		cellRenderer_ = new DocTreeCellRenderer(docModel_);
 		jTree.setCellRenderer(cellRenderer_);
 //		jTree.addPropertyChangeListener("font",cellRenderer_);
 		//DnD
 		TreeNodeTransferHandler transferHandler = 
-			new TreeNodeTransferHandler(this, actionMap_);
+			new TreeNodeTransferHandler2(this, jTree, actionMap_.get(ActRefreshNode.class));
 		jTree.setTransferHandler(transferHandler);
 		jTree.setDragEnabled(true);
-		//Treeã®ã‚·ãƒ§ãƒ¼ãƒˆã‚«ãƒƒãƒˆã¨ãƒœã‚¿ãƒ³ç™»éŒ²
+		//Tree‚ÌƒVƒ‡[ƒgƒJƒbƒg‚Æƒ{ƒ^ƒ““o˜^
 		setupTreeAction();
 		
-		//ä½œæ¥­ãƒªã‚¹ãƒˆ
+		//ì‹ÆƒŠƒXƒg
 		getDspWorkList().setModel(new OutputOfWorkListModel());
 		getDspWorkList().setup();
 		getDspWorkList().getActionMap().put(LstWorks.DOUBLE_CLICK_ACTION_KEY,
@@ -2157,18 +2181,19 @@ public class FrmZeetaMain extends BaseFrame {
 		getDspWorkList().getPopupMenu().add(actionMap_.get(ActShowWorkUpdater.class));
 		getDspWorkList().getPopupMenu().add(actionMap_.get(ActRemoveWork.class));
 
-		//Treeã®ãƒªã‚¹ãƒŠãƒ¼ç™»éŒ²
+		//Tree‚ÌƒŠƒXƒi[“o˜^
 		nodeInfo_ = new NodeInfo();  //  @jve:decl-index=0:
 		getFrmParentList().setup(docModel_);
 		getJTree().addTreeSelectionListener(getFrmParentList());
 		getJTree().addTreeSelectionListener(getDspWorkList());
 		getJTree().addTreeSelectionListener(getDlgReverseTree());
 		getJTree().addTreeSelectionListener(nodeInfo_);
+//		getJTree().addTreeSelectionListener(getDlg2ndTree());	“¯Šú‚Í‚µ‚È‚¢
 		
-		//ComboBoxã®è¨­å®š
+		//ComboBox‚Ìİ’è
 		setupComboBox();
 		
-		//å„ãƒ¢ãƒ‡ãƒ«ã«updateãƒªã‚¹ãƒŠãƒ¼ã‚’è¿½åŠ (æ±šã‚ŒãŸã“ã¨ã®åˆ¤å®š)
+		//Šeƒ‚ƒfƒ‹‚ÉupdateƒŠƒXƒi[‚ğ’Ç‰Á(‰˜‚ê‚½‚±‚Æ‚Ì”»’è)
 		DetailUpdateListener dl = viewState_.getDetailState();
 		getInpDocTitle().getDocument().addDocumentListener(dl);
 		getInpDocCont().getDocument().addDocumentListener(dl);
@@ -2178,22 +2203,23 @@ public class FrmZeetaMain extends BaseFrame {
 		getInpSortType().addActionListener(dl);
 		getInpChkLinkNode().addActionListener(dl);
 		
-		//toolbarã®ç”Ÿæˆ
+		//toolbar‚Ì¶¬
 		getJToolBar().add(actionMap_.get(ActMoveUp.class));
 		getJToolBar().add(actionMap_.get(ActMoveDown.class));
 		getJToolBar().add(actionMap_.get(ActPrepareCreateDocAsChild.class));
 		getJToolBar().add(actionMap_.get(ActPrepareCreateDocAsSibling.class));
 		getJToolBar().add(actionMap_.get(ActRemoveDoc.class));
 		getJToolBar().add(actionMap_.get(ActDuplicateDoc.class));
+		getJToolBar().add(actionMap_.get(ActRefreshCurrent.class));
+		getJToolBar().add(actionMap_.get(ActExpandAll.class));
 		getJToolBar().addSeparator();
 		getJToolBar().add(actionMap_.get(ActBookMark.class));
 		getJToolBar().add(actionMap_.get(ActBookMarkNavi.class));
 		getJToolBar().addSeparator();
-		getJToolBar().add(actionMap_.get(ActRefreshCurrent.class));
 		getJToolBar().add(actionMap_.get(ActShowParents.class));
 		getJToolBar().add(actionMap_.get(ActShowSearchWindow.class));
-		getJToolBar().add(actionMap_.get(ActExpandAll.class));
 //		getJToolBar().add(actionMap_.get(ActBackup.class));
+		getJToolBar().add(actionMap_.get(ActShow2ndTreeView.class));
 		getJToolBar().add(actionMap_.get(ActShowReverseTreeView.class));
 		getJToolBar().add(actionMap_.get(ActShowExportView.class));
 		getJToolBar().add(actionMap_.get(ActShowSummaryView.class));
@@ -2201,45 +2227,46 @@ public class FrmZeetaMain extends BaseFrame {
 		getJToolBar().add(actionMap_.get(ActShowOutputList.class));
 		getJToolBar().addSeparator();
 		getJToolBar().add(actionMap_.get(ActShowToolsWindow.class));
+		getJToolBar().addSeparator();
 		
-		//Treeã®ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ç”Ÿæˆ
+		//Tree‚Ìƒ|ƒbƒvƒAƒbƒvƒƒjƒ…[‚Ì¶¬
 		getMnuTreePopup().add(actionMap_.get(ActPrepareCreateDocAsChild.class));
 		getMnuTreePopup().add(actionMap_.get(ActPrepareCreateDocAsSibling.class));
 		getMnuTreePopup().add(actionMap_.get(ActRemoveDoc.class));
 		getMnuTreePopup().add(actionMap_.get(ActDuplicateDoc.class));
-//		getMnuTreePopup().add(actionMap_.get(ActRefreshCurrent.class));
+		getMnuTreePopup().add(actionMap_.get(ActExpandAll.class));
+		getMnuTreePopup().add(actionMap_.get(ActRefreshCurrent.class));
 		getMnuTreePopup().add(actionMap_.get(ActMoveUp.class));
 		getMnuTreePopup().add(actionMap_.get(ActMoveDown.class));
 		getMnuTreePopup().addSeparator();
 		getMnuTreePopup().add(actionMap_.get(ActBookMark.class));
 		getMnuTreePopup().add(actionMap_.get(ActBookMarkNavi.class));
 		getMnuTreePopup().addSeparator();
-
 //		getMnuTreePopup().add(actionMap_.get(ActShowParents.class));
-		getMnuTreePopup().add(actionMap_.get(ActExpandAll.class));
+		getMnuTreePopup().add(actionMap_.get(ActShow2ndTreeView.class));
 		getMnuTreePopup().add(actionMap_.get(ActShowReverseTreeView.class));
 		getMnuTreePopup().add(actionMap_.get(ActChooseTreeFont.class));
 		
-		//ä¸Šè¨˜ä»¥å¤–ã®Actionç™»éŒ²
+		//ã‹LˆÈŠO‚ÌAction“o˜^
 		getCmdShowOutputList().setAction(actionMap_.get(ActShowOutputListForWork.class));
 		
-		//KeyEventDispatcherç™»éŒ²
+		//KeyEventDispatcher“o˜^
 		java.awt.KeyboardFocusManager.
 			getCurrentKeyboardFocusManager().
 				addKeyEventDispatcher(new MainViewKeyDispatcher(actionMap_, this));
 
-		//WindowListenerç™»éŒ²
+		//WindowListener“o˜^
 		this.addWindowListener(
 			new WindowAdapter(){
 				public void windowClosing(WindowEvent e) {
 					log.debug(e);
-					//æ›´æ–°ãƒã‚§ãƒƒã‚¯
+					//XVƒ`ƒFƒbƒN
 					actionMap_.get(ActUpdateIfDarty.class).actionPerformed(null);
-					//æœ€å¾Œã«é¸æŠã—ã¦ã„ãŸãƒãƒ¼ãƒ‰ã‚’ä¿å­˜
+					//ÅŒã‚É‘I‘ğ‚µ‚Ä‚¢‚½ƒm[ƒh‚ğ•Û‘¶
 					TreeNode[] paths = viewState_.getCurrentNode().getPath();
 					String pathById = makePathById(paths);
 					log.debug(LAST_SELECTED_NODE_ID+"="+pathById);
-//					prefs_.put(LAST_SELECTED_NODE_ID, pathsById);	//é¸æŠä¸­ã®ãƒãƒ¼ãƒ‰ã‚’è¨˜æ†¶
+//					prefs_.put(LAST_SELECTED_NODE_ID, pathsById);	//‘I‘ğ’†‚Ìƒm[ƒh‚ğ‹L‰¯
 					prefs_.put(DEVIDER_LOC_KEY, ""+getJSplitPane().getDividerLocation());
 				}
 			}
@@ -2256,7 +2283,7 @@ public class FrmZeetaMain extends BaseFrame {
 			)
 		);
 
-		//fontã®å¾©å…ƒ
+		//font‚Ì•œŒ³
 		Font orgFont = getJTree().getFont();
 		Font f = new Font(
 				prefs_.get("tree.font.name", orgFont.getName()), 
@@ -2273,7 +2300,7 @@ public class FrmZeetaMain extends BaseFrame {
 		getInpDocTitle().setFont(f);
 		getInpDocCont().setFont(f);
 		
-		//é¸æŠãƒãƒ¼ãƒ‰ã®å¾©å…ƒï¼ˆä¿å­˜ã—ã¦ãªã„ã®ã§å®Ÿè³ªæœªä½¿ç”¨ï¼‰
+		//‘I‘ğƒm[ƒh‚Ì•œŒ³i•Û‘¶‚µ‚Ä‚È‚¢‚Ì‚ÅÀ¿–¢g—pj
 		long lastId = prefs_.getLong(LAST_SELECTED_NODE_ID, -1);
 		if(lastId == -1){
 	        jTree.setSelectionRow(0);
@@ -2285,21 +2312,21 @@ public class FrmZeetaMain extends BaseFrame {
 	}
 
 	private void setupComboBox() {
-		//ä½œæ¥­è€…ã®è¨­å®š
+		//ì‹ÆÒ‚Ìİ’è
 		inpUser.setModel(MasterComboModel.newUserComboBoxModel());
 		inpUser.getModel().setSelectedItem("");
 
-		//ã‚½ãƒ¼ãƒˆé †ã‚³ãƒ³ãƒœã®è¨­å®š
+		//ƒ\[ƒg‡ƒRƒ“ƒ{‚Ìİ’è
 		inpSortType.setModel(MasterComboModel.newSortTypeComboBoxModel());
 		
-		//ä½œæ¥­ç¨®é¡ã‚³ãƒ³ãƒœã®è¨­å®š
+		//ì‹Æí—ŞƒRƒ“ƒ{‚Ìİ’è
 		inpSelectWorkType.setModel(MasterComboModel.newWorkTypeComboBoxModel());
 	}
 	void setupTreeAction(){
 		ActionMap treeActMap = jTree.getActionMap();
 		InputMap treeInputMap = jTree.getInputMap();
 
-		//DELã‚­ãƒ¼
+		//DELƒL[
 		treeActMap.put(ActRemoveDoc.class, actionMap_.get(ActRemoveDoc.class));
 		treeInputMap.put(
 				KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), 
@@ -2322,7 +2349,7 @@ public class FrmZeetaMain extends BaseFrame {
 				act_ = act;
 			}
 			public void actionPerformed(ActionEvent e) {
-				e.setSource(jTree);		//ã“ã‚ŒãŒãƒŸã‚½ã‚„ï¼ï¼ï¼
+				e.setSource(jTree);		//‚±‚ê‚ªƒ~ƒ\‚âIII
 				act_.actionPerformed(e);
 			}
 		}
@@ -2332,7 +2359,7 @@ public class FrmZeetaMain extends BaseFrame {
 			Object key = 
 				treeInputMap.get(KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.CTRL_MASK));
 			act = new DelegateTreeAction(treeActMap.get(key));
-			act.putValue(Action.SHORT_DESCRIPTION, "Treeãƒãƒ¼ãƒ‰ã®ã‚³ãƒ”ãƒ¼(ctrl+C)"); 
+			act.putValue(Action.SHORT_DESCRIPTION, "Treeƒm[ƒh‚ÌƒRƒs[(ctrl+C)"); 
 			act.putValue(Action.SMALL_ICON, 
 				new ImageIcon(getClass().getResource("/image/copy.gif")));
 			getJToolBar().add(act);
@@ -2340,7 +2367,7 @@ public class FrmZeetaMain extends BaseFrame {
 			
 			key =treeInputMap.get(KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.CTRL_MASK));
 			act = new DelegateTreeAction(treeActMap.get(key));
-			act.putValue(Action.SHORT_DESCRIPTION, "Treeãƒãƒ¼ãƒ‰ã‚’ãƒšãƒ¼ã‚¹ãƒˆæ™‚ã«ã‚«ãƒƒãƒˆ(ctrl+X)"); 
+			act.putValue(Action.SHORT_DESCRIPTION, "Treeƒm[ƒh‚ğƒy[ƒXƒg‚ÉƒJƒbƒg(ctrl+X)"); 
 			act.putValue(Action.SMALL_ICON, 
 				new ImageIcon(getClass().getResource("/image/cut.gif")));
 			getJToolBar().add(act);
@@ -2348,18 +2375,18 @@ public class FrmZeetaMain extends BaseFrame {
 			
 			key =treeInputMap.get(KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_MASK));
 			act = new DelegateTreeAction(treeActMap.get(key));
-			act.putValue(Action.SHORT_DESCRIPTION, "Treeãƒãƒ¼ãƒ‰ã®ãƒšãƒ¼ã‚¹ãƒˆ(ctrl+V)"); 
+			act.putValue(Action.SHORT_DESCRIPTION, "Treeƒm[ƒh‚Ìƒy[ƒXƒg(ctrl+V)"); 
 			act.putValue(Action.SMALL_ICON, 
 				new ImageIcon(getClass().getResource("/image/paste.gif")));
 			getJToolBar().add(act);
 			actionMap_.put(ACTKEY_NODE_PASTE, act);
 		}catch(NullPointerException ex){
-			//TODOã€€MACã®å ´åˆã“ã®ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã™ã‚‹
+			//TODO@MAC‚Ìê‡‚±‚ÌƒGƒ‰[‚ª”­¶‚·‚é
 			//act = new DelegateTreeAction(treeActMap.get(key));
-			//æš«å®šå¯¾å¿œã¨ã—ã¦ã€ã“ã®ã‚¨ãƒ©ãƒ¼ã‚’ç„¡è¦–ã—ã€ã‚·ãƒ§ãƒ¼ãƒˆã‚«ãƒƒãƒˆãŒä½¿ç”¨ã§ããªãã™ã‚‹
+			//b’è‘Î‰‚Æ‚µ‚ÄA‚±‚ÌƒGƒ‰[‚ğ–³‹‚µAƒVƒ‡[ƒgƒJƒbƒg‚ªg—p‚Å‚«‚È‚­‚·‚é
 			Action act =new AbstractAction() {
 				public void actionPerformed(ActionEvent e) {
-					//ãªã«ã‚‚ã—ãªã„
+					//‚È‚É‚à‚µ‚È‚¢
 					setEnabled(false);
 				}
 			};
@@ -2397,10 +2424,10 @@ public class FrmZeetaMain extends BaseFrame {
 		this.setContentPane(getJContentPane());
 		this.setTitle(getTitle());
 		
-		//è¦ä»¶å†…å®¹ã®è¡ŒæŠ˜ã‚Šè¿”ã—ã®è¨­å®š
+		//—vŒ“à—e‚ÌsÜ‚è•Ô‚µ‚Ìİ’è
 		inpDocCont.setLineWrap(getCmdToggleLineWrap().isSelected());
 
-		//Title,Textã®undo, redo
+		//Title,Text‚Ìundo, redo
 		titleUndoHandler_.setup(inpDocTitle);
 		textUndoHandler_.setup(inpDocCont);
 	}
@@ -2412,9 +2439,18 @@ public class FrmZeetaMain extends BaseFrame {
 		}
 		return revTree_;
 	}
+	private Dlg2ndTree getDlg2ndTree(){
+		if(secndTree_ == null){
+			secndTree_ = new Dlg2ndTree(FrmZeetaMain.this);
+			secndTree_.setLocationRelativeTo(FrmZeetaMain.this);
+			secndTree_.setup(FrmZeetaMain.this, jTree);
+			
+		}
+		return secndTree_;
+	}
 	private DlgParentDocList getFrmParentList(){
 		if(frmParentList_== null){
-			//è¦ªä¸€è¦§
+			//eˆê——
 			frmParentList_ =new DlgParentDocList(this);
 			frmParentList_.setLocationRelativeTo(this);
 		}
@@ -2525,7 +2561,7 @@ public class FrmZeetaMain extends BaseFrame {
 	public DocNode showOyaDocNode(long oyaId, long koId, boolean mark) {
 		DocNode oyaNode = showDocNode(oyaId, false);
 		if(mark){
-			//å­ã«å°ã‚’ä»˜ã‘ã‚‹
+			//q‚Éˆó‚ğ•t‚¯‚é
 			Enumeration children = oyaNode.children();
 			while(children.hasMoreElements()){
 				DocNode child = (DocNode)children.nextElement();
@@ -2564,7 +2600,7 @@ public class FrmZeetaMain extends BaseFrame {
 		jTree.scrollPathToVisible(new TreePath(leaf.getPath()));
 		
 		if(mark){
-			//Treeã«å°ã‚’ä»˜ã‘ã‚‹
+			//Tree‚Éˆó‚ğ•t‚¯‚é
 			cellRenderer_.setMarkingNode(leaf);
 			jTree.repaint();
 		}
@@ -2580,10 +2616,10 @@ public class FrmZeetaMain extends BaseFrame {
 			return;
 		}
 		
-		//ä¸€ç•ªè¿‘ãã§è¦‹ã¤ã‹ã£ãŸã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰
+		//ˆê”Ô‹ß‚­‚ÅŒ©‚Â‚©‚Á‚½ƒL[ƒ[ƒh
 		int minP = Integer.MAX_VALUE;
 		for(String searchText: searchTexts){
-			//ã‚¿ã‚¤ãƒˆãƒ«
+			//ƒ^ƒCƒgƒ‹
 			int p = inpDocTitle.getText().toLowerCase().indexOf(searchText.toLowerCase());
 			if(p >= 0){
 				if(minP > p){
@@ -2618,7 +2654,7 @@ public class FrmZeetaMain extends BaseFrame {
 			return;
 		}
 		
-		//ã‚¿ã‚¤ãƒˆãƒ«
+		//ƒ^ƒCƒgƒ‹
 		int p = inpDocTitle.getText().toLowerCase().indexOf(searchText.toLowerCase());
 		if(p >= 0){
 			selectText(inpDocTitle, p, searchText.length());
@@ -2638,7 +2674,7 @@ public class FrmZeetaMain extends BaseFrame {
 		jTree.setSelectionPath(tp);
 		jTree.scrollPathToVisible(tp);
 	}
-	// return false-æ–‡å­—åˆ—ãŒè¦‹ã¤ã‹ã‚‰ãªã„, true-ã¿ã¤ã‹ã£ãŸ
+	// return false-•¶š—ñ‚ªŒ©‚Â‚©‚ç‚È‚¢, true-‚İ‚Â‚©‚Á‚½
 	public boolean findText(String search){
 		boolean ret = false;
 		if(search != null){
@@ -2661,7 +2697,7 @@ public class FrmZeetaMain extends BaseFrame {
 			throw new RuntimeException(e);
 		}
 		getCntScrDocCont().getViewport().setViewPosition(new Point(0, rect.y));
-		inpDocCont.invalidate();	//ã“ã‚Œã‚’å…¥ã‚Œãªã„ã¨ã€ä¸‹ã«ã‚´ãƒŸãŒæ®‹ã‚‹å ´åˆãŒã‚ã‚‹
+		inpDocCont.invalidate();	//‚±‚ê‚ğ“ü‚ê‚È‚¢‚ÆA‰º‚ÉƒSƒ~‚ªc‚éê‡‚ª‚ ‚é
 	}
 	void selectText(JTextComponent tc, int startPoint, int len){
 		tc.setCaretPosition(startPoint);
@@ -2670,17 +2706,17 @@ public class FrmZeetaMain extends BaseFrame {
 	public DocNode showDocNode(long id, boolean mark) {
 		List<Long> idPath = docModel_.getPathToDocRoot(id);
 		
-		//rootã‚’å±•é–‹
+		//root‚ğ“WŠJ
 		DocNode root = (DocNode)docModel_.getRoot();
 		if(idPath.get(0) != ((Doc)root.getDoc()).getDocId() ){
-			throw new RuntimeException("æ¤œç´¢ã—ãŸrootã¨Treeã®rootãŒé•ã†");
+			throw new RuntimeException("ŒŸõ‚µ‚½root‚ÆTree‚Ìroot‚ªˆá‚¤");
 		}
 		jTree.expandPath(new TreePath( root.getPath() ) );
 		DocNode leaf = expandIdPath(root.getLevel(), root, idPath);
 		jTree.scrollPathToVisible(new TreePath(leaf.getPath()));
 		
 		if(mark){
-			//Treeã«å°ã‚’ä»˜ã‘ã‚‹
+			//Tree‚Éˆó‚ğ•t‚¯‚é
 			cellRenderer_.setMarkingNode(leaf);
 			jTree.repaint();
 		}
@@ -2689,11 +2725,11 @@ public class FrmZeetaMain extends BaseFrame {
 //		}
 		return leaf;
 	}
-	//nodeã®å­ãƒãƒ¼ãƒ‰ã‹ã‚‰idPathä¸Šã®idã‚’æŒã¤è¦ä»¶Nodeã‚’å±•é–‹ã™ã‚‹ã€‚
-	//idPathã®æœ€å¾Œã®Nodeã‚’è¿”å´ã™ã‚‹ã€‚
+	//node‚Ìqƒm[ƒh‚©‚çidPathã‚Ìid‚ğ‚Â—vŒNode‚ğ“WŠJ‚·‚éB
+	//idPath‚ÌÅŒã‚ÌNode‚ğ•Ô‹p‚·‚éB
 	DocNode expandIdPath(int initLevel, DocNode node, List<Long> idPath){
 		
-		int level = node.getLevel() + 1;	//rootã¯å±•é–‹ã•ã‚Œã¦ã„ã‚‹å‰æ
+		int level = node.getLevel() + 1;	//root‚Í“WŠJ‚³‚ê‚Ä‚¢‚é‘O’ñ
 
 		if((idPath.size()+initLevel) <= level){
 			return node;
@@ -2714,17 +2750,17 @@ public class FrmZeetaMain extends BaseFrame {
 					break;
 				}
 			}
-			//è¦‹ã¤ã‹ã‚‰ãªã„å ´åˆã¯ã€ãƒªãƒ­ãƒ¼ãƒ‰ã—ã¦ãƒªãƒˆãƒ©ã‚¤ã—ã¦ã¿ã‚‹
+			//Œ©‚Â‚©‚ç‚È‚¢ê‡‚ÍAƒŠƒ[ƒh‚µ‚ÄƒŠƒgƒ‰ƒC‚µ‚Ä‚İ‚é
 			if( ret == null ){	//not found
 				if(i > 0){
 					throw new NotFoundDocOnDB(
-							"id="+idPath.get(level-initLevel)+" ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“");
+							"id="+idPath.get(level-initLevel)+" ‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ");
 				}else{
 					TreePath path = new TreePath( node.getPath() );
 					jTree.collapsePath(path);
-					//å­ãƒãƒ¼ãƒ‰ã‚’èª­ã¿è¾¼ã¿ãªãŠã—ã¦ã¿ã‚‹
-					Action act = actionMap_.get(ActRefreshSpecific.class);
-					act.putValue(ActRefreshSpecific.REFRESH_NODE,  node);
+					//qƒm[ƒh‚ğ“Ç‚İ‚İ‚È‚¨‚µ‚Ä‚İ‚é
+					Action act = actionMap_.get(ActRefreshNode.class);
+					act.putValue(ActRefreshNode.REFRESH_NODE,  node);
 					act.actionPerformed(null);
 				}
 			}else{
@@ -2853,25 +2889,25 @@ public class FrmZeetaMain extends BaseFrame {
 	private JSlider inpDepth = null;
 	class OutputSelectEventListener implements ActionListener {
 		public void actionPerformed(java.awt.event.ActionEvent e) {
-			//TODO ãƒˆãƒ©ãƒ³ã‚¶ã‚¯ã‚·ãƒ§ãƒ³ã‚’ä½¿ç”¨ã™ã‚‹ãŸã‚ã€ActTransactionåŒ–ã™ã‚‹
+			//TODO ƒgƒ‰ƒ“ƒUƒNƒVƒ‡ƒ“‚ğg—p‚·‚é‚½‚ßAActTransaction‰»‚·‚é
 			switch(e.getID()){
 			case DlgOutputList.EVENT_SELECT:
 				DlgOutputList.SelectOutputEvent ev = 
 					(DlgOutputList.SelectOutputEvent)e;
 				OutputOfWorkListModel workModel = 
 					(OutputOfWorkListModel)getDspWorkList().getModel();
-				//ä½œæ¥­ã‚’è¿½åŠ 
+				//ì‹Æ‚ğ’Ç‰Á
 				Doc curDoc = viewState_.currentNode_.getDoc();
 				workModel.addWork(
 						curDoc.getDocId(), 
 						ev.output_, 
 						ev.worker_, 
 						(WorkType)getInpSelectWorkType().getSelectedItem());
-				//ã‚«ãƒ¬ãƒ³ãƒˆãƒãƒ¼ãƒ‰ã®ã‚¢ã‚¤ã‚³ãƒ³ã‚’å¤‰æ›´
+				//ƒJƒŒƒ“ƒgƒm[ƒh‚ÌƒAƒCƒRƒ“‚ğ•ÏX
 				if(curDoc.getWorkCount() == 0){
 					curDoc.setWorkCount(1);
 					docModel_.refreshWorkCount(curDoc.getDocId(), curDoc.getWorkCount());
-					jTree.repaint();	//ã“ã‚Œã‚’ã‚„ã‚‰ãªã„ã¨å¤‰åŒ–ã—ãªã„
+					jTree.repaint();	//‚±‚ê‚ğ‚â‚ç‚È‚¢‚Æ•Ï‰»‚µ‚È‚¢
 				}
 				break;
 			}
@@ -2946,7 +2982,7 @@ public class FrmZeetaMain extends BaseFrame {
 			inpDepth.setMajorTickSpacing(5);
 //			inpDepth.setPreferredSize(new Dimension(200, 25));
 			inpDepth.setPaintTicks(true);
-			inpDepth.setToolTipText("é¸æŠä¸­ã®ãƒãƒ¼ãƒ‰é…ä¸‹ã‚’ä¸€æ°—ã«å±•é–‹ã—ã¾ã™ã€‚");
+			inpDepth.setToolTipText("‘I‘ğ’†‚Ìƒm[ƒh”z‰º‚ğˆê‹C‚É“WŠJ‚µ‚Ü‚·B");
 			inpDepth.setSnapToTicks(true);
 			inpDepth.setValue(0);
 			inpDepth.setBorder( 
@@ -2957,14 +2993,30 @@ public class FrmZeetaMain extends BaseFrame {
 
 			inpDepth.addChangeListener(new javax.swing.event.ChangeListener() {
 				public void stateChanged(javax.swing.event.ChangeEvent e) {
-					if(setDepthFlag_){	//å†…éƒ¨ã§ã‚»ãƒƒãƒˆã—ã¦ã„ã‚‹å ´åˆ
+					if(setDepthFlag_){	//“à•”‚ÅƒZƒbƒg‚µ‚Ä‚¢‚éê‡
 						return;
 					}
 					DocNode dn = viewState_.getCurrentNode();
 					if( dn == null ){
 						return;
 					}
-					expandNode(dn, inpDepth.getValue());
+					expandNode(jTree, dn, inpDepth.getValue());
+				}
+				protected void expandNode(JTree jTree, DocNode node, int depth){
+					if(node == null){
+						return;
+					}
+					if(depth <= 0){
+						jTree.collapsePath(new TreePath(node.getPath()));
+						return;
+					}
+					depth--;
+					Enumeration children = node.children();
+					while(children.hasMoreElements()){
+						DocNode child = (DocNode)children.nextElement();
+						jTree.expandPath(new TreePath(child.getPath()));
+						expandNode(jTree, child, depth);
+					}
 				}
 			});
 // 			inpDepth.setVisible(false);
@@ -2972,22 +3024,6 @@ public class FrmZeetaMain extends BaseFrame {
 		return inpDepth;
 	}
 	
-	void expandNode(DocNode node, int depth){
-		if(node == null){
-			return;
-		}
-		if(depth <= 0){
-			jTree.collapsePath(new TreePath(node.getPath()));
-			return;
-		}
-		depth--;
-		Enumeration children = node.children();
-		while(children.hasMoreElements()){
-			DocNode child = (DocNode)children.nextElement();
-			jTree.expandPath(new TreePath(child.getPath()));
-			expandNode(child, depth);
-		}
-	}
 
 	/**
 	 * This method initializes cntNodeInfo	
@@ -3153,7 +3189,7 @@ public class FrmZeetaMain extends BaseFrame {
 			dspLinkedUserCaption.setText("user : ");
 			dspLinkedUserCaption.setHorizontalAlignment(SwingConstants.RIGHT);
 			cntLinkCreator = new JPanel();
-			cntLinkCreator.setToolTipText("è¦ªãƒãƒ¼ãƒ‰ã®é–¢ä¿‚ã‚’ä½œæˆã—ãŸãƒ¦ãƒ¼ã‚¶ã¨æ—¥æ™‚");
+			cntLinkCreator.setToolTipText("eƒm[ƒh‚ÌŠÖŒW‚ğì¬‚µ‚½ƒ†[ƒU‚Æ“ú");
 			cntLinkCreator.setLayout(new GridBagLayout());
 			cntLinkCreator.setBorder(new TitledBorder("link info"));
 			cntLinkCreator.add(getCmdRefreshLinkCreator(), gbcButton);
@@ -3198,8 +3234,8 @@ public class FrmZeetaMain extends BaseFrame {
 		if (inpChkLinkNode == null) {
 			inpChkLinkNode = new JCheckBox();
 			inpChkLinkNode.setText("link node");
-			inpChkLinkNode.setToolTipText("Titleã®å…ˆé ­ã®æ–‡å­—åˆ—ã§ã“ã‚Œã®on/offã‚’è‡ªå‹•è¨­å®š -->" +
-					"ãƒ„ãƒ¼ãƒ«ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ï¼Preference");
+			inpChkLinkNode.setToolTipText("Title‚Ìæ“ª‚Ì•¶š—ñ‚Å‚±‚ê‚Ìon/off‚ğ©“®İ’è -->" +
+					"ƒc[ƒ‹ƒEƒBƒ“ƒhƒE„Preference");
 		}
 		return inpChkLinkNode;
 	}

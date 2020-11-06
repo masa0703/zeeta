@@ -7,177 +7,177 @@ public class CatStringTest extends TestCase {
 
 	public void testConcatLine01() {
 		String[] lines = new String[]{
-				"ã‚ã‚ã‚ ã„ã„ã„"
+				"‚ ‚ ‚  ‚¢‚¢‚¢"
 		};
 		
 		lines = CatString.concatLine(lines);
-		 assertEquals(lines[0], "ã‚ã‚ã‚ ã„ã„ã„");
+		 assertEquals(lines[0], "‚ ‚ ‚  ‚¢‚¢‚¢");
 	}
 	public void testConcatLine02() {
 		String[] lines = new String[]{
-				"\tã‚ã‚ã‚ ã„ã„ã„"
+				"\t‚ ‚ ‚  ‚¢‚¢‚¢"
 		};
 		
 		lines = CatString.concatLine(lines);
-		 assertEquals(lines[0], "\tã‚ã‚ã‚ ã„ã„ã„");
+		 assertEquals(lines[0], "\t‚ ‚ ‚  ‚¢‚¢‚¢");
 	}
 	public void testConcatLine03() {
 		String[] lines = new String[]{
-				"ã‚ã‚ã‚\t\"ã„ã„ã„\""
+				"‚ ‚ ‚ \t\"‚¢‚¢‚¢\""
 		};
 		
 		lines = CatString.concatLine(lines);
-		 assertEquals(lines[0], "ã‚ã‚ã‚\tã„ã„ã„");
+		 assertEquals(lines[0], "‚ ‚ ‚ \t‚¢‚¢‚¢");
 	}
 	public void testConcatLine04() {
 		String[] lines = new String[]{
-				"ã‚ã‚ã‚\t\t\"ã„ã„ã„\""
+				"‚ ‚ ‚ \t\t\"‚¢‚¢‚¢\""
 		};
 		
 		lines = CatString.concatLine(lines);
-		 assertEquals(lines[0], "ã‚ã‚ã‚\tã„ã„ã„");
+		 assertEquals(lines[0], "‚ ‚ ‚ \t‚¢‚¢‚¢");
 	}
 	public void testConcatLine05() {
 		String[] lines = new String[]{
-				"\"ã‚ã‚ã‚\" ã„ã„ã„"
+				"\"‚ ‚ ‚ \" ‚¢‚¢‚¢"
 		};
-		//ã‚¿ã‚¤ãƒˆãƒ«ãŒ"ã§å›²ã¾ã‚Œã¦ã„ãŸã‚‰tabãŒãªãã¦ã‚‚å¾ŒåŠã¯memoã¨ã™ã‚‹
-		//ã“ã®ãŸã‚ã€åŒºåˆ‡ã‚Šæ–‡å­—ã¯ã€tabã«ç½®æ›ã•ã‚Œã‚‹
+		//ƒ^ƒCƒgƒ‹‚ª"‚ÅˆÍ‚Ü‚ê‚Ä‚¢‚½‚çtab‚ª‚È‚­‚Ä‚àŒã”¼‚Ímemo‚Æ‚·‚é
+		//‚±‚Ì‚½‚ßA‹æØ‚è•¶š‚ÍAtab‚É’uŠ·‚³‚ê‚é
 		lines = CatString.concatLine(lines);
-		 assertEquals(lines[0], "ã‚ã‚ã‚\tã„ã„ã„");
+		 assertEquals(lines[0], "‚ ‚ ‚ \t‚¢‚¢‚¢");
 	}
 	public void testConcatLine06() {
 		String[] lines = new String[]{
-				"\"ã‚ã‚ã‚\"\tã„ã„ã„"
+				"\"‚ ‚ ‚ \"\t‚¢‚¢‚¢"
 		};
 		lines = CatString.concatLine(lines);
-		 assertEquals(lines[0], "ã‚ã‚ã‚\tã„ã„ã„");
+		 assertEquals(lines[0], "‚ ‚ ‚ \t‚¢‚¢‚¢");
 	}
 	public void testConcatLine07() {
 		String[] lines = new String[]{
-				"\"ã‚ã‚ã‚\"\t  \"ã„ã„ã„\""
+				"\"‚ ‚ ‚ \"\t  \"‚¢‚¢‚¢\""
 		};
 		lines = CatString.concatLine(lines);
-		 assertEquals(lines[0], "ã‚ã‚ã‚\tã„ã„ã„");
+		 assertEquals(lines[0], "‚ ‚ ‚ \t‚¢‚¢‚¢");
 	}
 	public void testConcatLine08() {
 		String[] lines = new String[]{
-				"\"ã‚ã‚ã‚\" \"ã„ã„ã„"
+				"\"‚ ‚ ‚ \" \"‚¢‚¢‚¢"
 		};
 		lines = CatString.concatLine(lines);
-		 assertEquals(lines[0], "ã‚ã‚ã‚\tã„ã„ã„");
+		 assertEquals(lines[0], "‚ ‚ ‚ \t‚¢‚¢‚¢");
 	}
 	public void testConcatLine09() {
 		String[] lines = new String[]{
-				"\"ã‚ã‚ã‚\"\t  \"ã„ã„ã„\" \"ã†ã†ã†\""
+				"\"‚ ‚ ‚ \"\t  \"‚¢‚¢‚¢\" \"‚¤‚¤‚¤\""
 		};
 		lines = CatString.concatLine(lines);
-		 assertEquals(lines[0], "ã‚ã‚ã‚\tã„ã„ã„\tã†ã†ã†");
+		 assertEquals(lines[0], "‚ ‚ ‚ \t‚¢‚¢‚¢\t‚¤‚¤‚¤");
 	}
 	public void testConcatLine10() {
 		String[] lines = new String[]{
-				"\"ã‚ã‚ã‚\"\t  \"ã„ã„ã„\" \"ã†ã†ã†\"    ãˆãˆãˆ"
+				"\"‚ ‚ ‚ \"\t  \"‚¢‚¢‚¢\" \"‚¤‚¤‚¤\"    ‚¦‚¦‚¦"
 		};
 		lines = CatString.concatLine(lines);
-		assertEquals(lines[0], "ã‚ã‚ã‚\tã„ã„ã„\tã†ã†ã†\tãˆãˆãˆ");
+		assertEquals(lines[0], "‚ ‚ ‚ \t‚¢‚¢‚¢\t‚¤‚¤‚¤\t‚¦‚¦‚¦");
 	}
 	public void testConcatLine11() {
 		String[] lines = new String[]{
-				"\"ã‚ã‚ã‚\"\t  \"ã„ã„ã„\" \"ã†ã†ã†\"    ãˆãˆãˆ ãŠãŠãŠ"
+				"\"‚ ‚ ‚ \"\t  \"‚¢‚¢‚¢\" \"‚¤‚¤‚¤\"    ‚¦‚¦‚¦ ‚¨‚¨‚¨"
 		};
 		lines = CatString.concatLine(lines);
-		 assertEquals(lines[0], "ã‚ã‚ã‚\tã„ã„ã„\tã†ã†ã†\tãˆãˆãˆ ãŠãŠãŠ");
+		 assertEquals(lines[0], "‚ ‚ ‚ \t‚¢‚¢‚¢\t‚¤‚¤‚¤\t‚¦‚¦‚¦ ‚¨‚¨‚¨");
 	}
 
-	//==== è¤‡æ•°è¡Œã«è·¨ã‚‹
+	//==== •¡”s‚ÉŒ×‚é
 	public void testConcatLine20() {
 
 	}
 	public void testConcatLine21() {
 		String[] lines = new String[]{
-				"ã‚ã‚ã‚\t\"ã„"
-				,"ã„"
-				,"ã„\""
+				"‚ ‚ ‚ \t\"‚¢"
+				,"‚¢"
+				,"‚¢\""
 		};
 		lines = CatString.concatLine(lines);
-		assertEquals(lines[0], "ã‚ã‚ã‚\tã„\nã„\nã„");
+		assertEquals(lines[0], "‚ ‚ ‚ \t‚¢\n‚¢\n‚¢");
 	}
 	public void testConcatLine22() {
 		String[] lines = new String[]{
-				"\"ã‚"
-				,"ã‚"
-				,"ã‚\"\tã„ã„ã„"
+				"\"‚ "
+				,"‚ "
+				,"‚ \"\t‚¢‚¢‚¢"
 		};
 		lines = CatString.concatLine(lines);
-		assertEquals(lines[0], "ã‚\nã‚\nã‚\tã„ã„ã„");
+		assertEquals(lines[0], "‚ \n‚ \n‚ \t‚¢‚¢‚¢");
 	}
 	public void testConcatLine23() {
 		String[] lines = new String[]{
-				"ã‚ã‚ã‚\t\t\t\t\"ã„"
-				,"ã„"
-				,"ã„"
-				,"ã†ã¸ã¸ã¸\""
+				"‚ ‚ ‚ \t\t\t\t\"‚¢"
+				,"‚¢"
+				,"‚¢"
+				,"‚¤‚Ö‚Ö‚Ö\""
 		};
 		lines = CatString.concatLine(lines);
-		assertEquals(lines[0], "ã‚ã‚ã‚\tã„\nã„\nã„\nã†ã¸ã¸ã¸");
+		assertEquals(lines[0], "‚ ‚ ‚ \t‚¢\n‚¢\n‚¢\n‚¤‚Ö‚Ö‚Ö");
 	}
 	public void testConcatLine24() {
 		String[] lines = new String[]{
-				"ã‚ã‚ã‚\t\t\t\t\"ã„"
-				,"----ã„"
-				,"\tã„"
-				,"ã†ã¸ã¸ã¸\""
+				"‚ ‚ ‚ \t\t\t\t\"‚¢"
+				,"----‚¢"
+				,"\t‚¢"
+				,"‚¤‚Ö‚Ö‚Ö\""
 		};
 		lines = CatString.concatLine(lines);
-		assertEquals(lines[0], "ã‚ã‚ã‚\tã„\n----ã„\n\tã„\nã†ã¸ã¸ã¸");
+		assertEquals(lines[0], "‚ ‚ ‚ \t‚¢\n----‚¢\n\t‚¢\n‚¤‚Ö‚Ö‚Ö");
 	}
 	public void testConcatLine25() {
 		String[] lines = new String[]{
-				"\"ã‚"
-				,"----ã‚"
-				,"ã‚\"\tã„ã„ã„"
+				"\"‚ "
+				,"----‚ "
+				,"‚ \"\t‚¢‚¢‚¢"
 		};
 		lines = CatString.concatLine(lines);
-		assertEquals(lines[0], "ã‚\n----ã‚\nã‚\tã„ã„ã„");
+		assertEquals(lines[0], "‚ \n----‚ \n‚ \t‚¢‚¢‚¢");
 	}
 
-	//==== "" ã‚’"ã¨èªè­˜ã™ã‚‹
+	//==== "" ‚ğ"‚Æ”F¯‚·‚é
 	public void testConcatLine40() {
 		String[] lines = new String[]{
-				"ã‚\"\"ã‚ã‚"
+				"‚ \"\"‚ ‚ "
 		};
 		lines = CatString.concatLine(lines);
-		assertEquals(lines[0], "ã‚\"ã‚ã‚");
+		assertEquals(lines[0], "‚ \"‚ ‚ ");
 	}
 	public void testConcatLine41() {
 		String[] lines = new String[]{
-				"ã‚\"\"ã‚ã‚\tã„ã„\"\"ã„"
+				"‚ \"\"‚ ‚ \t‚¢‚¢\"\"‚¢"
 		};
 		lines = CatString.concatLine(lines);
-		assertEquals(lines[0], "ã‚\"ã‚ã‚\tã„ã„\"ã„");
+		assertEquals(lines[0], "‚ \"‚ ‚ \t‚¢‚¢\"‚¢");
 	}
 
 
 	//====
 	public void testConcatLine90() {
 		String[] lines = new String[]{
-				"èªè¨¼ãƒ»èªå¯\t\"åˆ©ç”¨è€…è¦–ç‚¹"
-				,"    * åˆ©ç”¨è€…ã«ä»˜ä¸ã•ã‚Œã‚‹å›ºæœ‰IDã€ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã«ã‚ˆã‚ŠCWSã‚’è‡ªç”±ã«ç·¨é›†ã™ã‚‹ã“ã¨ãŒå‡ºæ¥ã‚‹ã€‚"
-				,"ç®¡ç†è€…è¦–ç‚¹\""
+				"”FØE”F‰Â\t\"—˜—pÒ‹“_"
+				,"    * —˜—pÒ‚É•t—^‚³‚ê‚éŒÅ—LIDAƒpƒXƒ[ƒh‚É‚æ‚èCWS‚ğ©—R‚É•ÒW‚·‚é‚±‚Æ‚ªo—ˆ‚éB"
+				,"ŠÇ—Ò‹“_\""
 		};
 		lines = CatString.concatLine(lines);
-		assertEquals(lines[0], "èªè¨¼ãƒ»èªå¯\tåˆ©ç”¨è€…è¦–ç‚¹\n"
-				+"    * åˆ©ç”¨è€…ã«ä»˜ä¸ã•ã‚Œã‚‹å›ºæœ‰IDã€ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã«ã‚ˆã‚ŠCWSã‚’è‡ªç”±ã«ç·¨é›†ã™ã‚‹ã“ã¨ãŒå‡ºæ¥ã‚‹ã€‚\n"
-				+"ç®¡ç†è€…è¦–ç‚¹"
+		assertEquals(lines[0], "”FØE”F‰Â\t—˜—pÒ‹“_\n"
+				+"    * —˜—pÒ‚É•t—^‚³‚ê‚éŒÅ—LIDAƒpƒXƒ[ƒh‚É‚æ‚èCWS‚ğ©—R‚É•ÒW‚·‚é‚±‚Æ‚ªo—ˆ‚éB\n"
+				+"ŠÇ—Ò‹“_"
 				);
 	}
 	public void testConcatLine91() {
 		String[] lines = new String[]{
-				"ã‚ã‚ã‚\t\"ã„"
-				,"ã„"
-				,"ã„"	//å¾Œã‚ã®"ãŒæ¬ ã‘ã¦ã„ã‚‹
+				"‚ ‚ ‚ \t\"‚¢"
+				,"‚¢"
+				,"‚¢"	//Œã‚ë‚Ì"‚ªŒ‡‚¯‚Ä‚¢‚é
 		};
 		lines = CatString.concatLine(lines);
-		assertEquals(lines[0], "ã‚ã‚ã‚\tã„\nã„\nã„");
+		assertEquals(lines[0], "‚ ‚ ‚ \t‚¢\n‚¢\n‚¢");
 	}
 }

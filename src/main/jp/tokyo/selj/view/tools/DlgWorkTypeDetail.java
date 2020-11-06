@@ -44,7 +44,7 @@ public class DlgWorkTypeDetail extends DlgTableMaintUpdateBase {
 	WorkTypeDao workTypeDao_ = null;  //  @jve:decl-index=0:
 	WorkType workType_ = null;  //  @jve:decl-index=0:
 
-	//new, updateå…¼ç”¨
+	//new, updateŒ“—p
 	class ActNewOrUpdateWorkType extends ActTransactionBase {
 		protected Component getOwnerComponent(){
 			return DlgWorkTypeDetail.this;
@@ -52,7 +52,7 @@ public class DlgWorkTypeDetail extends DlgTableMaintUpdateBase {
 		public ActNewOrUpdateWorkType(){
 			super();
 			putValue(Action.NAME, "commit");
-			putValue(Action.SHORT_DESCRIPTION, "æ–°è¦ç™»éŒ²ã¾ãŸã¯æ›´æ–°");
+			putValue(Action.SHORT_DESCRIPTION, "V‹K“o˜^‚Ü‚½‚ÍXV");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			workType_.setSeq( ((Number)getInpSEQ().getValue()).intValue() );
@@ -60,24 +60,24 @@ public class DlgWorkTypeDetail extends DlgTableMaintUpdateBase {
 			workType_.setMemo( getInpMemo().getText() );
 			workType_.check();
 			if(isUpdate_){
-				//æ›´æ–°
+				//XV
 				workTypeDao_.update(workType_);
 			}else{
-				//æ–°è¦è¿½åŠ 
+				//V‹K’Ç‰Á
 				workTypeDao_.insert(workType_);
 			}
 			getOwnerComponent().setVisible(false);
-			//ä¸€æ—¦ãƒˆãƒ©ãƒ³ã‚¶ã‚¯ã‚·ãƒ§ãƒ³ã‚’çµ‚äº†ã—ãªã„ã¨model_.executeQuery()ãŒã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆã«ãªã‚‹
+			//ˆê’Uƒgƒ‰ƒ“ƒUƒNƒVƒ‡ƒ“‚ğI—¹‚µ‚È‚¢‚Æmodel_.executeQuery()‚ªƒ^ƒCƒ€ƒAƒEƒg‚É‚È‚é
 			postProc();
 			preProc();
-			//MasterComboModelã‚’æ›´æ–°ã™ã‚‹
+			//MasterComboModel‚ğXV‚·‚é
 			MasterComboModel.refreshWorkType();
-			//JTableã‚’ãƒªãƒ•ãƒ¬ãƒƒã‚·ãƒ¥ã™ã‚‹
+			//JTable‚ğƒŠƒtƒŒƒbƒVƒ…‚·‚é
 			((DlgWorkTypeOutputType)getOwner()).loadWorkTypeTable();
 //			model_.executeQuery();	
 		}
 	}
-	//deleteç”¨
+	//delete—p
 	ActDeleteWorkType actDeleteWorkType_ = new ActDeleteWorkType();
 	class ActDeleteWorkType extends ActTransactionBase {
 		protected Component getOwnerComponent(){
@@ -86,24 +86,24 @@ public class DlgWorkTypeDetail extends DlgTableMaintUpdateBase {
 		public ActDeleteWorkType(){
 			super();
 			putValue(Action.NAME, "delete");
-			putValue(Action.SHORT_DESCRIPTION, "å‰Šé™¤");
+			putValue(Action.SHORT_DESCRIPTION, "íœ");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			int id = Integer.parseInt(e.getActionCommand());
-			//æˆæœç‰©ç¨®é¡ãŒç´ã¥ã„ã¦ã„ãŸã‚‰ã ã‚
+			//¬‰Ê•¨í—Ş‚ª•R‚Ã‚¢‚Ä‚¢‚½‚ç‚¾‚ß
 			OutputTypeDao outputTypeDao = (OutputTypeDao)daoCont_.getComponent(OutputTypeDao.class);
 			if(outputTypeDao.findByWorkTypeId(id).size() > 0){
-				throw new AppException("é–¢é€£ã™ã‚‹æˆæœç‰©ç¨®é¡(output type)ã‚’å‰Šé™¤ã™ã‚‹ã‹åˆ¥ã®ä½œæ¥­ç¨®é¡ã«å‰²ã‚Šå½“ã¦ã¦ãã ã•ã„ã€‚");
+				throw new AppException("ŠÖ˜A‚·‚é¬‰Ê•¨í—Ş(output type)‚ğíœ‚·‚é‚©•Ê‚Ìì‹Æí—Ş‚ÉŠ„‚è“–‚Ä‚Ä‚­‚¾‚³‚¢B");
 			}
-			//workTypeå‰Šé™¤
+			//workTypeíœ
 			workTypeDao_.deleteByWorkTypeId(id); 
-			//ä¸€æ—¦ãƒˆãƒ©ãƒ³ã‚¶ã‚¯ã‚·ãƒ§ãƒ³ã‚’çµ‚äº†ã—ãªã„ã¨model_.executeQuery()ãŒã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆã«ãªã‚‹
+			//ˆê’Uƒgƒ‰ƒ“ƒUƒNƒVƒ‡ƒ“‚ğI—¹‚µ‚È‚¢‚Æmodel_.executeQuery()‚ªƒ^ƒCƒ€ƒAƒEƒg‚É‚È‚é
 			postProc();
 			preProc();
-			//MasterComboModelã‚’æ›´æ–°ã™ã‚‹
+			//MasterComboModel‚ğXV‚·‚é
 			MasterComboModel.refreshWorkType();
 			
-			//JTableã‚’ãƒªãƒ•ãƒ¬ãƒƒã‚·ãƒ¥ã™ã‚‹
+			//JTable‚ğƒŠƒtƒŒƒbƒVƒ…‚·‚é
 			((DlgWorkTypeOutputType)getOwner()).loadWorkTypeTable();
 
 			getOwnerComponent().setVisible(false);
@@ -133,7 +133,7 @@ public class DlgWorkTypeDetail extends DlgTableMaintUpdateBase {
 	public void loadWorkType(long id){
 		workType_ = workTypeDao_.findByWorkTypeId(id); 
 		if(workType_ == null){
-			throw new AppException("ä½œæ¥­ç¨®é¡ID="+id+" ã¯ã€æ—¢ã«å‰Šé™¤ã•ã‚Œã¦ã„ã¾ã™");
+			throw new AppException("ì‹Æí—ŞID="+id+" ‚ÍAŠù‚Éíœ‚³‚ê‚Ä‚¢‚Ü‚·");
 		}
 		setWorkType(workType_);
 		isUpdate_ = true;

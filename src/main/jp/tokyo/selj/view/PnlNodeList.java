@@ -55,10 +55,10 @@ public class PnlNodeList extends JPanel {
 					JOptionPane.showMessageDialog(
 							SwingUtilities.getWindowAncestor(PnlNodeList.this),
 							"<html>" +
-							"ä»–ã®Zeetaã§è¿½åŠ ã•ã‚ŒãŸãƒãƒ¼ãƒ‰ã§ã™ã€‚<br>" +
-							"ç¾åœ¨é¸æŠä¸­ã®ãƒãƒ¼ãƒ‰ã®è¦ªãƒãƒ¼ãƒ‰ã‚’é¸æŠã—F5ã‚­ãƒ¼ã§ãƒªãƒ•ãƒ¬ãƒƒã‚·ãƒ¥ã—ã¦ã‹ã‚‰" +
-							"å†åº¦å®Ÿè¡Œã—ã¦ãã ã•ã„ã€‚<br>" +
-							"åŒã˜ç—‡çŠ¶ãŒå‡ºã‚‹å ´åˆã¯ã€æ›´ã«ãã®è¦ªã‚’ãƒªãƒ•ãƒ¬ãƒƒã‚·ãƒ¥ã—ã¦ãã ã•ã„ã€‚" ,
+							"‘¼‚ÌZeeta‚Å’Ç‰Á‚³‚ê‚½ƒm[ƒh‚Å‚·B<br>" +
+							"Œ»İ‘I‘ğ’†‚Ìƒm[ƒh‚Ìeƒm[ƒh‚ğ‘I‘ğ‚µF5ƒL[‚ÅƒŠƒtƒŒƒbƒVƒ…‚µ‚Ä‚©‚ç" +
+							"Ä“xÀs‚µ‚Ä‚­‚¾‚³‚¢B<br>" +
+							"“¯‚¶Çó‚ªo‚éê‡‚ÍAX‚É‚»‚Ìe‚ğƒŠƒtƒŒƒbƒVƒ…‚µ‚Ä‚­‚¾‚³‚¢B" ,
 							""
 							,JOptionPane.WARNING_MESSAGE);
 
@@ -146,12 +146,12 @@ public class PnlNodeList extends JPanel {
 			dspNodes2.setModel(docModel);
 			dspNodes2.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			isFirstSetup_ = false;
-			//Enterã‚­ãƒ¼ã§jump
+			//EnterƒL[‚Åjump
 			dspNodes2.getInputMap().
 				put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,0), "select");
 			dspNodes2.getActionMap().put("select", actSelect_);
 		}else{
-			//ã‚«ãƒ©ãƒ å¹…ã‚’è¨˜æ†¶
+			//ƒJƒ‰ƒ€•‚ğ‹L‰¯
 			TableColumnModel colM = getDspNodes2().getColumnModel();
 			for(int i=0; i<INIT_WIDTHS.length; i++){
 				widths[i] = colM.getColumn(i).getWidth();
@@ -162,18 +162,18 @@ public class PnlNodeList extends JPanel {
 		DocTableModel docTableModel = (DocTableModel)dspNodes2.getModel();
 		docTableModel.setDoc(docs);
 
-		//ã“ã‚Œã¯æ¯å›ã‚„ã‚‰ãªã„ã¨ã ã‚ãªã‚ˆã†ã 
+		//‚±‚ê‚Í–ˆ‰ñ‚â‚ç‚È‚¢‚Æ‚¾‚ß‚È‚æ‚¤‚¾
 		colM.getColumn(0).setMaxWidth(INIT_WIDTHS[0]);
 		colM.getColumn(0).setResizable(false);
 		colM.getColumn(1).setMinWidth(INIT_WIDTHS[1]);
 
 		for(int i=0; i<(widths.length-0); i++){
-			colM.getColumn(i).setPreferredWidth(widths[i]);	//setWidth()ã˜ã‚ƒã ã‚ãªã‚ˆã†ã 
+			colM.getColumn(i).setPreferredWidth(widths[i]);	//setWidth()‚¶‚á‚¾‚ß‚È‚æ‚¤‚¾
 		}
 
 		sl_ = sl;
 		dspNodes2.setEnabled(true);
-		//é¸æŠçŠ¶æ…‹ã«ã™ã‚‹
+		//‘I‘ğó‘Ô‚É‚·‚é
 		if(docs.size() > 0){
 			dspNodes2.getSelectionModel().setSelectionInterval(0, 0);
 			dspNodes2.scrollRectToVisible(
@@ -222,7 +222,7 @@ public class PnlNodeList extends JPanel {
 	public JTable getDspNodes2() {
 		if (dspNodes2 == null) {
 			dspNodes2 = new JTable();
-			dspNodes2.setToolTipText("ãƒ€ãƒ–ãƒ«ã‚¯ãƒªãƒƒã‚¯ã€Enterã‚­ãƒ¼ã§æ­£ãƒ„ãƒªãƒ¼ã‚’ãƒã‚¤ãƒ³ãƒˆã—ã¾ã™ã€‚");
+			dspNodes2.setToolTipText("ƒ_ƒuƒ‹ƒNƒŠƒbƒNAEnterƒL[‚ÅMain Tree‚ğƒ|ƒCƒ“ƒg‚µ‚Ü‚·B");
 			dspNodes2.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
 					if(e.getClickCount() > 1){

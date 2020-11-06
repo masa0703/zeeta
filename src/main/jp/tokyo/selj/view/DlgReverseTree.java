@@ -37,9 +37,11 @@ import javax.swing.tree.TreePath;
 
 import jp.tokyo.selj.common.PreferenceWindowHelper;
 import jp.tokyo.selj.model.DocModel;
+import jp.tokyo.selj.model.DocModel4Reverse;
 import jp.tokyo.selj.model.DocNode;
 
 import org.apache.log4j.Logger;
+import java.awt.SystemColor;
 
 public class DlgReverseTree extends JDialog implements TreeSelectionListener{
 	Logger log = Logger.getLogger(this.getClass());  //  @jve:decl-index=0:
@@ -64,7 +66,7 @@ public class DlgReverseTree extends JDialog implements TreeSelectionListener{
 		public void actionPerformed(ActionEvent e) {
 //			JTree tree = (JTree)e.getSource();
 			JTree tree = jTree;
-			if(jTree.getSelectionPath() == null){	//ä½•ã‚‚é¸æŠã•ã‚Œã¦ã„ãªã„
+			if(jTree.getSelectionPath() == null){	//‰½‚à‘I‘ğ‚³‚ê‚Ä‚¢‚È‚¢
 				return;
 			}
 			DocNode node = (DocNode)tree.getSelectionPath().getLastPathComponent();
@@ -102,7 +104,7 @@ public class DlgReverseTree extends JDialog implements TreeSelectionListener{
 	private JPanel getJContentPane() {
 		if (jContentPane == null) {
 			jLabel = new JLabel();
-			jLabel.setText("double click/enter key/popup menuã§MainTreeã‚’ãƒã‚¤ãƒ³ãƒˆ");
+			jLabel.setText("enter key / popup menu ‚ÅMainTree‚ğƒ|ƒCƒ“ƒg");
 			jLabel.setFont(new Font("Dialog", Font.PLAIN, 12));
 			jLabel.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 			jContentPane = new JPanel();
@@ -135,28 +137,28 @@ public class DlgReverseTree extends JDialog implements TreeSelectionListener{
 		if (jTree == null) {
 			jTree = new JTree();
 			jTree.setShowsRootHandles(true);
-			jTree.setToggleClickCount(0);
-			jTree.setToolTipText("Enterã‚­ãƒ¼ã§æ­£ãƒ„ãƒªãƒ¼ã‚’ãƒã‚¤ãƒ³ãƒˆã—ã¾ã™ã€‚");
+			jTree.setToggleClickCount(2);	//ƒ_ƒuƒ‹ƒNƒŠƒbƒN‚Åƒm[ƒh‚Ì“WŠJ
+			jTree.setBackground(SystemColor.controlDkShadow);
+			jTree.setFont(new Font("Dialog", Font.PLAIN, 12));
+			jTree.setToolTipText("EnterƒL[‚ÅMain Tree‚ğƒ|ƒCƒ“ƒg‚µ‚Ü‚·B");
 			jTree.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(MouseEvent e) {
-					if(e.getButton() == MouseEvent.BUTTON3){	//å³ãƒœã‚¿ãƒ³
+					if(e.getButton() == MouseEvent.BUTTON3){	//‰Eƒ{ƒ^ƒ“
 						if(jTree.getSelectionPath() != null){
 							getMnuTreePopup().show(jTree, e.getX(), e.getY());
 						}
-					}else if(e.getClickCount() >= 2){
-						actSelect_.actionPerformed(null);
 					}
 				}
 			});
-			//Enterã‚­ãƒ¼ã§jump
+			//EnterƒL[‚Åjump
 			jTree.getInputMap().
 				put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,0), "select");
 			jTree.getActionMap().put("select", actSelect_);
-			//ãƒªã‚¹ãƒŠç™»éŒ²
+			//ƒŠƒXƒi“o˜^
 			jTree.addTreeExpansionListener(new javax.swing.event.TreeExpansionListener() {
 				public void treeExpanded(javax.swing.event.TreeExpansionEvent e) {
 					Object node = e.getPath().getLastPathComponent();
-					docModel_.addJijiDocFromDb((DocNode)node);
+					docModel_.addMagoDocFromDb((DocNode)node);
 				}
 				public void treeCollapsed(javax.swing.event.TreeExpansionEvent e) {
 				}
@@ -166,8 +168,8 @@ public class DlgReverseTree extends JDialog implements TreeSelectionListener{
 		return jTree;
 	}
 	
-	DocModel docModel_ = new DocModel();  //  @jve:decl-index=0:
-	DocTreeCellRenderer2 renderer_ = new DocTreeCellRenderer2(docModel_);
+	DocModel4Reverse docModel_ = new DocModel4Reverse();  //  @jve:decl-index=0:
+	DocTreeCellRenderer4ReverseTree renderer_ = new DocTreeCellRenderer4ReverseTree(docModel_);
 
 	private JPopupMenu mnuTreePopup = null;  //  @jve:decl-index=0:visual-constraint="348,25"
 
@@ -193,55 +195,29 @@ public class DlgReverseTree extends JDialog implements TreeSelectionListener{
 		return bFont_;
 	}
 
-	class DocTreeCellRenderer2 extends DocTreeCellRenderer{
-		TreeNode[] path_;
-		public DocTreeCellRenderer2(DocModel docModel) {
-			super(docModel);
-		}
-		public void setPath(TreeNode[] path){
-			path_ = path;
-		}
-
-		@Override
-		protected void decorateFont(JTree tree, DocNode node) {
-			super.decorateFont(tree, node);
-			if(path_ == null || node.getLevel() < 1){	//node.getLevel()==0ã¯ã€ãƒ«ãƒ¼ãƒˆãªã®ã§ãã®ã¾ã¾ã«ã—ã¦ãŠã
-				return;
-			}
-			int index = path_.length - node.getLevel() -1;
-			if( index >= 0 && path_.length > index &&
-				node.getUserObject().equals(
-					((DocNode)path_[index]).getUserObject()
-				) 
-			){
-//				setFont(cnvBoldFont(tree.getFont()));
-				setForeground(Color.GRAY);
-			}
-		}
-	}
 	DocNode curNode_;
 	boolean ignoreChange_ = false;
 	protected Preferences prefs_ = Preferences.userNodeForPackage(this.getClass());  //  @jve:decl-index=0:
 	public void setup(){
 		
-		//==== jTreeã®è¨­å®š
+		//==== jTree‚Ìİ’è
         getJTree().setModel(docModel_);
         getJTree().setCellRenderer(renderer_);
 		
 		pref_ = new PreferenceWindowHelper(this);
 		pref_.restoreForm();
 		
-		//ãƒãƒ¼ãƒ‰syncã™ã‚‹ï¼Ÿ
+		//ƒm[ƒhsync‚·‚éH
 		ignoreChange_ = prefs_.getBoolean("revTree.sync", false);
 		refreshSyncIcon();
 	}
 	public void valueChanged(TreeSelectionEvent e) {
 		curNode_ = null;
-		//é¸æŠã•ã‚ŒãŸitem
+		//‘I‘ğ‚³‚ê‚½item
 		if( !isShowing() || e.getPath().getLastPathComponent() == null){
 			return;
 		}
-		//é¸æŠã•ã‚ŒãŸãƒãƒ¼ãƒ‰ã‚’detailã«è¡¨ç¤º
+		//‘I‘ğ‚³‚ê‚½ƒm[ƒh‚ğdetail‚É•\¦
 //		log.debug("refresh reverseTree");
 		curNode_ = (DocNode)e.getPath().getLastPathComponent();
 		if(ignoreChange_){
@@ -269,7 +245,7 @@ public class DlgReverseTree extends JDialog implements TreeSelectionListener{
 	@Override
 	public void setVisible(boolean b) {
 		if(b){
-			throw new RuntimeException("setVisible(boolean b, DocNode docNode)ã‚’ã¤ã‹ã‚ãªã‚ã‹ã‚“");
+			throw new RuntimeException("setVisible(boolean b, DocNode docNode)‚ğ‚Â‚©‚í‚È‚ ‚©‚ñ");
 		}else{
 			super.setVisible(b);
 		}
@@ -366,7 +342,7 @@ public class DlgReverseTree extends JDialog implements TreeSelectionListener{
 			inpDepth.setMajorTickSpacing(5);
 //			inpDepth.setPreferredSize(new Dimension(200, 25));
 			inpDepth.setPaintTicks(true);
-			inpDepth.setToolTipText("ãƒãƒ¼ãƒ‰ã‚’å±•é–‹ã™ã‚‹ãƒ«ãƒ¼ãƒˆã‹ã‚‰ã®æ·±ã•ã‚’æŒ‡å®šã—ã¾ã™ã€‚");
+			inpDepth.setToolTipText("ƒm[ƒh‚ğ“WŠJ‚·‚éƒ‹[ƒg‚©‚ç‚Ì[‚³‚ğw’è‚µ‚Ü‚·B");
 			inpDepth.setSnapToTicks(true);
 			inpDepth.setValue(0);
 			inpDepth.setBorder( 
@@ -379,22 +355,22 @@ public class DlgReverseTree extends JDialog implements TreeSelectionListener{
 				public void stateChanged(javax.swing.event.ChangeEvent e) {
 					expandNode((DocNode)docModel_.getRoot(), inpDepth.getValue());
 				}
+				void expandNode(DocNode node, int depth){
+					if(depth <= 0){
+						jTree.collapsePath(new TreePath(node.getPath()));
+						return;
+					}
+					depth--;
+					Enumeration children = node.children();
+					while(children.hasMoreElements()){
+						DocNode child = (DocNode)children.nextElement();
+						jTree.expandPath(new TreePath(child.getPath()));
+						expandNode(child, depth);
+					}
+				}
 			});
 		}
 		return inpDepth;
-	}
-	void expandNode(DocNode node, int depth){
-		if(depth <= 0){
-			jTree.collapsePath(new TreePath(node.getPath()));
-			return;
-		}
-		depth--;
-		Enumeration children = node.children();
-		while(children.hasMoreElements()){
-			DocNode child = (DocNode)children.nextElement();
-			jTree.expandPath(new TreePath(child.getPath()));
-			expandNode(child, depth);
-		}
 	}
 
 	/**
@@ -410,7 +386,7 @@ public class DlgReverseTree extends JDialog implements TreeSelectionListener{
 				public void mouseClicked(java.awt.event.MouseEvent e) {
 					ignoreChange_ = !ignoreChange_;
 					refreshSyncIcon();
-					//è¨˜éŒ²
+					//‹L˜^
 					try {
 						prefs_.putBoolean("revTree.sync", ignoreChange_);
 						prefs_.flush();
@@ -419,8 +395,8 @@ public class DlgReverseTree extends JDialog implements TreeSelectionListener{
 					}
 				}
 			});
-			cmdSyncNode.setIcon(SYNC_ICON);	//å¾Œã§ãƒªã‚»ãƒƒãƒˆã•ã‚Œã‚‹
-			cmdSyncNode.setToolTipText("ãƒ¡ã‚¤ãƒ³ãƒ„ãƒªãƒ¼ã®ãƒãƒ¼ãƒ‰é¸æŠã¨åŒæœŸ");
+			cmdSyncNode.setIcon(SYNC_ICON);	//Œã‚ÅƒŠƒZƒbƒg‚³‚ê‚é
+			cmdSyncNode.setToolTipText("ƒƒCƒ“ƒcƒŠ[‚Ìƒm[ƒh‘I‘ğ‚Æ“¯Šú");
 		}
 		return cmdSyncNode;
 	}

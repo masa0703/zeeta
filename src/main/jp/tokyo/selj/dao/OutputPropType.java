@@ -42,10 +42,10 @@ public class OutputPropType implements Serializable {
 
     public void check() throws AppException{
     	if(outputPropTypeName == null || "".equals(outputPropTypeName.trim()) ){
-    		throw new ModelCheckException("åç§°(outputPropTypeName)ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„");
+    		throw new ModelCheckException("–¼Ì(outputPropTypeName)‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢");
     	}
     	if(unitName == null || "".equals(unitName.trim())){
-    		throw new ModelCheckException("å˜ä½å(unitName)ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„");
+    		throw new ModelCheckException("’PˆÊ–¼(unitName)‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢");
     	}
     }
     

@@ -37,7 +37,7 @@ public class CopyData {
 
     public static void main(String[] args) throws Exception{
 		//version check
-    	//ä¸‡ãŒä¸€ã€dbSetup.diconã‚’æ›´æ–°ã—å¿˜ã‚Œã¦ã‚‚ã€ã“ã‚Œã§ã‚¹ã‚­ãƒ¼ãƒãŒæ›´æ–°ã•ã‚Œã‚‹
+    	//–œ‚ªˆêAdbSetup.dicon‚ğXV‚µ–Y‚ê‚Ä‚àA‚±‚ê‚ÅƒXƒL[ƒ}‚ªXV‚³‚ê‚é
 		ZeetaDBManager.check();
 
 		Connection dstCon = getDstConnection();
@@ -67,13 +67,13 @@ public class CopyData {
         	//work
         	copyTable(dstCon, srcCon, "work");
         	
-        	//ã‚·ãƒ¼ã‚±ãƒ³ã‚¹ã®åˆæœŸåŒ–
+        	//ƒV[ƒPƒ“ƒX‚Ì‰Šú‰»
         	initSequence(dstCon, srcCon, "DocId");
         	initSequence(dstCon, srcCon, "OutputId");
         	initSequence(dstCon, srcCon, "OutputTypeId");
         	initSequence(dstCon, srcCon, "WorkTypeId");
  
-        	//------ ã“ã“ã‹ã‚‰ver0.6
+        	//------ ‚±‚±‚©‚çver0.6
         	copyTable(dstCon, srcCon, "checkState");
         	copyTable(dstCon, srcCon, "checkPoint");
         	copyTable(dstCon, srcCon, "checktbl");
@@ -84,12 +84,12 @@ public class CopyData {
 //        	initSequence(dstCon, srcCon, "WorkPropTypeId");
         	initSequence(dstCon, srcCon, "CheckPointId");
         	
-        	//------ ã“ã“ã‹ã‚‰ver0.6.10
+        	//------ ‚±‚±‚©‚çver0.6.10
         	copyTable(dstCon, srcCon, "reviewStateType");
         	copyTable(dstCon, srcCon, "review");
         	copyTable(dstCon, srcCon, "reviewDetail");
 
-        	//------ ã“ã“ã‹ã‚‰ver0.7.00
+        	//------ ‚±‚±‚©‚çver0.7.00
         	copyTable(dstCon, srcCon, "outputPropType");
         	copyTable(dstCon, srcCon, "outputTypePropType");
         	copyTable(dstCon, srcCon, "workProp");
@@ -113,11 +113,11 @@ public class CopyData {
 			,String seqName) throws Exception{
 
 		Statement srcSt = srcCon.createStatement();
-		//postgreSqlã§ã¯ã€nextvalãŒä½¿ç”¨ã•ã‚Œãªã„ã¨currvalãŒä½¿ç”¨ã§ããªã„
+		//postgreSql‚Å‚ÍAnextval‚ªg—p‚³‚ê‚È‚¢‚Æcurrval‚ªg—p‚Å‚«‚È‚¢
 		ResultSet rs = srcSt.executeQuery("select nextval('" + seqName + "') as nextval");
 		rs.next();
 		long curVal = ((Number)rs.getObject("nextval")).longValue();
-//		curVal--;	ã“ã‚Œã‚’ã‚„ã‚‹ã¨ã€postgressã§ã¯ã€æœ€åˆã®insertã§ä¸€æ„åˆ¶ç´„é•åã«ãªã‚‹ã®ã§ã‚„ã‚ãŸ
+//		curVal--;	‚±‚ê‚ğ‚â‚é‚ÆApostgress‚Å‚ÍAÅ‰‚Ìinsert‚ÅˆêˆÓ§–ñˆá”½‚É‚È‚é‚Ì‚Å‚â‚ß‚½
 		
 		Statement dstSt = dstCon.createStatement();
 		dstSt.executeUpdate("ALTER SEQUENCE " + seqName
@@ -128,25 +128,25 @@ public class CopyData {
 	static void copyTable(Connection dstCon, Connection srcCon
 			,String tableName) throws Exception{
 
-		//ã‚³ãƒ”ãƒ¼å…ƒãƒ‡ãƒ¼ã‚¿ã®ãƒ­ãƒ¼ãƒ‰
+		//ƒRƒs[Œ³ƒf[ƒ^‚Ìƒ[ƒh
 		Statement srcSt = srcCon.createStatement();
 		ResultSet rs = srcSt.executeQuery("select * from " + tableName);
 
-		//ã‚«ãƒ©ãƒ ä¸€è¦§ä½œæˆ
+		//ƒJƒ‰ƒ€ˆê——ì¬
 		ResultSetMetaData rsm = rs.getMetaData();
 		String[] columns = new String[rsm.getColumnCount()];
 		for(int i=0; i<columns.length; i++){
 			columns[i] = rsm.getColumnName(i+1);
 		}
 		
-		//insertæ–‡ä½œæˆ
+		//insert•¶ì¬
 		String sql = makeInsertStatement(tableName, columns);
 
-		//ã‚³ãƒ”ãƒ¼å…ˆãƒ‡ãƒ¼ã‚¿ã®å‰Šé™¤
+		//ƒRƒs[æƒf[ƒ^‚Ìíœ
 		Statement dstSt = dstCon.createStatement();
-		dstSt.executeUpdate("delete from " + tableName);	//rollbackã—ãŸã„ã®ã§truncateã¯ä½¿ã‚ãªã„
+		dstSt.executeUpdate("delete from " + tableName);	//rollback‚µ‚½‚¢‚Ì‚Åtruncate‚Íg‚í‚È‚¢
 		
-		//ã‚³ãƒ”ãƒ¼å…ˆã®insertæº–å‚™
+		//ƒRƒs[æ‚Ìinsert€”õ
 		PreparedStatement dstPrep = dstCon.prepareStatement(sql);
 		
 		try{

@@ -40,7 +40,7 @@ public class DlgReviewStateTypeDetail extends DlgTableMaintUpdateBase {
 	boolean isUpdate_ = false;
 	ReviewStateTypeDao dao_ = null;  //  @jve:decl-index=0:
 	ReviewStateType reviewStateType_ = null;  //  @jve:decl-index=0:
-	//new, updateå…¼ç”¨
+	//new, updateŒ“—p
 	private class ActNewOrUpdate extends ActTransactionBase {
 		protected Component getOwnerComponent(){
 			return DlgReviewStateTypeDetail.this;
@@ -48,31 +48,31 @@ public class DlgReviewStateTypeDetail extends DlgTableMaintUpdateBase {
 		public ActNewOrUpdate(){
 			super();
 			putValue(Action.NAME, "commit");
-			putValue(Action.SHORT_DESCRIPTION, "æ–°è¦ç™»éŒ²ã¾ãŸã¯æ›´æ–°");
+			putValue(Action.SHORT_DESCRIPTION, "V‹K“o˜^‚Ü‚½‚ÍXV");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			reviewStateType_.setReviewStateTypeId(((Number)getInpId().getValue()).intValue());
 			reviewStateType_.setReviewStateTypeName( getInpName().getText() );
 			reviewStateType_.check();
 			if(isUpdate_){
-				//æ›´æ–°
+				//XV
 				dao_.update(reviewStateType_);
 			}else{
-				//æ–°è¦è¿½åŠ 
+				//V‹K’Ç‰Á
 				dao_.insert(reviewStateType_);
 			}
 			getOwnerComponent().setVisible(false);
-			//ä¸€æ—¦ãƒˆãƒ©ãƒ³ã‚¶ã‚¯ã‚·ãƒ§ãƒ³ã‚’çµ‚äº†ã—ãªã„ã¨model_.executeQuery()ãŒã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆã«ãªã‚‹
+			//ˆê’Uƒgƒ‰ƒ“ƒUƒNƒVƒ‡ƒ“‚ğI—¹‚µ‚È‚¢‚Æmodel_.executeQuery()‚ªƒ^ƒCƒ€ƒAƒEƒg‚É‚È‚é
 			postProc();
 			preProc();
-			//JTableã‚’ãƒªãƒ•ãƒ¬ãƒƒã‚·ãƒ¥ã™ã‚‹
+			//JTable‚ğƒŠƒtƒŒƒbƒVƒ…‚·‚é
 			((DlgReviewStateTypeMaint)getOwner()).loadReviewStateTypeTable();
 
-			//MasterComboModelã‚’æ›´æ–°ã™ã‚‹
+			//MasterComboModel‚ğXV‚·‚é
 			MasterComboModel.refreshrRvieStateType();
 		}
 	}
-	//deleteç”¨
+	//delete—p
 	ActDelete actDelete_ = new ActDelete();  //  @jve:decl-index=0:
 
 	private JTextField inpName = null;
@@ -84,19 +84,19 @@ public class DlgReviewStateTypeDetail extends DlgTableMaintUpdateBase {
 		public ActDelete(){
 			super();
 			putValue(Action.NAME, "delete");
-			putValue(Action.SHORT_DESCRIPTION, "å‰Šé™¤ã—ã¾ã™");
+			putValue(Action.SHORT_DESCRIPTION, "íœ‚µ‚Ü‚·");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			String id = e.getActionCommand();
-			//å‰Šé™¤
+			//íœ
 			dao_.deleteById(Integer.parseInt(id)); 
-			//ä¸€æ—¦ãƒˆãƒ©ãƒ³ã‚¶ã‚¯ã‚·ãƒ§ãƒ³ã‚’çµ‚äº†ã—ãªã„ã¨model_.executeQuery()ãŒã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆã«ãªã‚‹
+			//ˆê’Uƒgƒ‰ƒ“ƒUƒNƒVƒ‡ƒ“‚ğI—¹‚µ‚È‚¢‚Æmodel_.executeQuery()‚ªƒ^ƒCƒ€ƒAƒEƒg‚É‚È‚é
 			postProc();
 			preProc();
-			//JTableã‚’ãƒªãƒ•ãƒ¬ãƒƒã‚·ãƒ¥ã™ã‚‹
+			//JTable‚ğƒŠƒtƒŒƒbƒVƒ…‚·‚é
 			((DlgReviewStateTypeMaint)getOwner()).loadReviewStateTypeTable();
 
-			//MasterComboModelã‚’æ›´æ–°ã™ã‚‹
+			//MasterComboModel‚ğXV‚·‚é
 			MasterComboModel.refreshrRvieStateType();
 			
 			getOwnerComponent().setVisible(false);
@@ -125,7 +125,7 @@ public class DlgReviewStateTypeDetail extends DlgTableMaintUpdateBase {
 	public void loadReviewStateType(int id){
 		reviewStateType_ = dao_.findById(id); 
 		if(reviewStateType_ == null){
-			throw new AppException("id="+id+" ã¯ã€æ—¢ã«å‰Šé™¤ã•ã‚Œã¦ã„ã¾ã™");
+			throw new AppException("id="+id+" ‚ÍAŠù‚Éíœ‚³‚ê‚Ä‚¢‚Ü‚·");
 		}
 		setReviewStateType(reviewStateType_);
 		isUpdate_ = true;

@@ -27,7 +27,7 @@ public class LstOutputs extends JList {
 		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 			Output output = (Output)value;
 			this.setOutput(output);
-			this.setOpaque(isSelected);		//ä¸é€æ˜ã«ã™ã‚‹ã“ã¨ã§é¸æŠçŠ¶æ…‹ã‚’è¡¨ã™ã€‚ï¼ˆé€æ˜ã ã¨ç™½ããªã‚‹ï¼‰
+			this.setOpaque(isSelected);		//•s“§–¾‚É‚·‚é‚±‚Æ‚Å‘I‘ğó‘Ô‚ğ•\‚·Bi“§–¾‚¾‚Æ”’‚­‚È‚éj
 			return this;
 		}
 
@@ -42,7 +42,7 @@ public class LstOutputs extends JList {
     		}
     	}
     	public void mousePressed(java.awt.event.MouseEvent e) {
-			if(e.getButton() == MouseEvent.BUTTON3){	//å³ãƒœã‚¿ãƒ³
+			if(e.getButton() == MouseEvent.BUTTON3){	//‰Eƒ{ƒ^ƒ“
 				getMnuWorkListPopup().show(LstOutputs.this, e.getX(), e.getY());
 			}
     	}
@@ -74,7 +74,7 @@ public class LstOutputs extends JList {
 	}
 
 	public void setup() {
-		//ä½•ã‚‚ã™ã‚‹ã“ã¨ãŒãªããªã£ãŸã‘ã©ã€ä¸€å¿œæ®‹ã—ã¦ãŠã
+		//‰½‚à‚·‚é‚±‚Æ‚ª‚È‚­‚È‚Á‚½‚¯‚ÇAˆê‰c‚µ‚Ä‚¨‚­
 	}
 
 	/**

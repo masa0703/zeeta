@@ -57,7 +57,7 @@ public class DlgNewCheck extends JDialog {
 		public ActCreateOrUpdateCheckList(){
 			super();
 			putValue(Action.NAME, "commit");
-			putValue(Action.SHORT_DESCRIPTION, "æ–°è¦ã®ãƒã‚§ãƒƒã‚¯ãƒªã‚¹ãƒˆã‚’ä½œæˆã™ã‚‹");
+			putValue(Action.SHORT_DESCRIPTION, "V‹K‚Ìƒ`ƒFƒbƒNƒŠƒXƒg‚ğì¬‚·‚é");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			if(check_ == null){
@@ -74,10 +74,10 @@ public class DlgNewCheck extends JDialog {
 			checkDao_.update(check_);
 		}
 		void create(ActionEvent e) {
-			//checkPointã‚’èª­ã¿è¾¼ã‚€
+			//checkPoint‚ğ“Ç‚İ‚Ş
 			List<CheckPoint> checkPoints = checkPointDao_.findByOutputTypeId(output_.getOutputTypeId());
 			if(checkPoints.size() <= 0){
-				throw new AppException("ã“ã®æˆæœç‰©ç¨®é¡ã«ãƒã‚§ãƒƒã‚¯é …ç›®ãŒç™»éŒ²ã•ã‚Œã¦ã„ã¾ã›ã‚“");
+				throw new AppException("‚±‚Ì¬‰Ê•¨í—Ş‚Éƒ`ƒFƒbƒN€–Ú‚ª“o˜^‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
 			}
 
 			Check check = new Check();
@@ -180,7 +180,7 @@ public class DlgNewCheck extends JDialog {
 	@Override
 	public void setVisible(boolean b) {
 		if(b){
-			throw new RuntimeException("setVisible(boolean b, Output output)ã‚’ã¤ã‹ã‚ãªã‚ã‹ã‚“");
+			throw new RuntimeException("setVisible(boolean b, Output output)‚ğ‚Â‚©‚í‚È‚ ‚©‚ñ");
 		}else{
 			super.setVisible(b);
 		}

@@ -35,10 +35,10 @@ public class Review implements Serializable {
     
     public void check(){
     	if(reviewi == null || "".equals(reviewi.trim()) ){
-    		throw new ModelCheckException("authorã‚’å…¥åŠ›ã—ã¦ãã ã•ã„");
+    		throw new ModelCheckException("author‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢");
     	}
     	if(reviewer1 == null || "".equals(reviewer1.trim()) ){
-    		throw new ModelCheckException("reviewer1ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„");
+    		throw new ModelCheckException("reviewer1‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢");
     	}
     }
     

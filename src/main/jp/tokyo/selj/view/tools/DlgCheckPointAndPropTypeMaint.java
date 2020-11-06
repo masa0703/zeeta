@@ -59,7 +59,7 @@ public class DlgCheckPointAndPropTypeMaint extends JDialog {
 	OutputTypePropTypeDao outputTypePropTypeDao_ = null;
 
 	private JTabbedPane cntSlaveTab = null;
-	//Actionã®è¦ªã‚¯ãƒ©ã‚¹
+	//Action‚ÌeƒNƒ‰ƒX
 	private abstract class ActBase2 extends ActBase {
 		ActBase2(ActionMap map){
 			super(map);
@@ -76,7 +76,7 @@ public class DlgCheckPointAndPropTypeMaint extends JDialog {
 		public ActCheckPointShowNewDlg(ActionMap map){
 			super(map);
 			putValue(Action.NAME, "new");
-			putValue(Action.SHORT_DESCRIPTION, "ãƒã‚§ãƒƒã‚¯é …ç›®ã‚’è¿½åŠ ã—ã¾ã™(Ins)");
+			putValue(Action.SHORT_DESCRIPTION, "ƒ`ƒFƒbƒN€–Ú‚ğ’Ç‰Á‚µ‚Ü‚·(Ins)");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			getDlg().newCheckPoint(checkPointModel_.curOutputTypeId_);
@@ -95,12 +95,12 @@ public class DlgCheckPointAndPropTypeMaint extends JDialog {
 		public ActCheckPointShowUpdateDlg(ActionMap map){
 			super(map);
 			putValue(Action.NAME, "update");
-			putValue(Action.SHORT_DESCRIPTION, "ãƒã‚§ãƒƒã‚¯é …ç›®ã‚’æ›´æ–°ã—ã¾ã™");
+			putValue(Action.SHORT_DESCRIPTION, "ƒ`ƒFƒbƒN€–Ú‚ğXV‚µ‚Ü‚·");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			JTable table = getCntCheckPoint().getJTable();
 			if(table.getSelectedRow() < 0){
-				throw new AppException("check pointã‚’é¸æŠã—ã¦ãã ã•ã„"); 
+				throw new AppException("check point‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢"); 
 			}
 			int idIndex = checkPointModel_.getColumnIndex("id");
 			int id = ((Number)table.getValueAt(
@@ -113,13 +113,13 @@ public class DlgCheckPointAndPropTypeMaint extends JDialog {
 		public ActCheckPointRemove(ActionMap map){
 			super(map);
 			putValue(Action.NAME, "remove");
-			putValue(Action.SHORT_DESCRIPTION, "ãƒã‚§ãƒƒã‚¯é …ç›®ã‚’å‰Šé™¤ã—ã¾ã™(Del)");
+			putValue(Action.SHORT_DESCRIPTION, "ƒ`ƒFƒbƒN€–Ú‚ğíœ‚µ‚Ü‚·(Del)");
 		}
 		public void actionPerformed2(ActionEvent e) {
-			//ä½œæ¥­ç¨®é¡ã®å‰Šé™¤ã‚’è¡Œã†
+			//ì‹Æí—Ş‚Ìíœ‚ğs‚¤
 			JTable table = getCntCheckPoint().getJTable();
 			if(table.getSelectedRow() < 0){
-				throw new AppException("check pointã‚’é¸æŠã—ã¦ãã ã•ã„"); 
+				throw new AppException("check point‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢"); 
 			}
 			int idIndex = checkPointModel_.getColumnIndex("id");
 			int id = ((Number)table.getValueAt(
@@ -127,9 +127,9 @@ public class DlgCheckPointAndPropTypeMaint extends JDialog {
 
 			if( JOptionPane.showConfirmDialog(
 					DlgCheckPointAndPropTypeMaint.this
-					,"é¸æŠä¸­ã®ãƒã‚§ãƒƒã‚¯é …ç›®ã‚’å‰Šé™¤ã—ã¾ã™ã€‚\n" +
-					"ãƒã‚§ãƒƒã‚¯é …ç›®ãŒã™ã§ã«ä½¿ç”¨ã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ã€delete flagã‚’Onã«ã—ã¦ãã ã•ã„ã€‚\n" +
-					"ã‚ˆã‚ã—ã„ã§ã™ã‹ï¼Ÿ",""
+					,"‘I‘ğ’†‚Ìƒ`ƒFƒbƒN€–Ú‚ğíœ‚µ‚Ü‚·B\n" +
+					"ƒ`ƒFƒbƒN€–Ú‚ª‚·‚Å‚Ég—p‚³‚ê‚Ä‚¢‚éê‡‚ÍAdelete flag‚ğOn‚É‚µ‚Ä‚­‚¾‚³‚¢B\n" +
+					"‚æ‚ë‚µ‚¢‚Å‚·‚©H",""
 					,JOptionPane.YES_NO_OPTION
 					,JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
 						
@@ -146,7 +146,7 @@ public class DlgCheckPointAndPropTypeMaint extends JDialog {
 		public ActOutputPropTypeShowNewDlg(ActionMap map){
 			super(map);
 			putValue(Action.NAME, "new");
-			putValue(Action.SHORT_DESCRIPTION, "æˆæœç‰©å±æ€§ç¨®é¡ã‚’è¿½åŠ ã—ã¾ã™(Ins)");
+			putValue(Action.SHORT_DESCRIPTION, "¬‰Ê•¨‘®«í—Ş‚ğ’Ç‰Á‚µ‚Ü‚·(Ins)");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			getDlg().newWorkPropType();
@@ -165,12 +165,12 @@ public class DlgCheckPointAndPropTypeMaint extends JDialog {
 		public ActOutputPropTypeShowUpdateDlg(ActionMap map){
 			super(map);
 			putValue(Action.NAME, "update");
-			putValue(Action.SHORT_DESCRIPTION, "æˆæœç‰©å±æ€§ç¨®é¡ã‚’æ›´æ–°ã—ã¾ã™");
+			putValue(Action.SHORT_DESCRIPTION, "¬‰Ê•¨‘®«í—Ş‚ğXV‚µ‚Ü‚·");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			JList workPeopTypes = getInpSelectOutputPropTypeList();
 			if(workPeopTypes.getSelectedIndex() < 0){
-				throw new AppException("workPropTypeã‚’é¸æŠã—ã¦ãã ã•ã„"); 
+				throw new AppException("workPropType‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢"); 
 			}
 			getDlg().setWorkPropType((OutputPropType)workPeopTypes.getSelectedValue());
 			getDlg().setVisible(true);
@@ -180,18 +180,18 @@ public class DlgCheckPointAndPropTypeMaint extends JDialog {
 		public ActOutputPropTypeRemove(ActionMap map){
 			super(map);
 			putValue(Action.NAME, "remove");
-			putValue(Action.SHORT_DESCRIPTION, "æˆæœç‰©å±æ€§ç¨®é¡ã‚’å‰Šé™¤ã—ã¾ã™(Del)");
+			putValue(Action.SHORT_DESCRIPTION, "¬‰Ê•¨‘®«í—Ş‚ğíœ‚µ‚Ü‚·(Del)");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			JList outputPropTypes = getInpSelectOutputPropTypeList();
 			if(outputPropTypes.getSelectedIndex() < 0){
-				throw new AppException("æˆæœç‰©å±æ€§ç¨®é¡ã‚’é¸æŠã—ã¦ãã ã•ã„"); 
+				throw new AppException("¬‰Ê•¨‘®«í—Ş‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢"); 
 			}
 
 			if( JOptionPane.showConfirmDialog(
 					DlgCheckPointAndPropTypeMaint.this
-					,"é¸æŠä¸­ã®æˆæœç‰©å±æ€§ç¨®é¡ã‚’å‰Šé™¤ã—ã¾ã™ã€‚\n" +
-					"ã‚ˆã‚ã—ã„ã§ã™ã‹ï¼Ÿ",""
+					,"‘I‘ğ’†‚Ì¬‰Ê•¨‘®«í—Ş‚ğíœ‚µ‚Ü‚·B\n" +
+					"‚æ‚ë‚µ‚¢‚Å‚·‚©H",""
 					,JOptionPane.YES_NO_OPTION
 					,JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
 						
@@ -205,17 +205,17 @@ public class DlgCheckPointAndPropTypeMaint extends JDialog {
 		public ActApplySetting(ActionMap map){
 			super(map);
 			putValue(Action.NAME, "apply setting");
-			putValue(Action.SHORT_DESCRIPTION, "é¸æŠä¸­ã®æˆæœç‰©å±æ€§ç¨®é¡ã‚’æˆæœç‰©ç¨®é¡ã«é–¢é€£ä»˜ã‘ã¾ã™");
+			putValue(Action.SHORT_DESCRIPTION, "‘I‘ğ’†‚Ì¬‰Ê•¨‘®«í—Ş‚ğ¬‰Ê•¨í—Ş‚ÉŠÖ˜A•t‚¯‚Ü‚·");
 		}
 		public void actionPerformed2(ActionEvent e) {
 			long outputTypeId = getSelectedOutputTypeId();
 			if(outputTypeId < 0){
-				throw new AppException("æˆæœç‰©ç¨®é¡ã‚’é¸æŠã—ã¦ãã ã•ã„");
+				throw new AppException("¬‰Ê•¨í—Ş‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢");
 			}
 			
 			int[] selectIndices = getInpSelectOutputPropTypeList().getSelectedIndices();
 
-			outputTypePropTypeDao_.deleteByOutputTyeId(outputTypeId);	//ä¸€æ—¦å…¨å‰Šé™¤
+			outputTypePropTypeDao_.deleteByOutputTyeId(outputTypeId);	//ˆê’U‘Síœ
 			for(int i=0;i < selectIndices.length; i++){
 				OutputTypePropType otpt = new OutputTypePropType();
 				otpt.setOutputTypeId(outputTypeId);
@@ -228,7 +228,7 @@ public class DlgCheckPointAndPropTypeMaint extends JDialog {
 		}
 	}
 
-	//æˆæœç‰©ç¨®é¡ãƒ†ãƒ¼ãƒ–ãƒ«ãƒ¢ãƒ‡ãƒ«
+	//¬‰Ê•¨í—Şƒe[ƒuƒ‹ƒ‚ƒfƒ‹
 	class OutputTypeModel extends DBTableModel{
 		@Override
 		public String getTableName() {
@@ -256,7 +256,7 @@ public class DlgCheckPointAndPropTypeMaint extends JDialog {
 			return "outputTypeId=" + id;
 		}
 	}
-	//ãƒã‚§ãƒƒã‚¯ãƒã‚¤ãƒ³ãƒˆãƒ†ãƒ¼ãƒ–ãƒ«ãƒ¢ãƒ‡ãƒ«
+	//ƒ`ƒFƒbƒNƒ|ƒCƒ“ƒgƒe[ƒuƒ‹ƒ‚ƒfƒ‹
 	class CheckPointModel extends DBTableModel{
 		long curOutputTypeId_ = -1;
 		@Override
@@ -312,7 +312,7 @@ public class DlgCheckPointAndPropTypeMaint extends JDialog {
 	}
 	
 	void setCheckPointTableColumnWidth(){
-		//outputTypesã®åˆ—å¹…ã‚’æ±ºå®š
+		//outputTypes‚Ì—ñ•‚ğŒˆ’è
 		JTable table = getCntCheckPoint().getJTable();
 		int verIndex = checkPointModel_.getVersionNoColumnIndex();
 		if(verIndex >= 0){
@@ -339,7 +339,7 @@ public class DlgCheckPointAndPropTypeMaint extends JDialog {
 		outputPropTypeDao_ = (OutputPropTypeDao)daoCont_.getComponent(OutputPropTypeDao.class);
 		outputTypePropTypeDao_ = (OutputTypePropTypeDao)daoCont_.getComponent(OutputTypePropTypeDao.class);
 
-		//outputTypeã®Actionã‚»ãƒƒãƒˆ
+		//outputType‚ÌActionƒZƒbƒg
 //		getCntOutputType().getActionMap().put(PnlTableMaint.ACTION_KEY_NEW, 
 //				new ActOutputTypeShowNewDlg(actionMap_));
 //		getCntOutputType().getActionMap().put(PnlTableMaint.ACTION_KEY_UPDATE, 
@@ -348,7 +348,7 @@ public class DlgCheckPointAndPropTypeMaint extends JDialog {
 //				new ActOutputTypeDelete(actionMap_));
 //		getCntOutputType().setup();
 		
-		//workTypeã®Actionã‚»ãƒƒãƒˆ
+		//workType‚ÌActionƒZƒbƒg
 		getCntCheckPoint().getActionMap().put(PnlTableMaint.ACTION_KEY_NEW, 
 				new ActCheckPointShowNewDlg(actionMap_));
 		getCntCheckPoint().getActionMap().put(PnlTableMaint.ACTION_KEY_UPDATE, 
@@ -389,7 +389,7 @@ public class DlgCheckPointAndPropTypeMaint extends JDialog {
 
 		refreshOutputPropTypeTable();
 
-		//ä½œæ¥­ç¨®é¡ã®è¡Œé¸æŠã‚¤ãƒ™ãƒ³ãƒˆã‚’æ¤œçŸ¥
+		//ì‹Æí—Ş‚Ìs‘I‘ğƒCƒxƒ“ƒg‚ğŒŸ’m
 		getCntOutputType().setTableSelectionListener(new Synchronizer());
 	}
 	
@@ -476,7 +476,7 @@ public class DlgCheckPointAndPropTypeMaint extends JDialog {
 
 	public void refreshCheckPointTable() {
 		checkPointModel_.executeQuery();
-		//æœ€å¾Œã«æŒ‡å®šã•ã‚ŒãŸcheckPointIdã¯ã€checkPointModel_å†…ã«ä¿å­˜ã•ã‚Œã¦ã„ã‚‹
+		//ÅŒã‚Éw’è‚³‚ê‚½checkPointId‚ÍAcheckPointModel_“à‚É•Û‘¶‚³‚ê‚Ä‚¢‚é
 		setCheckPointTableColumnWidth();
 	}
 	public void loadOutputTypeTable() {
@@ -485,7 +485,7 @@ public class DlgCheckPointAndPropTypeMaint extends JDialog {
 		
 		outputTypeModel_.executeQuery();
 		
-		//outputTypeã®åˆ—å¹…ã‚’æ±ºå®š
+		//outputType‚Ì—ñ•‚ğŒˆ’è
 		int verIndex = outputTypeModel_.getVersionNoColumnIndex();
 		if(verIndex >= 0){
 			TableColumn col = table.getColumnModel().getColumn(verIndex);
@@ -499,7 +499,7 @@ public class DlgCheckPointAndPropTypeMaint extends JDialog {
 		table.getColumnModel().getColumn(
 				outputTypeModel_.getColumnIndex("seq")).setMaxWidth(60);	//seq
 		
-		//é¸æŠçŠ¶æ…‹ã‚’å¾©å…ƒ
+		//‘I‘ğó‘Ô‚ğ•œŒ³
 		if((selectedIndex >= 0) && ( outputTypeModel_.getRowCount() > selectedIndex)){
 			table.getSelectionModel().addSelectionInterval(selectedIndex, selectedIndex);
 		}
@@ -639,7 +639,7 @@ public class DlgCheckPointAndPropTypeMaint extends JDialog {
 		if (inpSelectOutputPropTypeList == null) {
 			inpSelectOutputPropTypeList = new JList();
 			inpSelectOutputPropTypeList.setFont(new Font("Dialog", Font.PLAIN, 12));
-			inpSelectOutputPropTypeList.setToolTipText("ctrl+clickã§è¤‡æ•°ã®å±æ€§ç¨®é¡ã‚’é¸æŠã—ã€Œapply Settingã€ãƒœã‚¿ãƒ³ã‚’æŠ¼ã—ã¦ãã ã•ã„");
+			inpSelectOutputPropTypeList.setToolTipText("ctrl+click‚Å•¡”‚Ì‘®«í—Ş‚ğ‘I‘ğ‚µuapply Settingvƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚Ä‚­‚¾‚³‚¢");
 			inpSelectOutputPropTypeList.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
 					if(e.getClickCount() >= 2){
